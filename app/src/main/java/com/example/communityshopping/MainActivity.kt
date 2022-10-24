@@ -1,16 +1,25 @@
 package com.example.communityshopping
 
+import android.app.AlertDialog
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.communityshopping.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
+
 
 class MainActivity : AppCompatActivity() {
-
+    lateinit var add: Button;
+    var dialog: AlertDialog? = null
+    var layout: LinearLayout? = null
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,7 +27,10 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        add = findViewById(R.id.btn_addItem)
+        layout = findViewById(R.id.containerList)
+        buildDialog();
+        add.setOnClickListener({ dialog!!.show() })
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
@@ -28,5 +40,31 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    private fun buildDialog() {
+        val builder = AlertDialog.Builder(this)
+        val view: View = layoutInflater.inflate(R.layout.dialog, null)
+        val name = view.findViewById<EditText>(R.id.nameEdit)
+        builder.setView(view)
+        builder.setTitle("Enter name")
+            .setPositiveButton(
+                "OK"
+            ) { dialog, which -> addCard(name.text.toString()) }
+            .setNegativeButton(
+                "Cancel"
+            ) { dialog, which -> }
+        dialog = builder.create()
+    }
+
+    private fun addCard(name: String) {
+        val view: View = layoutInflater.inflate(R.layout.card, null)
+        val nameView: TextView = view.findViewById(R.id.name)
+        val delete: Button = view.findViewById(R.id.delete)
+        nameView.text = name
+        delete.setOnClickListener( {
+                layout!!.removeView(view)
+        })
+        layout!!.addView(view)
     }
 }
