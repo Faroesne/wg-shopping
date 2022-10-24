@@ -14,10 +14,11 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.communityshopping.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class MainActivity : AppCompatActivity() {
-    lateinit var add: Button;
+    lateinit var add: FloatingActionButton;
     var dialog: AlertDialog? = null
     var layout: LinearLayout? = null
     private lateinit var binding: ActivityMainBinding
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        add = findViewById(R.id.btn_addItem)
+         add = findViewById(R.id.btn_addItem)
         layout = findViewById(R.id.containerList)
         buildDialog();
         add.setOnClickListener({ dialog!!.show() })
@@ -47,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         val view: View = layoutInflater.inflate(R.layout.dialog, null)
         val name = view.findViewById<EditText>(R.id.nameEdit)
         builder.setView(view)
-        builder.setTitle("Enter name")
+        builder.setTitle("Enter article")
             .setPositiveButton(
                 "OK"
             ) { dialog, which -> addCard(name.text.toString()) }
@@ -60,11 +61,11 @@ class MainActivity : AppCompatActivity() {
     private fun addCard(name: String) {
         val view: View = layoutInflater.inflate(R.layout.card, null)
         val nameView: TextView = view.findViewById(R.id.name)
-        val delete: Button = view.findViewById(R.id.delete)
+        //val delete: Button = view.findViewById(R.id.checkbox)
         nameView.text = name
-        delete.setOnClickListener( {
-                layout!!.removeView(view)
-        })
+        //delete.setOnClickListener( {
+       //         layout!!.removeView(view)
+      //  })
         layout!!.addView(view)
     }
 }
