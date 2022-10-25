@@ -20,7 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class MainActivity : AppCompatActivity() {
-    lateinit var add: FloatingActionButton;
+    lateinit var add: ImageButton;
     lateinit var btnDelete: ImageButton;
     lateinit var btnSubmit: Button;
     var itemList = arrayListOf<View>()

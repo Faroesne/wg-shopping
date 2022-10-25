@@ -69,10 +69,10 @@
                 app:srcCompat="@android:drawable/ic_menu_delete"
                 android:id="@+id/btn_delete"
                 android:backgroundTint="@color/deepblack"
-                android:tint="@color/deepblack"
+                android:tint="@color/white"
                 android:minWidth="60dp"
                 android:layout_marginRight="0dp"
-                android:background="@null"
+                android:background="@drawable/custom_image_button"
                 />
 
         <Button
@@ -86,22 +86,17 @@
                 android:backgroundTint="@color/brandred"
                 android:layout_weight="6"
                 android:layout_marginLeft="0dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="0dp"
                 app:cornerRadius="12dp" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="true"
                 app:srcCompat="@android:drawable/ic_input_add"
                 android:id="@+id/btn_addItem"
-                android:layout_marginBottom="0dp"
-                app:rippleColor="#F6F5F5"
-                app:tint="@color/white"
                 android:backgroundTint="@color/deepblack"
-                android:layout_marginEnd="0dp"
-                android:layout_weight="0"
-                android:layout_marginLeft="0dp" />
+                android:tint="@color/white"
+                android:background="@drawable/custom_image_button" />
 
     </LinearLayout>
 
