@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="?attr/actionBarSize">
+        android:background="@color/icegrey">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/nav_view"
@@ -17,7 +17,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:menu="@menu/bottom_nav_menu"/>
+            app:menu="@menu/bottom_nav_menu" />
 
     <fragment
             android:id="@+id/nav_host_fragment_activity_main"
@@ -25,11 +25,79 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:defaultNavHost="true"
-            app:layout_constraintBottom_toTopOf="@id/nav_view"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:navGraph="@navigation/mobile_navigation"
-    />
+            app:navGraph="@navigation/mobile_navigation" />
+
+    <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scrollbars="none"
+            app:layout_constraintEnd_toEndOf="@+id/nav_host_fragment_activity_main"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            android:id="@+id/scroll"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintBottom_toTopOf="@+id/bottom"
+            android:layout_marginTop="-50dp">
+
+        <LinearLayout
+                android:id="@+id/containerList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            app:layout_constraintBottom_toTopOf="@+id/nav_view"
+            android:id="@+id/bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp">
+
+        <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                app:srcCompat="@android:drawable/ic_menu_delete"
+                android:id="@+id/btn_delete"
+                android:backgroundTint="@color/deepblack"
+                android:tint="@color/white"
+                android:minWidth="60dp"
+                android:layout_marginRight="0dp"
+                android:background="@drawable/custom_image_button"
+                />
+
+        <Button
+                android:text="Artikel gekauft"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:id="@+id/btn_submit"
+                android:layout_marginBottom="0dp"
+                app:iconTint="#040404"
+                android:textSize="16dp"
+                android:backgroundTint="@color/brandred"
+                android:layout_weight="6"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
+                app:cornerRadius="12dp" />
+
+        <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@android:drawable/ic_input_add"
+                android:id="@+id/btn_addItem"
+                android:backgroundTint="@color/deepblack"
+                android:tint="@color/white"
+                android:background="@drawable/custom_image_button" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
