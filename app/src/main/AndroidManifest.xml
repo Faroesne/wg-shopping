@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.example.communityshopping">
+        package="com.example.communityshopping">
+
+    <uses-permission
+            android:name="android.permission.BLUETOOTH_ADMIN"
+            android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
 
     <application
             android:allowBackup="true"
@@ -10,15 +16,21 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.CommunityShopping">
         <activity
+                android:name=".ui.bluetooth.BluetoothSearchActivity"
+                android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <meta-data
+                    android:name="android.app.lib_name"
+                    android:value="" />
+        </activity>
+        <activity
                 android:name=".MainActivity"
                 android:exported="true"
-                android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
+                android:label="@string/app_name"></activity>
     </application>
 
 </manifest>
