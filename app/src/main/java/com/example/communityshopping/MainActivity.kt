@@ -1,6 +1,7 @@
 package com.example.communityshopping
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -71,7 +72,7 @@ class MainActivity : AppCompatActivity() {
         val view: View = layoutInflater.inflate(R.layout.card, null)
         val nameView: TextView = view.findViewById(R.id.name)
         nameView.text = name
-        itemList.add(view);
+        itemList.add(view)
         layout!!.addView(view)
     }
 
@@ -85,8 +86,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
     private fun submitItems(){
-        // TODO use submitted items for next activity
-        // clear Items from list after submitting them
-        removeItems()
+        startActivity(Intent(this, TotalPriceActivity::class.java))
     }
 }
