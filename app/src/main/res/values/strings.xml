@@ -3,4 +3,8 @@
     <string name="title_home">Einkaufsliste</string>
     <string name="title_dashboard">Archiv</string>
     <string name="title_notifications">Einstellungen</string>
+    <string name="gesamt">GESAMT</string>
+    <string name="einzeln">EINZELN</string>
+    <string name="einkaufspreis">Einkaufspreis</string>
+    <string name="einkauf_best_tigen">EINKAUF BESTÄTIGEN</string>
 </resources>
