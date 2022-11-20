@@ -7,4 +7,17 @@
     <string name="einzeln">EINZELN</string>
     <string name="einkaufspreis">Einkaufspreis</string>
     <string name="einkauf_best_tigen">EINKAUF BESTÄTIGEN</string>
+    <string name="willkommen">WILLKOMMEN</string>
+    <string name="title_activity_create_group">CreateGroup</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="gruppe_erstellen">Gruppe erstellen</string>
+    <string name="gruppe_beitreten">Gruppe beitreten</string>
+    <string name="einkaufspreise">Einkaufspreise</string>
 </resources>

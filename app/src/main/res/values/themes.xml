@@ -14,4 +14,11 @@
         <!-- Customize your theme here. -->
         <item name="android:navigationBarColor">@color/brandred</item>
     </style>
+    <style name="Theme.CommunityShopping.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.CommunityShopping.AppBarOverlay"
+            parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.CommunityShopping.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

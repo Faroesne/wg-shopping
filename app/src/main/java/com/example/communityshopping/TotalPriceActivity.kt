@@ -6,22 +6,16 @@ import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.net.Uri
-import android.opengl.Visibility
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import com.theartofdev.edmodo.cropper.CropImage
-import kotlin.math.sin
 
 class TotalPriceActivity : AppCompatActivity() {
 
@@ -36,7 +30,7 @@ class TotalPriceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_total_price)
         singleButton = findViewById(R.id.singleBtn2)
-        singleButton.setOnClickListener { changeToSingle () }
+        singleButton.setOnClickListener { changeToSingle() }
         totalButton = findViewById(R.id.totalBtn2)
         totalButton.setOnClickListener { changeToTotal() }
         confirmBtn = findViewById(R.id.confirmBuyBtn2)
@@ -59,31 +53,28 @@ class TotalPriceActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
     private fun pickCameraOrGallery() {
         val pick: Boolean = true
-        if(pick)
-        {
-            if(!checkCameraPermission())
-            {
+        if (pick) {
+            if (!checkCameraPermission()) {
                 requestCameraPermission()
-            }else
+            } else
                 pickImage()
-        }else
-        {
-            if(!checkStoragePermission())
-            {
+        } else {
+            if (!checkStoragePermission()) {
                 requestStoragePermission()
-            }else
+            } else
                 pickImage()
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun requestStoragePermission() {
-        requestPermissions(Array<String>(1){ Manifest.permission.WRITE_EXTERNAL_STORAGE},100)
+        requestPermissions(Array<String>(1) { Manifest.permission.WRITE_EXTERNAL_STORAGE }, 100)
     }
 
     private fun checkStoragePermission(): Boolean {
         return ContextCompat.checkSelfPermission(
-        this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            this, Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun pickImage() {
@@ -92,19 +83,25 @@ class TotalPriceActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun requestCameraPermission() {
-        requestPermissions(Array<String>(2){Manifest.permission.CAMERA; Manifest.permission.WRITE_EXTERNAL_STORAGE},100)
+        requestPermissions(
+            Array<String>(2) { Manifest.permission.CAMERA; Manifest.permission.WRITE_EXTERNAL_STORAGE },
+            100
+        )
     }
 
     private fun checkCameraPermission(): Boolean {
-        val firstResource: Boolean = ContextCompat.checkSelfPermission(this,
-            Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
-        val secondResource: Boolean = ContextCompat.checkSelfPermission(this,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+        val firstResource: Boolean = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED
+        val secondResource: Boolean = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
         return firstResource && secondResource
     }
 
-    private fun changeToSingle ()
-    {
+    private fun changeToSingle() {
         val card = view.findViewById<EditText>(R.id.itemPrice)
         val item2 = findViewById<EditText>(R.id.totalPrice)
         card.visibility = View.VISIBLE
