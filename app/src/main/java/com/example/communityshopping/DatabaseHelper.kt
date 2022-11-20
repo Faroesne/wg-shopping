@@ -35,16 +35,18 @@ class DatabaseHelper(
             // TODO add other tables here
         }
     }
-    fun addItem(name: String){
+    fun addItem(name: String): Long {
         val db = this.writableDatabase
         val values = ContentValues()
         values.put(COLUMN_ITEM_NAME, name)
-        db.insert(TABLE_SHOPPING_LIST, null, values)
+        val id =  db.insert(TABLE_SHOPPING_LIST, null, values)
         db.close()
+        return id
         //TODO write different add methods for each screen
     }
-    fun deleteItem(){
-        //TODO delete Item from database (table shopping list)
+    fun deleteItem(id: Long) {
+        val db = this.writableDatabase
+        db.delete(TABLE_SHOPPING_LIST,"_id="+id,null)
     }
 
     companion object {

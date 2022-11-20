@@ -3,6 +3,7 @@ package com.example.communityshopping
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -18,9 +19,10 @@ class MainActivity : AppCompatActivity() {
     lateinit var add: ImageButton
     lateinit var btnDelete: ImageButton
     lateinit var btnSubmit: Button
-    var itemList = arrayListOf<View>()
+    var itemList = arrayListOf<Item>()
     var dialog: AlertDialog? = null
     var layout: LinearLayout? = null
+
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,18 +73,23 @@ class MainActivity : AppCompatActivity() {
                 val view: View = layoutInflater.inflate(R.layout.card, null)
                 val nameView: TextView = view.findViewById(R.id.name)
                 nameView.text = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ITEM_NAME))
-                itemList.add(view)
+                val item = Item(view, cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID)))
+
+                Log.i("tag", "ID" + item.id)
+                itemList.add(item)
                 layout!!.addView(view)
             }
+            cursor.close()
         }
     }
     private fun addCard(name: String) {
         val view: View = layoutInflater.inflate(R.layout.card, null)
         val nameView: TextView = view.findViewById(R.id.name)
         val db = DatabaseHelper(this, null)
-        db.addItem(name)
+        val id = db.addItem(name)
+        val item = Item(view, id)
         nameView.text = name
-        itemList.add(view)
+        itemList.add(item)
         layout!!.addView(view)
         Toast.makeText(this, name + " wurde der Einkaufsliste hinzugefügt", Toast.LENGTH_LONG).show()
 
@@ -91,11 +98,17 @@ class MainActivity : AppCompatActivity() {
     private fun removeItems(){
         val iterator = itemList.iterator()
         for(item in iterator){
-            if(item.findViewById<CheckBox>(R.id.checkbox).isChecked){
-                layout!!.removeView(item)
+            if(item.view.findViewById<CheckBox>(R.id.checkbox).isChecked){
+                Log.i("tag", "ID" + item.id)
+                dbDeleteItem(item.id)
+                layout!!.removeView(item.view)
                 iterator.remove()
             }
         }
+    }
+    private fun dbDeleteItem(id: Long){
+        val db = DatabaseHelper(this, null)
+        db.deleteItem(id)
     }
     private fun submitItems(){
         startActivity(Intent(this, TotalPriceActivity::class.java))
