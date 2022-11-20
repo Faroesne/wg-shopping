@@ -3,7 +3,6 @@ package com.example.communityshopping
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -74,8 +73,6 @@ class MainActivity : AppCompatActivity() {
                 val nameView: TextView = view.findViewById(R.id.name)
                 nameView.text = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ITEM_NAME))
                 val item = Item(view, cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID)))
-
-                Log.i("tag", "ID" + item.id)
                 itemList.add(item)
                 layout!!.addView(view)
             }
@@ -99,7 +96,6 @@ class MainActivity : AppCompatActivity() {
         val iterator = itemList.iterator()
         for(item in iterator){
             if(item.view.findViewById<CheckBox>(R.id.checkbox).isChecked){
-                Log.i("tag", "ID" + item.id)
                 dbDeleteItem(item.id)
                 layout!!.removeView(item.view)
                 iterator.remove()

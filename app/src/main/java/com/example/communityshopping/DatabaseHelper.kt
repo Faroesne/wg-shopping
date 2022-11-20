@@ -39,7 +39,7 @@ class DatabaseHelper(
         val db = this.writableDatabase
         val values = ContentValues()
         values.put(COLUMN_ITEM_NAME, name)
-        val id =  db.insert(TABLE_SHOPPING_LIST, null, values)
+        val id = db.insert(TABLE_SHOPPING_LIST, null, values)
         db.close()
         return id
         //TODO write different add methods for each screen
