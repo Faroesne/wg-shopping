@@ -4,12 +4,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -17,16 +12,16 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.communityshopping.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class MainActivity : AppCompatActivity() {
-    lateinit var add: ImageButton;
-    lateinit var btnDelete: ImageButton;
-    lateinit var btnSubmit: Button;
-    var itemList = arrayListOf<View>()
+    lateinit var add: ImageButton
+    lateinit var btnDelete: ImageButton
+    lateinit var btnSubmit: Button
+    var itemList = arrayListOf<Item>()
     var dialog: AlertDialog? = null
     var layout: LinearLayout? = null
+
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         btnDelete = findViewById(R.id.btn_delete)
         btnSubmit = findViewById(R.id.btn_submit)
         layout = findViewById(R.id.containerList)
-        buildDialog();
+        buildDialog()
         add.setOnClickListener({ dialog!!.show() })
         btnDelete.setOnClickListener({ removeItems() })
         btnSubmit.setOnClickListener({ submitItems() })
@@ -51,6 +46,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        dbGetShoppingList()
+
     }
 
     private fun buildDialog() {
@@ -67,23 +64,47 @@ class MainActivity : AppCompatActivity() {
             ) { dialog, which -> }
         dialog = builder.create()
     }
-
+    private fun dbGetShoppingList(){
+        val db = DatabaseHelper(this, null)
+        val cursor = db.getAllTableData(Table.TABLE_SHOPPING_LIST)
+        if(cursor!!.getCount() >= 1) {
+            while (cursor.moveToNext()) {
+                val view: View = layoutInflater.inflate(R.layout.card, null)
+                val nameView: TextView = view.findViewById(R.id.name)
+                nameView.text = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ITEM_NAME))
+                val item = Item(view, cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID)))
+                itemList.add(item)
+                layout!!.addView(view)
+            }
+            cursor.close()
+        }
+    }
     private fun addCard(name: String) {
         val view: View = layoutInflater.inflate(R.layout.card, null)
         val nameView: TextView = view.findViewById(R.id.name)
+        val db = DatabaseHelper(this, null)
+        val id = db.addItem(name)
+        val item = Item(view, id)
         nameView.text = name
-        itemList.add(view)
+        itemList.add(item)
         layout!!.addView(view)
+        Toast.makeText(this, name + " wurde der Einkaufsliste hinzugefügt", Toast.LENGTH_LONG).show()
+
     }
 
     private fun removeItems(){
         val iterator = itemList.iterator()
         for(item in iterator){
-            if(item.findViewById<CheckBox>(R.id.checkbox).isChecked){
-                layout!!.removeView(item)
+            if(item.view.findViewById<CheckBox>(R.id.checkbox).isChecked){
+                dbDeleteItem(item.id)
+                layout!!.removeView(item.view)
                 iterator.remove()
             }
         }
+    }
+    private fun dbDeleteItem(id: Long){
+        val db = DatabaseHelper(this, null)
+        db.deleteItem(id)
     }
     private fun submitItems(){
         startActivity(Intent(this, TotalPriceActivity::class.java))
