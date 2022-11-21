@@ -21,12 +21,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class MainActivity : AppCompatActivity() {
-    lateinit var add: ImageButton;
+    /*lateinit var add: ImageButton;
     lateinit var btnDelete: ImageButton;
     lateinit var btnSubmit: Button;
     var itemList = arrayListOf<View>()
     var dialog: AlertDialog? = null
-    var layout: LinearLayout? = null
+    var layout: LinearLayout? = null*/
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,14 +34,14 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        add = findViewById(R.id.btn_addItem)
+        /*add = findViewById(R.id.btn_addItem)
         btnDelete = findViewById(R.id.btn_delete)
         btnSubmit = findViewById(R.id.btn_submit)
         layout = findViewById(R.id.containerList)
         buildDialog();
         add.setOnClickListener({ dialog!!.show() })
         btnDelete.setOnClickListener({ removeItems() })
-        btnSubmit.setOnClickListener({ submitItems() })
+        btnSubmit.setOnClickListener({ submitItems() })*/
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
-    private fun buildDialog() {
+    /*private fun buildDialog() {
         val builder = AlertDialog.Builder(this)
         val view: View = layoutInflater.inflate(R.layout.dialog, null)
         val name = view.findViewById<EditText>(R.id.nameEdit)
@@ -87,5 +87,5 @@ class MainActivity : AppCompatActivity() {
     }
     private fun submitItems(){
         startActivity(Intent(this, TotalPriceActivity::class.java))
-    }
+    }*/
 }
