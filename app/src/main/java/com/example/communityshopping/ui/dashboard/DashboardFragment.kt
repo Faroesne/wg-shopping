@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.communityshopping.Archive
 import com.example.communityshopping.ArchiveActivity
 import com.example.communityshopping.ArchiveAdapter
-import com.example.communityshopping.Item
+import com.example.communityshopping.archiveItem
 import com.example.communityshopping.databinding.FragmentDashboardBinding
 
 class DashboardFragment : Fragment() {
@@ -65,11 +65,11 @@ class DashboardFragment : Fragment() {
         archiveArrayList = ArrayList()
 
         for (i in title.indices){
-            val itemsList : ArrayList<Item> = ArrayList()
+            val itemsList : ArrayList<archiveItem> = ArrayList()
             for (a in items[i].indices) {
                 val itemsTemp = items[i][a]
                 val pricesTemp = prices[i][a]
-                itemsList.add(Item(itemsTemp, pricesTemp))
+                itemsList.add(archiveItem(itemsTemp, pricesTemp))
             }
             val archive = Archive(title[i], info[i], itemsList)
             archiveArrayList.add(archive)

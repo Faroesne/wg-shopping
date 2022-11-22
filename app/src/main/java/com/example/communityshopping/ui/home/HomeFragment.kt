@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.communityshopping.R
 import com.example.communityshopping.TotalPriceActivity
@@ -54,7 +53,6 @@ class HomeFragment : Fragment() {
 
     private fun buildDialog(view: View = layoutInflater.inflate(R.layout.dialog, null)) {
         val builder = AlertDialog.Builder(view.getContext())
-        /*val view: View = layoutInflater.inflate(R.layout.dialog, null)*/
         val name = view.findViewById<EditText>(R.id.nameEdit)
         builder.setView(view)
         builder.setTitle("Enter article")
