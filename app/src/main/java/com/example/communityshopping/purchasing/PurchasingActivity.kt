@@ -1,4 +1,4 @@
-package com.example.communityshopping
+package com.example.communityshopping.purchasing
 
 import android.Manifest
 import android.content.Intent
@@ -15,9 +15,10 @@ import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.example.communityshopping.R
 import com.theartofdev.edmodo.cropper.CropImage
 
-class TotalPriceActivity : AppCompatActivity() {
+class PurchasingActivity : AppCompatActivity() {
 
     private lateinit var singleButton: Button
     private lateinit var totalButton: Button
@@ -28,7 +29,7 @@ class TotalPriceActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_total_price)
+        setContentView(R.layout.activity_purchasing)
         singleButton = findViewById(R.id.singleBtn2)
         singleButton.setOnClickListener { changeToSingle() }
         totalButton = findViewById(R.id.totalBtn2)

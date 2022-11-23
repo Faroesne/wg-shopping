@@ -1,4 +1,4 @@
-package com.example.communityshopping.ui.home
+package com.example.communityshopping.mainActivity.shoppinglist
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -10,7 +10,11 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.communityshopping.*
+import com.example.communityshopping.database.DatabaseHelper
+import com.example.communityshopping.database.Item
+import com.example.communityshopping.database.Table
 import com.example.communityshopping.databinding.FragmentHomeBinding
+import com.example.communityshopping.purchasing.PurchasingActivity
 
 class HomeFragment : Fragment() {
 
@@ -110,7 +114,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun submitItems(){
-        startActivity(Intent(getActivity(), TotalPriceActivity::class.java))
+        startActivity(Intent(getActivity(), PurchasingActivity::class.java))
     }
 
     override fun onDestroyView() {

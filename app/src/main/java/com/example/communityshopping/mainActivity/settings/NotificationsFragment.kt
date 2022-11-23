@@ -1,4 +1,4 @@
-package com.example.communityshopping.ui.notifications
+package com.example.communityshopping.mainActivity.settings
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.communityshopping.R
 import com.example.communityshopping.databinding.FragmentNotificationsBinding
 
 class NotificationsFragment : Fragment() {

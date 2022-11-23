@@ -1,10 +1,10 @@
-package com.example.communityshopping.ui.dashboard
+package com.example.communityshopping.mainActivity.settings
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class DashboardViewModel : ViewModel() {
+class NotificationsViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         value = ""

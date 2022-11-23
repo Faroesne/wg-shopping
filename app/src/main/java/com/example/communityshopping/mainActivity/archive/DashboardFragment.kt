@@ -1,4 +1,4 @@
-package com.example.communityshopping.ui.dashboard
+package com.example.communityshopping.mainActivity.archive
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,10 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.communityshopping.Archive
-import com.example.communityshopping.ArchiveActivity
-import com.example.communityshopping.ArchiveAdapter
-import com.example.communityshopping.archiveItem
 import com.example.communityshopping.databinding.FragmentDashboardBinding
 
 class DashboardFragment : Fragment() {

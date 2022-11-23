@@ -1,4 +1,4 @@
-package com.example.communityshopping
+package com.example.communityshopping.database
 
 import android.view.View
 

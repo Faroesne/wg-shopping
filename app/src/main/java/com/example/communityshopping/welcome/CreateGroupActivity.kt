@@ -1,4 +1,4 @@
-package com.example.communityshopping
+package com.example.communityshopping.welcome
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.example.communityshopping.mainActivity.MainActivity
+import com.example.communityshopping.R
 import com.theartofdev.edmodo.cropper.CropImage
 
 class CreateGroupActivity : AppCompatActivity() {
