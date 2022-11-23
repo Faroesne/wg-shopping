@@ -9,8 +9,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.communityshopping.R
-import com.example.communityshopping.TotalPriceActivity
+import com.example.communityshopping.*
 import com.example.communityshopping.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -18,7 +17,7 @@ class HomeFragment : Fragment() {
     lateinit var add: ImageButton;
     lateinit var btnDelete: ImageButton;
     lateinit var btnSubmit: Button;
-    var itemList = arrayListOf<View>()
+    var itemList = arrayListOf<Item>()
     var dialog: AlertDialog? = null
     var layout: LinearLayout? = null
     private lateinit var homeViewModel: HomeViewModel
@@ -47,12 +46,13 @@ class HomeFragment : Fragment() {
         add.setOnClickListener({ dialog!!.show() })
         btnDelete.setOnClickListener({ removeItems() })
         btnSubmit.setOnClickListener({ submitItems() })
-
+        dbGetShoppingList()
         return root
     }
 
     private fun buildDialog(view: View = layoutInflater.inflate(R.layout.dialog, null)) {
         val builder = AlertDialog.Builder(view.getContext())
+        val view: View = layoutInflater.inflate(R.layout.dialog, null)
         val name = view.findViewById<EditText>(R.id.nameEdit)
         builder.setView(view)
         builder.setTitle("Enter article")
@@ -65,23 +65,50 @@ class HomeFragment : Fragment() {
         dialog = builder.create()
     }
 
+    private fun dbGetShoppingList(){
+        val db = DatabaseHelper(this.context, null)
+        val cursor = db.getAllTableData(Table.TABLE_SHOPPING_LIST)
+        if(cursor!!.getCount() >= 1) {
+            while (cursor.moveToNext()) {
+                val view: View = layoutInflater.inflate(R.layout.card, null)
+                val nameView: TextView = view.findViewById(R.id.name)
+                nameView.text = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ITEM_NAME))
+                val item = Item(view, cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID)))
+                itemList.add(item)
+                layout!!.addView(view)
+            }
+            cursor.close()
+        }
+    }
     private fun addCard(name: String) {
         val view: View = layoutInflater.inflate(R.layout.card, null)
         val nameView: TextView = view.findViewById(R.id.name)
+        val db = DatabaseHelper(this.context, null)
+        val id = db.addItem(name)
+        val item = Item(view, id)
         nameView.text = name
-        itemList.add(view)
+        itemList.add(item)
         layout!!.addView(view)
+        Toast.makeText(this.context, name + " wurde der Einkaufsliste hinzugefügt", Toast.LENGTH_LONG).show()
+
     }
 
     private fun removeItems(){
         val iterator = itemList.iterator()
         for(item in iterator){
-            if(item.findViewById<CheckBox>(R.id.checkbox).isChecked){
-                layout!!.removeView(item)
+            if(item.view.findViewById<CheckBox>(R.id.checkbox).isChecked){
+                dbDeleteItem(item.id)
+                layout!!.removeView(item.view)
                 iterator.remove()
             }
         }
     }
+
+    private fun dbDeleteItem(id: Long){
+        val db = DatabaseHelper(this.context, null)
+        db.deleteItem(id)
+    }
+
     private fun submitItems(){
         startActivity(Intent(getActivity(), TotalPriceActivity::class.java))
     }
