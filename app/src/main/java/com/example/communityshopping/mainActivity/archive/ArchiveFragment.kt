@@ -8,11 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.communityshopping.databinding.FragmentDashboardBinding
+import com.example.communityshopping.mainActivity.archive.models.Archive
 
-class DashboardFragment : Fragment() {
+class ArchiveFragment : Fragment() {
 
-    private lateinit var dashboardViewModel: DashboardViewModel
-    private lateinit var archiveArrayList : ArrayList<Archive>
+    private lateinit var archiveViewModel: ArchiveViewModel
+    private lateinit var archiveArrayList: ArrayList<Archive>
     private var _binding: FragmentDashboardBinding? = null
 
     // This property is only valid between onCreateView and
@@ -24,8 +25,8 @@ class DashboardFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dashboardViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)
+        archiveViewModel =
+            ViewModelProvider(this).get(ArchiveViewModel::class.java)
 
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -60,8 +61,8 @@ class DashboardFragment : Fragment() {
 
         archiveArrayList = ArrayList()
 
-        for (i in title.indices){
-            val itemsList : ArrayList<archiveItem> = ArrayList()
+        for (i in title.indices) {
+            val itemsList: ArrayList<archiveItem> = ArrayList()
             for (a in items[i].indices) {
                 val itemsTemp = items[i][a]
                 val pricesTemp = prices[i][a]

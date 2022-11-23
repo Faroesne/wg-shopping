@@ -10,8 +10,8 @@ import android.widget.Button
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.example.communityshopping.mainActivity.MainActivity
 import com.example.communityshopping.R
+import com.example.communityshopping.mainActivity.MainActivity
 import com.theartofdev.edmodo.cropper.CropImage
 
 class JoinGroupActivity : AppCompatActivity() {

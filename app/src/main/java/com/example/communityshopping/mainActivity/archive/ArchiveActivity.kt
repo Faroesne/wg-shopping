@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.communityshopping.databinding.ActivityArchiveBinding
+import com.example.communityshopping.mainActivity.archive.models.Archive
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class ArchiveActivity : AppCompatActivity() {
@@ -32,7 +32,8 @@ class ArchiveActivity : AppCompatActivity() {
         binding.archiveFullPrice.text = "%,.2f".format(Locale.GERMAN, fullPrice) + "€"
 
         if (archiveArrayList != null) {
-            binding.archiveArticles.adapter = ArchiveDetailAdapter(this, archiveArrayList[position].archiveItems)
+            binding.archiveArticles.adapter =
+                ArchiveDetailAdapter(this, archiveArrayList[position].archiveItems)
         }
     }
 

@@ -38,6 +38,7 @@ class WelcomeActivity : AppCompatActivity() {
         groupBluetoothAdapter = initBluetoothAdapter()
         enableBluetoothPermissions()
         enableBluetoothFunction()
+        this.title = "Willkommen"
     }
 
     private fun joinGroup() {

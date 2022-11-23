@@ -8,8 +8,8 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.example.communityshopping.mainActivity.MainActivity
 import com.example.communityshopping.R
+import com.example.communityshopping.mainActivity.MainActivity
 import com.theartofdev.edmodo.cropper.CropImage
 
 class CreateGroupActivity : AppCompatActivity() {
