@@ -48,8 +48,7 @@ class BluetoothHelper(activity: Activity) {
                 Manifest.permission.BLUETOOTH_SCAN
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            enableBluetoothPermissions()
-            return
+            //TODO activate permission
         }
         groupBluetoothAdapter.startDiscovery()
     }
@@ -67,7 +66,7 @@ class BluetoothHelper(activity: Activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             ActivityCompat.requestPermissions(
                 mActivity,
-                arrayOf(android.Manifest.permission.BLUETOOTH_CONNECT),
+                arrayOf(Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT),
                 REQUEST_BT_PERMISSION
             )
         }
