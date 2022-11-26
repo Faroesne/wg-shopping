@@ -1,12 +1,20 @@
 package com.example.communityshopping.communication
 
+import android.Manifest
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.content.Intent
+import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.os.Build
+import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.startActivityForResult
+
 
 class BluetoothHelper(activity: Activity) {
 
@@ -18,11 +26,28 @@ class BluetoothHelper(activity: Activity) {
     private lateinit var groupBluetoothAdapter: BluetoothAdapter
     private lateinit var bluetoothEnableIntent: Intent
 
+    private val myReceiver: BroadcastReceiverHelper = BroadcastReceiverHelper()
+
     init {
         mActivity = activity;
         groupBluetoothAdapter = initBluetoothAdapter()
         enableBluetoothPermissions()
         enableBluetoothFunction()
+    }
+
+    fun startSearching() {
+        Log.i("Log", "in the start searching method")
+        val intentFilter = IntentFilter(BluetoothDevice.ACTION_FOUND)
+        mActivity.registerReceiver(myReceiver, intentFilter)
+        if (ActivityCompat.checkSelfPermission(
+                mActivity.applicationContext,
+                Manifest.permission.BLUETOOTH_SCAN
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            enableBluetoothPermissions()
+            return
+        }
+        groupBluetoothAdapter.startDiscovery()
     }
 
     private fun initBluetoothAdapter(): BluetoothAdapter {
@@ -53,4 +78,9 @@ class BluetoothHelper(activity: Activity) {
         }
     }
 
+    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_BT_ENABLE && resultCode == AppCompatActivity.RESULT_OK) {
+            Toast.makeText(mActivity.applicationContext, "Bluetooth aktiviert", Toast.LENGTH_LONG).show()
+        }
+    }
 }

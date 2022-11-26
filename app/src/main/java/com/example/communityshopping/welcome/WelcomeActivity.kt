@@ -16,12 +16,8 @@ import com.example.communityshopping.communication.BluetoothHelper
 
 class WelcomeActivity : AppCompatActivity() {
 
-
     lateinit var joinBtn: Button
     lateinit var createButton: Button
-
-    private var REQUEST_BT_ENABLE = 1
-    private var REQUEST_BT_PERMISSION = 2
 
     private lateinit var bluetoothHelper: BluetoothHelper
 
@@ -29,6 +25,8 @@ class WelcomeActivity : AppCompatActivity() {
     @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        this.title = "Willkommen"
+
         setContentView(R.layout.activity_welcome)
         joinBtn = findViewById(R.id.gruppeBeitreten)
         createButton = findViewById(R.id.gruppeErstellen)
@@ -36,7 +34,6 @@ class WelcomeActivity : AppCompatActivity() {
         createButton.setOnClickListener { createGroup() }
 
         bluetoothHelper = BluetoothHelper(this)
-        this.title = "Willkommen"
     }
 
     private fun joinGroup() {
@@ -49,8 +46,6 @@ class WelcomeActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_BT_ENABLE && resultCode == RESULT_OK) {
-            Toast.makeText(applicationContext, "Bluetooth aktiviert", Toast.LENGTH_LONG).show()
-        }
+        bluetoothHelper.onActivityResult(requestCode, resultCode, data)
     }
 }
