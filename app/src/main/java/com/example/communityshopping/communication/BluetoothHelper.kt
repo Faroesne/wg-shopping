@@ -35,6 +35,10 @@ class BluetoothHelper(activity: Activity) {
         enableBluetoothFunction()
     }
 
+    fun getDeviceList(): ArrayList<String> {
+        return myReceiver.deviceList
+    }
+
     fun startSearching() {
         Log.i("Log", "in the start searching method")
         val intentFilter = IntentFilter(BluetoothDevice.ACTION_FOUND)
@@ -80,7 +84,8 @@ class BluetoothHelper(activity: Activity) {
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_BT_ENABLE && resultCode == AppCompatActivity.RESULT_OK) {
-            Toast.makeText(mActivity.applicationContext, "Bluetooth aktiviert", Toast.LENGTH_LONG).show()
+            Toast.makeText(mActivity.applicationContext, "Bluetooth aktiviert", Toast.LENGTH_LONG)
+                .show()
         }
     }
 }

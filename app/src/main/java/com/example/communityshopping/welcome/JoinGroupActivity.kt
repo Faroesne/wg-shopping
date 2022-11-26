@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.communityshopping.R
@@ -30,11 +31,16 @@ class JoinGroupActivity : AppCompatActivity() {
         joinBtn = findViewById(R.id.gruppeBeitreten2)
         joinBtn.setOnClickListener { joinGroup() }
         totalLayout = findViewById(R.id.containerList)
-        view = layoutInflater.inflate(R.layout.group_card, null)
-        totalLayout!!.addView(view)
+
 
         bluetoothHelper = BluetoothHelper(this)
         bluetoothHelper.startSearching()
+        for (deviceName in bluetoothHelper.getDeviceList()) {
+            var view: View = layoutInflater.inflate(R.layout.group_card, null)
+            var textView: TextView = view.findViewById(R.id.groupName)
+            textView.text = deviceName
+            totalLayout!!.addView(view)
+        }
     }
 
     private fun joinGroup() {
