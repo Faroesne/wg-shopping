@@ -43,7 +43,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="55dp" />
 
-    <ScrollView
+    <ListView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="20dp"
@@ -53,14 +53,10 @@
             android:layout_marginBottom="15dp"
             app:layout_constraintBottom_toTopOf="@+id/totalPrice"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintVertical_bias="0.0"
+            android:id="@+id/scroll">
 
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/totalLayout" />
-    </ScrollView>
+    </ListView>
 
     <TextView
             android:text="Gesamt bezahlt:"

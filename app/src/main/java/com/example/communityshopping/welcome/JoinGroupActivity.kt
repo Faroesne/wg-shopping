@@ -12,7 +12,6 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.communityshopping.R
 import com.example.communityshopping.mainActivity.MainActivity
-import com.theartofdev.edmodo.cropper.CropImage
 
 class JoinGroupActivity : AppCompatActivity() {
 
@@ -20,8 +19,6 @@ class JoinGroupActivity : AppCompatActivity() {
     var totalLayout: LinearLayout? = null
     lateinit var view: View
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_join_group)
@@ -36,15 +33,4 @@ class JoinGroupActivity : AppCompatActivity() {
         startActivity(Intent(this, MainActivity::class.java))
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            val result = CropImage.getActivityResult(data)
-            if (resultCode == RESULT_OK) {
-                val resultUri: Uri = result.uri
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                val error = result.error
-            }
-        }
-    }
 }

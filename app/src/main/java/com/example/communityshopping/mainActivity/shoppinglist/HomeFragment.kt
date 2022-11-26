@@ -25,6 +25,7 @@ class HomeFragment : Fragment() {
     var layout: LinearLayout? = null
     private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
+    var itemNameList = arrayListOf<String>()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -122,7 +123,17 @@ class HomeFragment : Fragment() {
     }
 
     private fun submitItems() {
-        startActivity(Intent(activity, PurchasingActivity::class.java))
+        val iterator = itemList.iterator()
+        for (item in iterator)
+        {
+            if(item.view.findViewById<CheckBox>(R.id.checkbox).isChecked)
+            {
+                itemNameList.add(item.view.findViewById<TextView>(R.id.name).text as String)
+            }
+        }
+        val i = Intent(activity, PurchasingActivity::class.java)
+        i.putExtra("names", itemNameList)
+        startActivity(i)
     }
 
     override fun onDestroyView() {
