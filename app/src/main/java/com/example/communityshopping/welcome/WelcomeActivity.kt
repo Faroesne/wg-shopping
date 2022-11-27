@@ -12,33 +12,28 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.communityshopping.R
+import com.example.communityshopping.communication.BluetoothHelper
 
 class WelcomeActivity : AppCompatActivity() {
-
 
     lateinit var joinBtn: Button
     lateinit var createButton: Button
 
-    private var REQUEST_BT_ENABLE = 1
-    private var REQUEST_BT_PERMISSION = 2
-
-    private lateinit var groupBluetoothAdapter: BluetoothAdapter
-    private lateinit var bluetoothEnableIntent: Intent
+    private lateinit var bluetoothHelper: BluetoothHelper
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        this.title = "Willkommen"
+
         setContentView(R.layout.activity_welcome)
         joinBtn = findViewById(R.id.gruppeBeitreten)
         createButton = findViewById(R.id.gruppeErstellen)
         joinBtn.setOnClickListener { joinGroup() }
         createButton.setOnClickListener { createGroup() }
 
-        groupBluetoothAdapter = initBluetoothAdapter()
-        enableBluetoothPermissions()
-        enableBluetoothFunction()
-        this.title = "Willkommen"
+        bluetoothHelper = BluetoothHelper(this)
     }
 
     private fun joinGroup() {
@@ -51,34 +46,6 @@ class WelcomeActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_BT_ENABLE && resultCode == RESULT_OK) {
-            Toast.makeText(applicationContext, "Bluetooth aktiviert", Toast.LENGTH_LONG).show()
-        }
-    }
-
-    private fun initBluetoothAdapter(): BluetoothAdapter {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val groupBluetoothManager = getSystemService(BluetoothManager::class.java)
-            groupBluetoothManager.adapter
-        } else {
-            BluetoothAdapter.getDefaultAdapter()
-        }
-    }
-
-    private fun enableBluetoothPermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            ActivityCompat.requestPermissions(
-                this, arrayOf(android.Manifest.permission.BLUETOOTH_CONNECT), REQUEST_BT_PERMISSION
-            )
-        }
-    }
-
-    private fun enableBluetoothFunction() {
-        if (!groupBluetoothAdapter.isEnabled) {
-
-            bluetoothEnableIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-
-            startActivityForResult(bluetoothEnableIntent, REQUEST_BT_ENABLE)
-        }
+        bluetoothHelper.onActivityResult(requestCode, resultCode, data)
     }
 }
