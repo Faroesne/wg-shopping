@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.communityshopping.database.ArchiveDB
 import com.example.communityshopping.databinding.FragmentDashboardBinding
 import com.example.communityshopping.mainActivity.archive.models.Archive
 
@@ -87,7 +88,19 @@ class ArchiveFragment : Fragment() {
 
         }
 
+        dbGetArchiveList()
+
         return root
+    }
+
+    private fun dbGetArchiveList() {
+        val db = ArchiveDB(this.context, null)
+        val cursor = db.getAllTableData()
+        if (cursor!!.count >= 1) {
+            while (cursor.moveToNext()) {
+            }
+            cursor.close()
+        }
     }
 
     override fun onDestroyView() {
