@@ -32,8 +32,6 @@ class JoinGroupActivity : AppCompatActivity() {
 
     private lateinit var bluetoothHelper: BluetoothHelper
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_join_group)
@@ -48,7 +46,6 @@ class JoinGroupActivity : AppCompatActivity() {
 
         bluetoothHelper.startSearching()
     }
-
 
     private fun joinGroup() {
         startActivity(Intent(this, MainActivity::class.java))
