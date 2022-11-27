@@ -1,11 +1,13 @@
 package com.example.communityshopping.communication
 
 import android.Manifest
+import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.util.Log
 import androidx.core.app.ActivityCompat
 
 class BroadcastReceiverHelper : BroadcastReceiver() {
@@ -18,15 +20,17 @@ class BroadcastReceiverHelper : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent) {
         val action = intent.action
         if (BluetoothDevice.ACTION_FOUND == action) {
-            if (ActivityCompat.checkSelfPermission(
-                    context!!,
-                    Manifest.permission.BLUETOOTH_CONNECT
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-//TODO
-            }
             var device: BluetoothDevice? = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
-            deviceList.add(device!!.name)
+            Log.i("blub","found")
+            //deviceList.add(device!!.name)
+        } else if (action.equals(
+                BluetoothAdapter.ACTION_DISCOVERY_FINISHED)) {
+            // discoveryFinished
+            Log.i("blub","finshed")
+        } else if (action.equals(
+                BluetoothAdapter.ACTION_DISCOVERY_STARTED)) {
+            // discoveryStarted
+            Log.i("blub","started")
         }
     }
 }

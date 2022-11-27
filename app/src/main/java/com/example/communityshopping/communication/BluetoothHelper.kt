@@ -50,7 +50,11 @@ class BluetoothHelper(activity: Activity) {
         ) {
             //TODO activate permission
         }
-        groupBluetoothAdapter.startDiscovery()
+        if(!groupBluetoothAdapter.startDiscovery()){
+            Log.i("Log","notStarted")
+        }else{
+            Log.i("Log","Started")
+        }
     }
 
     private fun initBluetoothAdapter(): BluetoothAdapter {
@@ -66,7 +70,7 @@ class BluetoothHelper(activity: Activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             ActivityCompat.requestPermissions(
                 mActivity,
-                arrayOf(Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT),
+                arrayOf(Manifest.permission.BLUETOOTH_ADVERTISE, Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT),
                 REQUEST_BT_PERMISSION
             )
         }
