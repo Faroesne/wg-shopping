@@ -28,7 +28,7 @@ class JoinGroupActivity : AppCompatActivity() {
     lateinit var joinBtn: Button
     var totalLayout: LinearLayout? = null
     lateinit var view: View
-    var deviceList: Set<BluetoothDevice> = setOf()
+    var deviceList: MutableSet<BluetoothDevice> = mutableSetOf()
 
     private lateinit var bluetoothHelper: BluetoothHelper
 
@@ -77,7 +77,7 @@ class JoinGroupActivity : AppCompatActivity() {
                 }
 
                 if (!deviceList.contains(device)) {
-                    deviceList.plus(device)
+                    deviceList.add(device!!)
                     var view: View = layoutInflater.inflate(R.layout.group_card, null)
                     var textView: TextView = view.findViewById(R.id.groupName)
                     textView.text = device!!.name
