@@ -73,7 +73,7 @@ class HomeFragment : Fragment() {
         val db = ShoppingListDB(this.context, null)
         val cursor = db.getAllTableData()
         if (cursor!!.count >= 1) {
-            while (cursor.moveToNext()) {
+            while (cursor.moveToNext() && cursor.getInt(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_DELETED)) == 0) {
                 val view: View = layoutInflater.inflate(R.layout.card, null)
                 val nameView: TextView = view.findViewById(R.id.name)
                 nameView.text =
