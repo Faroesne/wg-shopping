@@ -9,7 +9,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
-
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -29,6 +28,7 @@ class JoinGroupActivity : AppCompatActivity() {
     lateinit var joinBtn: Button
     var totalLayout: LinearLayout? = null
     lateinit var view: View
+    var deviceList: Set<BluetoothDevice> = setOf()
 
     private lateinit var bluetoothHelper: BluetoothHelper
 
@@ -66,8 +66,6 @@ class JoinGroupActivity : AppCompatActivity() {
                 var device: BluetoothDevice? =
                     intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
                 Log.i("BluetoothReceiver", "found")
-                var view: View = layoutInflater.inflate(R.layout.group_card, null)
-                var textView: TextView = view.findViewById(R.id.groupName)
                 if (ActivityCompat.checkSelfPermission(
                         context!!,
                         Manifest.permission.BLUETOOTH_CONNECT
@@ -77,8 +75,15 @@ class JoinGroupActivity : AppCompatActivity() {
                     bluetoothHelper.enableBluetoothPermissions()
                     return
                 }
-                textView.text = device!!.name
-                totalLayout!!.addView(view)
+
+                if (!deviceList.contains(device)) {
+                    deviceList.plus(device)
+                    var view: View = layoutInflater.inflate(R.layout.group_card, null)
+                    var textView: TextView = view.findViewById(R.id.groupName)
+                    textView.text = device!!.name
+                    totalLayout!!.addView(view)
+                }
+
                 //deviceList.add(device!!.name)
             } else if (action.equals(
                     BluetoothAdapter.ACTION_DISCOVERY_FINISHED
