@@ -3,10 +3,8 @@ package com.example.communityshopping.communication
 import android.Manifest
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
@@ -23,10 +21,8 @@ class BluetoothHelper(activity: Activity) {
     private var REQUEST_BT_ENABLE = 1
     private var REQUEST_BT_PERMISSION = 2
 
-    private lateinit var groupBluetoothAdapter: BluetoothAdapter
+    private var groupBluetoothAdapter: BluetoothAdapter
     private lateinit var bluetoothEnableIntent: Intent
-
-    private val myReceiver: BroadcastReceiverHelper = BroadcastReceiverHelper()
 
     init {
         mActivity = activity;
@@ -35,14 +31,8 @@ class BluetoothHelper(activity: Activity) {
         enableBluetoothFunction()
     }
 
-    fun getDeviceList(): ArrayList<String> {
-        return myReceiver.deviceList
-    }
-
     fun startSearching() {
         Log.i("Log", "in the start searching method")
-        val intentFilter = IntentFilter(BluetoothDevice.ACTION_FOUND)
-        mActivity.registerReceiver(myReceiver, intentFilter)
         if (ActivityCompat.checkSelfPermission(
                 mActivity.applicationContext,
                 Manifest.permission.BLUETOOTH_SCAN
@@ -50,10 +40,10 @@ class BluetoothHelper(activity: Activity) {
         ) {
             //TODO activate permission
         }
-        if(!groupBluetoothAdapter.startDiscovery()){
-            Log.i("Log","notStarted")
-        }else{
-            Log.i("Log","Started")
+        if (!groupBluetoothAdapter.startDiscovery()) {
+            Log.i("BluetoothHelper", "notStarted")
+        } else {
+            Log.i("BluetoothHelper", "Started")
         }
     }
 
@@ -66,11 +56,15 @@ class BluetoothHelper(activity: Activity) {
         }
     }
 
-    private fun enableBluetoothPermissions() {
+    fun enableBluetoothPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             ActivityCompat.requestPermissions(
                 mActivity,
-                arrayOf(Manifest.permission.BLUETOOTH_ADVERTISE, Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT),
+                arrayOf(
+                    Manifest.permission.BLUETOOTH_ADVERTISE,
+                    Manifest.permission.BLUETOOTH_SCAN,
+                    Manifest.permission.BLUETOOTH_CONNECT
+                ),
                 REQUEST_BT_PERMISSION
             )
         }
