@@ -21,7 +21,7 @@ class BluetoothHelper(activity: Activity) {
     private var REQUEST_BT_ENABLE = 1
     private var REQUEST_BT_PERMISSION = 2
 
-    private var groupBluetoothAdapter: BluetoothAdapter
+    var groupBluetoothAdapter: BluetoothAdapter
     private lateinit var bluetoothEnableIntent: Intent
 
     init {
@@ -47,7 +47,7 @@ class BluetoothHelper(activity: Activity) {
         }
     }
 
-    private fun initBluetoothAdapter(): BluetoothAdapter {
+    fun initBluetoothAdapter(): BluetoothAdapter {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val groupBluetoothManager = mActivity.getSystemService(BluetoothManager::class.java)
             groupBluetoothManager.adapter
@@ -84,5 +84,9 @@ class BluetoothHelper(activity: Activity) {
             Toast.makeText(mActivity.applicationContext, "Bluetooth aktiviert", Toast.LENGTH_LONG)
                 .show()
         }
+    }
+
+    fun getBluetoothadapter(): BluetoothAdapter {
+        return groupBluetoothAdapter
     }
 }
