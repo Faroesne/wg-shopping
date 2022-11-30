@@ -3,6 +3,7 @@ package com.example.communityshopping.mainActivity.archive
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.database.getDoubleOrNull
 import com.example.communityshopping.database.ShoppingListDB
 import com.example.communityshopping.databinding.ActivityArchiveBinding
 import com.example.communityshopping.mainActivity.archive.models.Archive
@@ -30,21 +31,16 @@ class ArchiveActivity : AppCompatActivity() {
         val archiveItem = db.getArchiveItemData(archiveArrayList[position].index)
         var archiveList = ArrayList<archiveItem>()
 
-        var fullPrice = 0.0
         if (archiveItem!!.count >= 1) {
             while (archiveItem.moveToNext()) {
-                fullPrice += archiveItem.getDouble(
-                    archiveItem.getColumnIndexOrThrow
-                        (ShoppingListDB.COLUMN_ITEM_PRICE)
-                )
                 archiveList.add(
-                    archiveItem( //Platzhalter
-                        archiveItem.getInt
+                    archiveItem(
+                        archiveItem.getString
                             (
                             archiveItem.getColumnIndexOrThrow
-                                (ShoppingListDB.COLUMN_ITEM_ID)
-                        ).toString(),
-                        archiveItem.getDouble
+                                (ShoppingListDB.COLUMN_ITEM_NAME)
+                        ),
+                        archiveItem.getDoubleOrNull
                             (
                             archiveItem.getColumnIndexOrThrow
                                 (ShoppingListDB.COLUMN_ITEM_PRICE)
@@ -54,7 +50,8 @@ class ArchiveActivity : AppCompatActivity() {
             }
             archiveItem.close()
         }
-        binding.archiveFullPrice.text = "%,.2f".format(Locale.GERMAN, fullPrice) + "€"
+        binding.archiveFullPrice.text =
+            "%,.2f".format(Locale.GERMAN, archiveArrayList[position].fullPrice) + "€"
 
         if (archiveArrayList != null) {
             binding.archiveArticles.adapter =

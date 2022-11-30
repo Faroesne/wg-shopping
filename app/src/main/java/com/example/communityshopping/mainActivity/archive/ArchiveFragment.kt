@@ -49,6 +49,11 @@ class ArchiveFragment : Fragment() {
                             (cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_ID))
                     )
                 val archive = Archive(
+                    cursor.getDouble
+                        (
+                        cursor.getColumnIndexOrThrow
+                            (ShoppingListDB.COLUMN_ITEM_FULL_PRICE)
+                    ),
                     "Einkauf vom " +
                             cursor.getString
                                 (cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_DATE)),
@@ -61,18 +66,6 @@ class ArchiveFragment : Fragment() {
                     cursor.getInt(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_ID))
                 )
                 archiveArrayList.add(archive)
-
-                /*println(cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_USERNAME)))
-                println(cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_DATE)))
-                val archiveItem = db.getArchiveItemData(cursor.getInt(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_ID)))
-                println(archiveItem!!.count)
-                if (archiveItem!!.count >= 1) {
-                    while (archiveItem.moveToNext()) {
-                        println(archiveItem.getDouble(archiveItem.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ITEM_ID)))
-                    }
-                    archiveItem.close()
-                }
-                println(archiveItem.getDouble(archiveItem.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ITEM_ID)))*/
             }
             cursor.close()
         }

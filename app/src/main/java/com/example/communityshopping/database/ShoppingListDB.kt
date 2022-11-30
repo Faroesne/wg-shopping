@@ -20,6 +20,7 @@ class ShoppingListDB(
                 COLUMN_ITEM_NAME + " TEXT);"
         val queryArchive = "CREATE TABLE " + TABLE_ARCHIVE +
                 " (" + COLUMN_ARCHIVE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_ITEM_FULL_PRICE + " REAL, " +
                 COLUMN_ARCHIVE_USERNAME + " TEXT, " +
                 COLUMN_ARCHIVE_DATE + " TEXT);"
         val queryArchiveItem = "CREATE TABLE " + TABLE_ARCHIVE_ITEM +
@@ -33,16 +34,17 @@ class ShoppingListDB(
                 COLUMN_ITEM_NAME + ") VALUES ('Item1'), " +
                 "('Item2'), ('Item3'), ('Item4'), ('Item5');"
         val queryFillArchiveDB = "INSERT INTO " + TABLE_ARCHIVE + " (" +
-                COLUMN_ARCHIVE_USERNAME + ", " + COLUMN_ARCHIVE_DATE +
-                ") VALUES ('Nutzer1', '29.11.2022'), " +
-                "('Nutzer2', '30.11.2022');"
+                COLUMN_ITEM_FULL_PRICE + ", " + COLUMN_ARCHIVE_USERNAME + ", " +
+                COLUMN_ARCHIVE_DATE +
+                ") VALUES (8.97, 'Nutzer1', '29.11.2022'), " +
+                "(5.00, 'Nutzer2', '30.11.2022');"
         val queryFillArchiveItemDB = "INSERT INTO " + TABLE_ARCHIVE_ITEM + " (" +
                 COLUMN_ITEM_PRICE + ", " + COLUMN_ITEM_ID + ", " +
                 COLUMN_ARCHIVE_ID + ") VALUES (2.99, 1, 1), " +
                 "(1.99, 2, 1), " +
                 "(3.99, 3, 1), " +
-                "(4.99, 4, 2), " +
-                "(2.99, 5, 2);"
+                "(null, 4, 2), " +
+                "(null, 5, 2);"
         db!!.execSQL(queryShoppingList)
         db!!.execSQL(queryArchive)
         db!!.execSQL(queryArchiveItem)
@@ -69,8 +71,9 @@ class ShoppingListDB(
     fun getArchiveItemData(index: Int): Cursor? {
         val db = this.readableDatabase
         return db.rawQuery(
-            "SELECT * FROM " + TABLE_ARCHIVE_ITEM + " WHERE " + COLUMN_ARCHIVE_ID + " = " + index,
-            null
+            "SELECT * FROM " + TABLE_ARCHIVE_ITEM + " INNER JOIN " +
+                    TABLE_SHOPPING_LIST + " USING (" + COLUMN_ITEM_ID + ")" +
+                    " WHERE " + COLUMN_ARCHIVE_ID + " = " + index, null
         )
     }
 
@@ -118,6 +121,7 @@ class ShoppingListDB(
         const val TABLE_ARCHIVE = "archive_list"
         const val COLUMN_ARCHIVE_USERNAME = "archive_name"
         const val COLUMN_ARCHIVE_DATE = "archive_date"
+        const val COLUMN_ITEM_FULL_PRICE = "archive_full_price"
 
         const val TABLE_ARCHIVE_ITEM = "archive_item"
         const val COLUMN_ARCHIVE_ITEM_ID = "archive_item_id"
