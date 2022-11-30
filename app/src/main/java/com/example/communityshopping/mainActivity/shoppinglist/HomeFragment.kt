@@ -3,6 +3,7 @@ package com.example.communityshopping.mainActivity.shoppinglist
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -70,20 +71,23 @@ class HomeFragment : Fragment() {
     }
 
     private fun dbGetShoppingList() {
+
         val db = ShoppingListDB(this.context, null)
         val cursor = db.getShoppingListData()
         if (cursor!!.count >= 1) {
-            while (cursor.moveToNext() && cursor.getInt(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_DELETED)) == 0) {
-                val view: View = layoutInflater.inflate(R.layout.card, null)
-                val nameView: TextView = view.findViewById(R.id.name)
-                nameView.text =
-                    cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ITEM_NAME))
-                val item = Item(
-                    view,
-                    cursor.getLong(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ITEM_ID))
-                )
-                itemList.add(item)
-                layout!!.addView(view)
+            while (cursor.moveToNext()) {
+                if (cursor.getInt(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_DELETED)) == 0) {
+                    val view: View = layoutInflater.inflate(R.layout.card, null)
+                    val nameView: TextView = view.findViewById(R.id.name)
+                    nameView.text =
+                        cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ITEM_NAME))
+                    val item = Item(
+                        view,
+                        cursor.getLong(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ITEM_ID))
+                    )
+                    itemList.add(item)
+                    layout!!.addView(view)
+                }
             }
             cursor.close()
         }
