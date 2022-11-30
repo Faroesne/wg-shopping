@@ -15,6 +15,10 @@ class ClientSocketBluetooth(private val bluetoothAdapter: BluetoothAdapter, devi
         device.createRfcommSocketToServiceRecord(UUID.fromString("1240bfb6-6fc4-11ed-a1eb-0242ac120002"))
     }
 
+    init {
+        Log.i("CltSct","Client socket created")
+    }
+
     override fun run() {
         // Cancel discovery because it otherwise slows down the connection.
 
@@ -24,6 +28,7 @@ class ClientSocketBluetooth(private val bluetoothAdapter: BluetoothAdapter, devi
             // Connect to the remote device through the socket. This call blocks
             // until it succeeds or throws an exception.
             socket.connect()
+            Log.i("CltSct","Connection to server socket found")
 
             // The connection attempt succeeded. Perform work associated with
             // the connection in a separate thread.

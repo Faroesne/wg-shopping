@@ -14,6 +14,9 @@ class ServerSocketBluetooth(bluetoothAdapter: BluetoothAdapter) : Thread() {
     private val mmServerSocket: BluetoothServerSocket? by lazy(LazyThreadSafetyMode.NONE) {
         bluetoothAdapter.listenUsingInsecureRfcommWithServiceRecord("WGShopping", UUID.fromString("1240bfb6-6fc4-11ed-a1eb-0242ac120002"))
     }
+    init {
+        Log.i("SvrSct","Server socket created")
+    }
 
     override fun run() {
         // Keep listening until exception occurs or a socket is returned.
@@ -26,6 +29,7 @@ class ServerSocketBluetooth(bluetoothAdapter: BluetoothAdapter) : Thread() {
                 shouldLoop = false
                 null
             }
+            Log.i("SvrSct","Client accepted")
             socket?.also {
                 //manageMyConnectedSocket(it)
                 mmServerSocket?.close()
