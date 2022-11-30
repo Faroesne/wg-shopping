@@ -60,7 +60,7 @@ class SettingsFragment : Fragment() {
     private fun showChangeLang() {
         val listItems = arrayOf("English", "Deutsch")
         val mBuilder = AlertDialog.Builder(context)
-        mBuilder.setTitle("Choose Language")
+        mBuilder.setTitle(this.getString(R.string.wähle_sprache_aus))
         mBuilder.setSingleChoiceItems(listItems, -1){ dialog, which ->
             if (which == 0){
                 setLocate("en")
