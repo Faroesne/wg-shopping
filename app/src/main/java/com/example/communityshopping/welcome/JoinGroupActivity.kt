@@ -45,6 +45,7 @@ class JoinGroupActivity : AppCompatActivity() {
     }
 
     private fun joinGroup() {
+        saveBluetoothStatus()
         startActivity(Intent(this, MainActivity::class.java))
     }
 
@@ -92,6 +93,17 @@ class JoinGroupActivity : AppCompatActivity() {
                 // discoveryStarted
                 Log.i("BluetoothReceiver", "started")
             }
+        }
+    }
+
+    private fun saveBluetoothStatus() {
+        val sharedPref = this.getSharedPreferences(
+            getString(R.string.app_preferences), Context.MODE_PRIVATE
+        )
+        with(sharedPref.edit()) {
+            putInt(getString(R.string.bluetooth_setup_status), 1)
+            Log.i("sharedPref", "UserName gespeichert.")
+            apply()
         }
     }
 }

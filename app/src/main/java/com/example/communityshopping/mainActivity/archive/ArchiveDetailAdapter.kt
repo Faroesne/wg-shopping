@@ -25,7 +25,9 @@ class ArchiveDetailAdapter(
         val price: TextView = view.findViewById(R.id.archive_price)
 
         product.text = arrayList[position].articleName
-        price.text = "%,.2f".format(Locale.GERMAN, arrayList[position].price) + "€"
+        if (arrayList[position].price != null) {
+            price.text = "%,.2f".format(Locale.GERMAN, arrayList[position].price) + "€"
+        }
 
         return view
     }
