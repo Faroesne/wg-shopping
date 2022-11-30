@@ -7,7 +7,7 @@
         tools:context=".purchasing.PurchasingActivity">
 
     <Button
-            android:text="GESAMT"
+            android:text="@string/gesamt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/totalBtn2"
@@ -19,7 +19,7 @@
             android:layout_marginTop="16dp" />
 
     <Button
-            android:text="EINZELN"
+            android:text="@string/einzeln"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/singleBtn2"
@@ -32,7 +32,7 @@
             android:layout_marginTop="16dp" />
 
     <Button
-            android:text="EINKAUF BESTÄTIGEN"
+            android:text="@string/einkauf_best_tigen"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/confirmBuyBtn2"
@@ -59,7 +59,7 @@
     </ListView>
 
     <TextView
-            android:text="Gesamt bezahlt:"
+            android:text="@string/gesamt_bezahlt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textView3"

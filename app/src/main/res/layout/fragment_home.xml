@@ -52,7 +52,7 @@
                 android:background="@drawable/custom_image_button" />
 
         <Button
-                android:text="Artikel gekauft"
+                android:text="@string/Artikel_gekauft"
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:id="@+id/btn_submit"

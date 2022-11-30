@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- English-->
+    <string name="app_name">CommunityShopping</string>
+    <string name="title_home">Shopping List</string>
+    <string name="title_dashboard">archive</string>
+    <string name="title_notifications">Settings</string>
+    <string name="gesamt">total</string>
+    <string name="einzeln">Individually</string>
+    <string name="einkaufspreis">purchasing price</string>
+    <string name="einkauf_best_tigen">confirm purchase</string>
+    <string name="willkommen">welcome</string>
+    <string name="title_activity_create_group">CreateGroup</string>
+
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <!-- Strings used for sharedPreferences -->
+    <string name="app_preferences">app_preferences</string>
+    <string name="user_name">user_name</string>
+    <string name="bluetooth_setup_status">bluetooth_setup_status</string>
+    <!-- Strings to delete -->
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- Strings to delete -->
+    <string name="gruppe_erstellen">create group</string>
+    <string name="gruppe_beitreten">join a group</string>
+    <string name="gruppenname">groupname</string>
+    <string name="Gruppen_in_der_Nähe_gefunden">Groups found nearby</string>
+    <string name="einkaufspreise">purchase prices</string>
+    <string name="gesamt_bezahlt">total paid</string>
+    <string name="name">Name</string>
+    <string name="Einkauf_vom_01.01.1970">purchase from 01.01.1970</string>
+    <string name="_Artikel_gekauft_von_Nutzer">999 Item purchased by user</string>
+    <string name="Artikel1">Item1</string>
+    <string name="Artikel_gekauft">Item purchased</string>
+    <string name="sprache">English</string>
+    <string name="sprache2">Language</string>
+    <string name="Einkauf_vom">Purchase from   </string>
+    <string name="Artikel_gekauft_von">Item bought from </string>
+
+</resources>

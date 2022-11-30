@@ -26,7 +26,7 @@
     </ScrollView>
 
     <Button
-            android:text="GRUPPE BEITRETEN"
+            android:text="@string/gruppe_beitreten"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/gruppeBeitreten2"
@@ -40,7 +40,7 @@
             android:layout_marginBottom="40dp" />
 
     <TextView
-            android:text="Gruppen in der Nähe gefunden:"
+            android:text="@string/Gruppen_in_der_Nähe_gefunden"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/textView4"
@@ -50,5 +50,6 @@
             android:layout_marginEnd="16dp"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="16dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
