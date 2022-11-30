@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.communityshopping.database.ArchiveDB
+import com.example.communityshopping.database.ShoppingListDB
 import com.example.communityshopping.databinding.FragmentDashboardBinding
 import com.example.communityshopping.mainActivity.archive.models.Archive
 
@@ -32,74 +32,58 @@ class ArchiveFragment : Fragment() {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val title = arrayOf(
-            "Einkauf vom 03.10.2022",
-            "Einkauf vom 05.10.2022",
-            "Einkauf vom 06.10.2022",
-            "Einkauf vom 09.10.2022"
-        )
-
-        val info = arrayOf(
-            "3 Artikel gekauft von Nutzer1",
-            "2 Artikel gekauft von Nutzer2",
-            "1 Artikel gekauft von Nutzer1",
-            "4 Artikel gekauft von Nutzer3"
-        )
-
-        val items = arrayListOf(
-            arrayListOf("Artikel 1", "Artikel 2", "Artikel 3"),
-            arrayListOf("Artikel 1", "Artikel 2"),
-            arrayListOf("Artikel 1", "Artikel 2", "Artikel 3", "Artikel 4"),
-            arrayListOf("Artikel 1")
-        )
-
-        val prices = arrayListOf(
-            arrayListOf(1.00, 2.00, 3.00),
-            arrayListOf(2.00, 1.00),
-            arrayListOf(4.00, 3.00, 2.00, 1.00),
-            arrayListOf(5.00)
-        )
-
-        archiveArrayList = ArrayList()
-
-        for (i in title.indices) {
-            val itemsList: ArrayList<archiveItem> = ArrayList()
-            for (a in items[i].indices) {
-                val itemsTemp = items[i][a]
-                val pricesTemp = prices[i][a]
-                itemsList.add(archiveItem(itemsTemp, pricesTemp))
-            }
-            val archive = Archive(title[i], info[i], itemsList)
-            archiveArrayList.add(archive)
-        }
-
-        binding.listview.isClickable = true
-        binding.listview.adapter = ArchiveAdapter(requireActivity(), archiveArrayList)
-        binding.listview.setOnItemClickListener { parent, view, position, id ->
-
-            val title = title[position]
-            val info = info[position]
-            val items = items[position]
-
-            val i = Intent(requireActivity(), ArchiveActivity::class.java)
-            i.putExtra("archiveArrayList", archiveArrayList)
-            i.putExtra("position", position)
-            startActivity(i)
-
-        }
-
         dbGetArchiveList()
 
         return root
     }
 
     private fun dbGetArchiveList() {
-        val db = ArchiveDB(this.context, null)
-        val cursor = db.getAllTableData()
+        val db = ShoppingListDB(this.context, null)
+        val cursor = db.getArchiveData()
+        archiveArrayList = ArrayList()
         if (cursor!!.count >= 1) {
             while (cursor.moveToNext()) {
+                val archiveItem =
+                    db.getArchiveItemData(
+                        cursor.getInt
+                            (cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_ID))
+                    )
+                val archive = Archive(
+                    "Einkauf vom " +
+                            cursor.getString
+                                (cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_DATE)),
+                    archiveItem!!.count.toString() +
+                            " Artikel gekauft von " + cursor.getString(
+                        cursor.getColumnIndexOrThrow(
+                            ShoppingListDB.COLUMN_ARCHIVE_USERNAME
+                        )
+                    ),
+                    cursor.getInt(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_ID))
+                )
+                archiveArrayList.add(archive)
+
+                /*println(cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_USERNAME)))
+                println(cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_DATE)))
+                val archiveItem = db.getArchiveItemData(cursor.getInt(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_ID)))
+                println(archiveItem!!.count)
+                if (archiveItem!!.count >= 1) {
+                    while (archiveItem.moveToNext()) {
+                        println(archiveItem.getDouble(archiveItem.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ITEM_ID)))
+                    }
+                    archiveItem.close()
+                }
+                println(archiveItem.getDouble(archiveItem.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ITEM_ID)))*/
             }
             cursor.close()
+        }
+        binding.listview.isClickable = true
+        binding.listview.adapter = ArchiveAdapter(requireActivity(), archiveArrayList)
+        binding.listview.setOnItemClickListener { parent, view, position, id ->
+
+            val i = Intent(requireActivity(), ArchiveActivity::class.java)
+            i.putExtra("archiveArrayList", archiveArrayList)
+            i.putExtra("position", position)
+            startActivity(i)
         }
     }
 

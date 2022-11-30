@@ -3,6 +3,7 @@ package com.example.communityshopping.mainActivity.archive
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import com.example.communityshopping.database.ShoppingListDB
 import com.example.communityshopping.databinding.ActivityArchiveBinding
 import com.example.communityshopping.mainActivity.archive.models.Archive
 import java.util.*
@@ -25,15 +26,39 @@ class ArchiveActivity : AppCompatActivity() {
         setTitle(archiveArrayList[position].title)
         binding.infoArchive.text = archiveArrayList[position].info
 
+        val db = ShoppingListDB(this, null)
+        val archiveItem = db.getArchiveItemData(archiveArrayList[position].index)
+        var archiveList = ArrayList<archiveItem>()
+
         var fullPrice = 0.0
-        for (i in archiveArrayList[position].archiveItems.indices) {
-            fullPrice += archiveArrayList[position].archiveItems[i].price
+        if (archiveItem!!.count >= 1) {
+            while (archiveItem.moveToNext()) {
+                fullPrice += archiveItem.getDouble(
+                    archiveItem.getColumnIndexOrThrow
+                        (ShoppingListDB.COLUMN_ITEM_PRICE)
+                )
+                archiveList.add(
+                    archiveItem( //Platzhalter
+                        archiveItem.getInt
+                            (
+                            archiveItem.getColumnIndexOrThrow
+                                (ShoppingListDB.COLUMN_ITEM_ID)
+                        ).toString(),
+                        archiveItem.getDouble
+                            (
+                            archiveItem.getColumnIndexOrThrow
+                                (ShoppingListDB.COLUMN_ITEM_PRICE)
+                        )
+                    )
+                )
+            }
+            archiveItem.close()
         }
         binding.archiveFullPrice.text = "%,.2f".format(Locale.GERMAN, fullPrice) + "€"
 
         if (archiveArrayList != null) {
             binding.archiveArticles.adapter =
-                ArchiveDetailAdapter(this, archiveArrayList[position].archiveItems)
+                ArchiveDetailAdapter(this, archiveList)
         }
     }
 
