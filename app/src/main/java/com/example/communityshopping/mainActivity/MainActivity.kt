@@ -1,12 +1,19 @@
 package com.example.communityshopping.mainActivity
 
+import android.Manifest
+import android.bluetooth.BluetoothAdapter
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.communityshopping.R
+import com.example.communityshopping.communication.BluetoothHelper
 import com.example.communityshopping.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -14,6 +21,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
+    private lateinit var bluetoothHelper: BluetoothHelper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -31,5 +39,18 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        bluetoothHelper = BluetoothHelper(this)
+        var bAdapter = bluetoothHelper.getBluetoothadapter()
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.BLUETOOTH_SCAN
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+        if (!bAdapter!!.isDiscovering) {
+            startActivityForResult(Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE), 1)
+            Toast.makeText(applicationContext, "Making Device Discoverable", Toast.LENGTH_SHORT).show()
+        }
     }
 }

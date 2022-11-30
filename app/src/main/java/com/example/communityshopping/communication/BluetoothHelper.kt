@@ -35,7 +35,7 @@ class BluetoothHelper(activity: Activity) {
         Log.i("Log", "in the start searching method")
         if (ActivityCompat.checkSelfPermission(
                 mActivity.applicationContext,
-                Manifest.permission.BLUETOOTH_SCAN
+                Manifest.permission.BLUETOOTH_SCAN,
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             //TODO activate permission
