@@ -5,7 +5,6 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.util.Log
 import com.example.communityshopping.database.DbSettings.Companion.DATABASE_NAME
 import com.example.communityshopping.database.DbSettings.Companion.DATABASE_VERSION
 
@@ -16,20 +15,16 @@ class ShoppingListDB(
 
     override fun onCreate(db: SQLiteDatabase?) {
 
-        val query = "CREATE TABLE " + TABLE_SHOPPING_LIST +
+        val queryShoppingList = "CREATE TABLE " + TABLE_SHOPPING_LIST +
                 " (" + COLUMN_ITEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_ITEM_NAME + " TEXT, " +
                 COLUMN_TIMESTAMP + " LONG, " +
                 COLUMN_DELETED + " INTEGER" + ")";
-        db!!.execSQL(query)
-        val queryShoppingList = "CREATE TABLE " + TABLE_SHOPPING_LIST +
-                " (" + COLUMN_ITEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_ITEM_NAME + " TEXT);"
         val queryArchive = "CREATE TABLE " + TABLE_ARCHIVE +
                 " (" + COLUMN_ARCHIVE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_ITEM_FULL_PRICE + " REAL, " +
                 COLUMN_ARCHIVE_USERNAME + " TEXT, " +
-                COLUMN_ARCHIVE_DATE + " TEXT);"
+                COLUMN_ARCHIVE_DATE + " LONG);"
         val queryArchiveItem = "CREATE TABLE " + TABLE_ARCHIVE_ITEM +
                 " (" + COLUMN_ARCHIVE_ITEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_ITEM_PRICE + " REAL, " +
@@ -38,13 +33,17 @@ class ShoppingListDB(
                 COLUMN_ARCHIVE_ID + " INTEGER REFERENCES " +
                 TABLE_ARCHIVE + " (" + COLUMN_ARCHIVE_ID + "));"
         val queryFillShoppingDB = "INSERT INTO " + TABLE_SHOPPING_LIST + " (" +
-                COLUMN_ITEM_NAME + ") VALUES ('Item1'), " +
-                "('Item2'), ('Item3'), ('Item4'), ('Item5');"
+                COLUMN_ITEM_NAME + ", " + COLUMN_TIMESTAMP + ", " + COLUMN_DELETED +
+                ") VALUES ('Karotten', 5, 1), " +
+                "('Rinderkennzeichnungsfleischetikettierungsmaschine', 5, 1), " +
+                "('Äpfel', 5, 1), " +
+                "('Shampoo', 5, 1), " +
+                "('Ziegenmilchkonzentrat', 5, 1);"
         val queryFillArchiveDB = "INSERT INTO " + TABLE_ARCHIVE + " (" +
                 COLUMN_ITEM_FULL_PRICE + ", " + COLUMN_ARCHIVE_USERNAME + ", " +
                 COLUMN_ARCHIVE_DATE +
-                ") VALUES (8.97, 'Nutzer1', '29.11.2022'), " +
-                "(5.00, 'Nutzer2', '30.11.2022');"
+                ") VALUES (8.97, 'Fabian', 1669724179533), " +
+                "(5.00, 'Alen', 1669824179533);"
         val queryFillArchiveItemDB = "INSERT INTO " + TABLE_ARCHIVE_ITEM + " (" +
                 COLUMN_ITEM_PRICE + ", " + COLUMN_ITEM_ID + ", " +
                 COLUMN_ARCHIVE_ID + ") VALUES (2.99, 1, 1), " +

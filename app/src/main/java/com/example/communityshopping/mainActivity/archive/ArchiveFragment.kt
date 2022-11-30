@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.communityshopping.database.ShoppingListDB
 import com.example.communityshopping.databinding.FragmentDashboardBinding
 import com.example.communityshopping.mainActivity.archive.models.Archive
+import java.text.SimpleDateFormat
 
 class ArchiveFragment : Fragment() {
 
@@ -55,8 +56,15 @@ class ArchiveFragment : Fragment() {
                             (ShoppingListDB.COLUMN_ITEM_FULL_PRICE)
                     ),
                     "Einkauf vom " +
-                            cursor.getString
-                                (cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_DATE)),
+                            SimpleDateFormat
+                                ("dd.MM.yyyy").format
+                                (
+                                cursor.getLong
+                                    (
+                                    cursor.getColumnIndexOrThrow
+                                        (ShoppingListDB.COLUMN_ARCHIVE_DATE)
+                                )
+                            ),
                     archiveItem!!.count.toString() +
                             " Artikel gekauft von " + cursor.getString(
                         cursor.getColumnIndexOrThrow(
