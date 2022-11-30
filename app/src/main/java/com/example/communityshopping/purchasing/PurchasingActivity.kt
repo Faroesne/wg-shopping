@@ -21,6 +21,7 @@ import androidx.core.view.iterator
 import com.example.communityshopping.R
 import com.example.communityshopping.databinding.ActivityPurchasingBinding
 import com.example.communityshopping.mainActivity.archive.ArchiveDetailAdapter
+import com.example.communityshopping.mainActivity.shoppinglist.HomeFragment
 
 class PurchasingActivity : AppCompatActivity() {
 
@@ -44,6 +45,7 @@ class PurchasingActivity : AppCompatActivity() {
     }
 
     private fun changeToTotal() {
+
         val iterator = binding.scroll.iterator()
         for(item in iterator) {
             val card = item.findViewById<EditText>(R.id.itemPrice)
@@ -55,6 +57,7 @@ class PurchasingActivity : AppCompatActivity() {
         binding.totalPrice.visibility = View.VISIBLE
         totalButton.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
         singleButton.backgroundTintList = ColorStateList.valueOf(Color.GRAY)
+
     }
 
     private fun pickCameraOrGallery() {
@@ -102,6 +105,8 @@ class PurchasingActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 123) {
             var bmp: Bitmap = data?.extras?.get("data") as Bitmap
+            val i = Intent(this, HomeFragment::class.java)
+            startActivity(i)
         }
     }
 
