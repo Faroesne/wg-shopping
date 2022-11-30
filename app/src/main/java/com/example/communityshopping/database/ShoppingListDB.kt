@@ -69,6 +69,12 @@ class ShoppingListDB(
         return db.rawQuery("SELECT * FROM " + TABLE_SHOPPING_LIST, null)
     }
 
+    fun getShoppingListDataByID(index: Int):Cursor?
+    {
+        val db = this.readableDatabase
+        return db.rawQuery("SELECT "+ COLUMN_ITEM_NAME + " FROM " + TABLE_SHOPPING_LIST + " WHERE " + COLUMN_ITEM_ID + " = " + index, null)
+    }
+
     fun getArchiveData(): Cursor? {
         val db = this.readableDatabase
         return db.rawQuery("SELECT * FROM " + TABLE_ARCHIVE, null)

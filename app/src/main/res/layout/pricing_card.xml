@@ -50,8 +50,8 @@
                         android:layout_marginStart="300dp"
                         android:focusable="auto"
                         android:cursorVisible="false"
-                        android:visibility="invisible"
-                        android:freezesText="false" />
+                        android:freezesText="false"
+                        android:visibility="visible" />
 
             </RelativeLayout>
         </androidx.cardview.widget.CardView>

@@ -19,6 +19,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.view.get
 import androidx.core.view.iterator
 import com.example.communityshopping.R
+import com.example.communityshopping.database.ShoppingListDB
 import com.example.communityshopping.databinding.ActivityPurchasingBinding
 import com.example.communityshopping.mainActivity.archive.ArchiveDetailAdapter
 import com.example.communityshopping.mainActivity.shoppinglist.HomeFragment
@@ -29,6 +30,7 @@ class PurchasingActivity : AppCompatActivity() {
     private lateinit var totalButton: Button
     lateinit var confirmBtn: Button
     private lateinit var binding: ActivityPurchasingBinding
+    private var nameList = arrayListOf<Long>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,8 +42,12 @@ class PurchasingActivity : AppCompatActivity() {
         totalButton.setOnClickListener { changeToTotal() }
         confirmBtn = findViewById(R.id.confirmBuyBtn2)
         confirmBtn.setOnClickListener { pickCameraOrGallery() }
-        val namesList = intent.getSerializableExtra("names") as ArrayList<String>
-        binding.scroll.adapter = PurchasingAdapter(this, namesList)
+        nameList = intent.getSerializableExtra("ids") as ArrayList<Long>
+        val db = ShoppingListDB(this, null)
+        for (i in nameList.indices)
+        {
+            println(i)
+        }
     }
 
     private fun changeToTotal() {
@@ -104,9 +110,9 @@ class PurchasingActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 123) {
-            var bmp: Bitmap = data?.extras?.get("data") as Bitmap
-            val i = Intent(this, HomeFragment::class.java)
-            startActivity(i)
+            //var bmp: Bitmap = data?.extras?.get("data") as Bitmap
+           // val i = Intent(this, HomeFragment::class.java)
+           // startActivity(i)
         }
     }
 

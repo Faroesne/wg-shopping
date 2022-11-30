@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.TextView
 import com.example.communityshopping.R
 import java.util.*
@@ -21,7 +22,7 @@ class PurchasingAdapter(private val context: Activity,
 
         val name: TextView = view.findViewById(R.id.pricingName)
 
-        name.text = arrayList[position]
+        //name.text = arrayList[position]
 
         return view
     }
