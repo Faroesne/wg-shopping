@@ -18,6 +18,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.communityshopping.R
 import com.example.communityshopping.communication.BluetoothHelper
+import com.example.communityshopping.communication.ClientSocketBluetooth
+import com.example.communityshopping.communication.ServerSocketBluetooth
 import com.example.communityshopping.mainActivity.MainActivity
 
 class JoinGroupActivity : AppCompatActivity() {
@@ -42,6 +44,13 @@ class JoinGroupActivity : AppCompatActivity() {
         registerReceiver(mReceiver, intentFilter)
 
         bluetoothHelper.startSearching()
+
+    }
+
+    private fun initCtSocket(device: BluetoothDevice){
+        val btHelper = BluetoothHelper(this)
+        val ctSocket = ClientSocketBluetooth(btHelper.groupBluetoothAdapter, device)
+        ctSocket.start()
     }
 
     private fun joinGroup() {
@@ -68,6 +77,11 @@ class JoinGroupActivity : AppCompatActivity() {
                     //TODO activate Bluetooth permission
                     bluetoothHelper.enableBluetoothPermissions()
                     return
+                }
+
+
+                if (device != null) {
+                    initCtSocket(device)
                 }
 
                 if (!deviceList.contains(device)) {
