@@ -16,6 +16,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.view.get
+import androidx.core.view.iterator
 import com.example.communityshopping.R
 import com.example.communityshopping.databinding.ActivityPurchasingBinding
 import com.example.communityshopping.mainActivity.archive.ArchiveDetailAdapter
@@ -38,32 +40,22 @@ class PurchasingActivity : AppCompatActivity() {
         confirmBtn = findViewById(R.id.confirmBuyBtn2)
         confirmBtn.setOnClickListener { pickCameraOrGallery() }
         val namesList = intent.getSerializableExtra("names") as ArrayList<String>
-       /* val nameView: TextView = view.findViewById(R.id.pricingName)
-        val iterator = namesList.iterator()
-        for (item in iterator) {
-            nameView.text = item
-            view.apply {
-                if (parent != null) {
-                    (parent as ViewGroup).removeView(this)
-
-                }
-            }
-        }
-        */
         binding.scroll.adapter = PurchasingAdapter(this, namesList)
     }
 
     private fun changeToTotal() {
-
-        val card = binding.scroll.findViewById<EditText>(R.id.itemPrice)
-        card.visibility = View.INVISIBLE
+        val iterator = binding.scroll.iterator()
+        for(item in iterator) {
+            val card = item.findViewById<EditText>(R.id.itemPrice)
+            if(card.visibility == View.VISIBLE)
+            {
+                card.visibility = View.INVISIBLE
+            }
+        }
         binding.totalPrice.visibility = View.VISIBLE
         totalButton.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
         singleButton.backgroundTintList = ColorStateList.valueOf(Color.GRAY)
-
-
     }
-
 
     private fun pickCameraOrGallery() {
         if (ActivityCompat.checkSelfPermission(
@@ -78,15 +70,31 @@ class PurchasingActivity : AppCompatActivity() {
         }
     }
 
-
     private fun changeToSingle() {
-
-        val card = binding.scroll.findViewById<EditText>(R.id.itemPrice)
-        card.visibility = View.VISIBLE
-        binding.totalPrice.visibility = View.INVISIBLE
+        val totalPriceArrayList = arrayListOf<Float>()
+        val iterator = binding.scroll.iterator()
+        for(item in iterator) {
+            val card = item.findViewById<EditText>(R.id.itemPrice)
+            if(card.text.isBlank() || card.text.isEmpty())
+            {
+                totalPriceArrayList.add(0f)
+            }else {
+                totalPriceArrayList.add(card.text.toString().toFloat())
+            }
+            if(card.visibility == View.INVISIBLE)
+            {
+                card.visibility = View.VISIBLE
+            }
+        }
+        var totalPrice = 0f
+        val numberIterator = totalPriceArrayList.iterator()
+        for (item in numberIterator)
+        {
+            totalPrice += item
+        }
+        binding.totalPrice.setText(totalPrice.toString())
         singleButton.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
         totalButton.backgroundTintList = ColorStateList.valueOf(Color.GRAY)
-
 
     }
 

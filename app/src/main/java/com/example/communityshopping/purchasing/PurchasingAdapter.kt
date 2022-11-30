@@ -25,4 +25,5 @@ class PurchasingAdapter(private val context: Activity,
 
         return view
     }
+
 }
