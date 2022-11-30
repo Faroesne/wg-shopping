@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import com.example.communityshopping.database.DbSettings.Companion.DATABASE_NAME
 import com.example.communityshopping.database.DbSettings.Companion.DATABASE_VERSION
 
@@ -15,6 +16,12 @@ class ShoppingListDB(
 
     override fun onCreate(db: SQLiteDatabase?) {
 
+        val query = "CREATE TABLE " + TABLE_SHOPPING_LIST +
+                " (" + COLUMN_ITEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_ITEM_NAME + " TEXT, " +
+                COLUMN_TIMESTAMP + " LONG, " +
+                COLUMN_DELETED + " INTEGER" + ")";
+        db!!.execSQL(query)
         val queryShoppingList = "CREATE TABLE " + TABLE_SHOPPING_LIST +
                 " (" + COLUMN_ITEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_ITEM_NAME + " TEXT);"
@@ -81,6 +88,8 @@ class ShoppingListDB(
         val db = this.writableDatabase
         val values = ContentValues()
         values.put(COLUMN_ITEM_NAME, name)
+        values.put(COLUMN_TIMESTAMP, System.currentTimeMillis())
+        values.put(COLUMN_DELETED, 0)
         val id = db.insert(TABLE_SHOPPING_LIST, null, values)
         db.close()
         return id
@@ -109,7 +118,9 @@ class ShoppingListDB(
 
     fun deleteShoppingListItem(id: Long) {
         val db = this.writableDatabase
-        db.delete(TABLE_SHOPPING_LIST, "_id=" + id, null)
+        val values = ContentValues()
+        values.put(COLUMN_DELETED, 1)
+        db.update(TABLE_SHOPPING_LIST, values, "_id=" + id, null)
     }
 
     //add table column here
@@ -117,6 +128,8 @@ class ShoppingListDB(
         const val TABLE_SHOPPING_LIST = "shopping_list"
         const val COLUMN_ITEM_ID = "shopping_list_id"
         const val COLUMN_ITEM_NAME = "shopping_item"
+        const val COLUMN_TIMESTAMP = "timestamp"
+        const val COLUMN_DELETED = "deleteStatus"
 
         const val TABLE_ARCHIVE = "archive_list"
         const val COLUMN_ARCHIVE_USERNAME = "archive_name"
