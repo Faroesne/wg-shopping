@@ -39,5 +39,6 @@
     <string name="sprache2">Sprache</string>
     <string name="Einkauf_vom">Einkauf vom   </string>
     <string name="Artikel_gekauft_von">  Artikel gekauft von  </string>
+    <string name="wähle_sprache_aus">Wähle die Sprache aus </string>
 
 </resources>
