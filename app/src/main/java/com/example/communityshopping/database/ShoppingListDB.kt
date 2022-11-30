@@ -119,7 +119,7 @@ class ShoppingListDB(
         val db = this.writableDatabase
         val values = ContentValues()
         values.put(COLUMN_DELETED, 1)
-        db.update(TABLE_SHOPPING_LIST, values, "_id=" + id, null)
+        db.update(TABLE_SHOPPING_LIST, values, COLUMN_ITEM_ID + " = " + id, null)
     }
 
     //add table column here
