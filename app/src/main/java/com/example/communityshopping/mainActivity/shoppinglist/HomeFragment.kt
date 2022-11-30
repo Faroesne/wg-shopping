@@ -10,8 +10,8 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.communityshopping.R
-import com.example.communityshopping.database.models.Item
 import com.example.communityshopping.database.ShoppingListDB
+import com.example.communityshopping.database.models.Item
 import com.example.communityshopping.databinding.FragmentHomeBinding
 import com.example.communityshopping.purchasing.PurchasingActivity
 
@@ -71,7 +71,7 @@ class HomeFragment : Fragment() {
 
     private fun dbGetShoppingList() {
         val db = ShoppingListDB(this.context, null)
-        val cursor = db.getAllTableData()
+        val cursor = db.getShoppingListData()
         if (cursor!!.count >= 1) {
             while (cursor.moveToNext() && cursor.getInt(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_DELETED)) == 0) {
                 val view: View = layoutInflater.inflate(R.layout.card, null)
@@ -80,7 +80,7 @@ class HomeFragment : Fragment() {
                     cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ITEM_NAME))
                 val item = Item(
                     view,
-                    cursor.getLong(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ID))
+                    cursor.getLong(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ITEM_ID))
                 )
                 itemList.add(item)
                 layout!!.addView(view)
@@ -93,7 +93,7 @@ class HomeFragment : Fragment() {
         val view: View = layoutInflater.inflate(R.layout.card, null)
         val nameView: TextView = view.findViewById(R.id.name)
         val db = ShoppingListDB(this.context, null)
-        val id = db.addItem(name)
+        val id = db.addShoppingListItem(name)
         val item = Item(view, id)
         nameView.text = name
         itemList.add(item)
@@ -119,7 +119,7 @@ class HomeFragment : Fragment() {
 
     private fun dbDeleteItem(id: Long) {
         val db = ShoppingListDB(this.context, null)
-        db.deleteItem(id)
+        db.deleteShoppingListItem(id)
     }
 
     private fun submitItems() {
