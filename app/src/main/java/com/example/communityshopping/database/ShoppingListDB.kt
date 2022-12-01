@@ -100,22 +100,23 @@ class ShoppingListDB(
         return id
     }
 
-    fun addArchiveListItem(name: String, date: String): Long {
+    fun addArchiveListItem(price: Double, name: String): Long {
         val db = this.writableDatabase
         val values = ContentValues()
+        values.put(COLUMN_ITEM_FULL_PRICE, price)
         values.put(COLUMN_ARCHIVE_USERNAME, name)
-        values.put(COLUMN_ARCHIVE_DATE, date)
+        values.put(COLUMN_ARCHIVE_DATE, System.currentTimeMillis())
         val id = db.insert(TABLE_ARCHIVE, null, values)
         db.close()
         return id
     }
 
-    fun addArchiveItem(price: Double, listFK: Int, itemFK: Int): Long {
+    fun addArchiveItem(price: Double?, itemFK: Int, archiveFK: Int): Long {
         val db = this.writableDatabase
         val values = ContentValues()
         values.put(COLUMN_ITEM_PRICE, price)
         values.put(COLUMN_ITEM_ID, itemFK)
-        values.put(COLUMN_ARCHIVE_ID, listFK)
+        values.put(COLUMN_ARCHIVE_ID, archiveFK)
         val id = db.insert(TABLE_ARCHIVE_ITEM, null, values)
         db.close()
         return id
