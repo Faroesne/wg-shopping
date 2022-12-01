@@ -50,6 +50,7 @@
                         android:layout_marginStart="300dp"
                         android:focusable="auto"
                         android:cursorVisible="false"
+                        android:freezesText="false"
                         android:visibility="invisible" />
 
             </RelativeLayout>
