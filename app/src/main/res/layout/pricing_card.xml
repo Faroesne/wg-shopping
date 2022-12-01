@@ -51,7 +51,7 @@
                         android:focusable="auto"
                         android:cursorVisible="false"
                         android:freezesText="false"
-                        android:visibility="visible" />
+                        android:visibility="invisible" />
 
             </RelativeLayout>
         </androidx.cardview.widget.CardView>

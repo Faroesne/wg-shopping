@@ -26,7 +26,7 @@ class HomeFragment : Fragment() {
     var layout: LinearLayout? = null
     private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
-    var itemIdList = arrayListOf<Long>()
+    var itemIdList = arrayListOf<Int>()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -128,11 +128,9 @@ class HomeFragment : Fragment() {
 
     private fun submitItems() {
         val iterator = itemList.iterator()
-        for(item in iterator)
-        {
-            if(item.view.findViewById<CheckBox>(R.id.checkbox).isChecked)
-            {
-                itemIdList.add(item.id)
+        for (item in iterator) {
+            if (item.view.findViewById<CheckBox>(R.id.checkbox).isChecked) {
+                itemIdList.add(item.id.toInt())
             }
         }
         val i = Intent(activity, PurchasingActivity::class.java)
