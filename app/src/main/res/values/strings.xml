@@ -1,4 +1,5 @@
 <resources>
+    <!-- Deutsch -->
     <string name="app_name">CommunityShopping</string>
     <string name="title_home">Einkaufsliste</string>
     <string name="title_dashboard">Archiv</string>
@@ -9,15 +10,35 @@
     <string name="einkauf_best_tigen">EINKAUF BESTÄTIGEN</string>
     <string name="willkommen">WILLKOMMEN</string>
     <string name="title_activity_create_group">CreateGroup</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
+    <!-- Strings used for sharedPreferences -->
+    <string name="app_preferences">app_preferences</string>
+    <string name="user_name">user_name</string>
+    <string name="bluetooth_setup_status">bluetooth_setup_status</string>
+    <!-- Strings to delete -->
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- Strings to delete -->
     <string name="gruppe_erstellen">Gruppe erstellen</string>
     <string name="gruppe_beitreten">Gruppe beitreten</string>
+    <string name="gruppenname">Gruppenname</string>
+    <string name="Gruppen_in_der_Nähe_gefunden">Gruppen in der Nähe gefunden</string>
     <string name="einkaufspreise">Einkaufspreise</string>
+    <string name="gesamt_bezahlt">Gesamt Bezahlt</string>
+    <string name="name">Name</string>
+    <string name="Einkauf_vom_01.01.1970">Einkauf vom 01.01.1970</string>
+    <string name="_Artikel_gekauft_von_Nutzer">999 Artikel gekauft von Nutzer</string>
+    <string name="Artikel1">Artikel1</string>
+    <string name="Artikel_gekauft">Artikel gekauft</string>
+    <string name="sprache">Deutsch</string>
+    <string name="sprache2">Sprache</string>
+    <string name="Einkauf_vom">Einkauf vom   </string>
+    <string name="Artikel_gekauft_von">  Artikel gekauft von  </string>
+    <string name="wähle_sprache_aus">Wähle die Sprache aus </string>
+
 </resources>
