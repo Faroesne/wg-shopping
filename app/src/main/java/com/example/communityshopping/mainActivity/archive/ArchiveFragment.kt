@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.communityshopping.R
 import com.example.communityshopping.database.ShoppingListDB
-import com.example.communityshopping.databinding.FragmentDashboardBinding
+import com.example.communityshopping.databinding.FragmentArchiveBinding
 import com.example.communityshopping.mainActivity.archive.models.Archive
 import java.text.SimpleDateFormat
 
@@ -17,7 +17,7 @@ class ArchiveFragment : Fragment() {
 
     private lateinit var archiveViewModel: ArchiveViewModel
     private lateinit var archiveArrayList: ArrayList<Archive>
-    private var _binding: FragmentDashboardBinding? = null
+    private var _binding: FragmentArchiveBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -31,7 +31,7 @@ class ArchiveFragment : Fragment() {
         archiveViewModel =
             ViewModelProvider(this).get(ArchiveViewModel::class.java)
 
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        _binding = FragmentArchiveBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         dbGetArchiveList()

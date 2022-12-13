@@ -12,14 +12,21 @@
             tools:layout="@layout/fragment_home"/>
 
     <fragment
-            android:id="@+id/navigation_dashboard"
+            android:id="@+id/navigation_archive"
             android:name="com.example.communityshopping.mainActivity.archive.ArchiveFragment"
             android:label="@string/title_dashboard"
-            tools:layout="@layout/fragment_dashboard"/>
+            tools:layout="@layout/fragment_archive"/>
 
     <fragment
-            android:id="@+id/navigation_notifications"
-            android:name="com.example.communityshopping.mainActivity.settings.SettingsFragment"
+            android:id="@+id/navigation_finances"
+            android:name="com.example.communityshopping.mainActivity.finances.FinancesFragment"
             android:label="@string/title_notifications"
-            tools:layout="@layout/fragment_notifications"/>
+            tools:layout="@layout/fragment_finances"/>
+
+    <fragment
+            android:id="@+id/navigation_settings"
+            android:name="com.example.communityshopping.mainActivity.settings.SettingsFragment"
+            android:label="@string/title_settings"
+            tools:layout="@layout/fragment_settings"/>
+
 </navigation>

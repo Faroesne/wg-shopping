@@ -5,14 +5,14 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/icegrey"
+        android:background="@color/white"
         tools:context=".mainActivity.archive.ArchiveActivity">
 
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/line1"
-            app:layout_constraintBottom_toTopOf="@id/line2">
+            app:layout_constraintTop_toBottomOf="@id/line"
+            app:layout_constraintBottom_toTopOf="@id/roundedBottom">
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -30,7 +30,7 @@
             android:id="@+id/top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:padding="4dp"
             android:background="@color/white"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBaseline_toBaselineOf="parent">
@@ -38,7 +38,7 @@
         <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
+                android:layout_marginStart="6dp"
                 android:padding="10dp"
                 android:orientation="vertical">
 
@@ -46,60 +46,98 @@
                     android:id="@+id/infoArchive"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Einkauf_vom_01.01.1970"
-                    android:textColor="@color/black"
+                    android:textColor="@color/deepblack"
+                    android:textStyle="bold"
                     android:textSize="20sp" />
         </LinearLayout>
     </RelativeLayout>
 
     <View
-            android:id="@+id/line1"
+            android:id="@+id/line"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
             android:background="#c0c0c0"
             app:layout_constraintTop_toBottomOf="@id/top"/>
 
-    <View
-            android:id="@+id/line2"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#c0c0c0"
-            app:layout_constraintBottom_toTopOf="@id/bottom"/>
-
-    <RelativeLayout
-            android:id="@+id/bottom"
+    <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            android:id="@+id/roundedBottom"
+            android:background="@drawable/rounded">
 
-        <LinearLayout
-                android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:padding="10dp"
-                android:orientation="vertical">
+                android:layout_marginTop="10dp">
 
-            <TextView
-                    android:id="@+id/fullPrice"
-                    android:layout_width="wrap_content"
+            <RelativeLayout
+                    android:id="@+id/bottom"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/gesamt"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-        </LinearLayout>
-        <TextView
-                android:id="@+id/archive_fullPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0,00€"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:layout_marginEnd="4dp"
-                android:padding="10dp"
-                android:layout_alignParentEnd="true"/>
-    </RelativeLayout>
+                    android:padding="6dp"
+                    app:layout_constraintBottom_toTopOf="@id/findReceipt"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:padding="5dp"
+                        android:orientation="vertical">
+
+                    <TextView
+                            android:id="@+id/fullPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/gesamt"
+                            android:textColor="@color/icegrey"
+                            android:textStyle="bold"
+                            android:textSize="20sp" />
+                </LinearLayout>
+                <TextView
+                        android:id="@+id/archive_fullPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0,00€"
+                        android:textColor="@color/brandred"
+                        android:textStyle="bold"
+                        android:textSize="20sp"
+                        android:layout_marginEnd="16dp"
+                        android:padding="5dp"
+                        android:layout_alignParentEnd="true"/>
+
+            </RelativeLayout>
+
+            <Button
+                    android:text="@string/show_receipt"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:id="@+id/findReceipt"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintBottom_toTopOf="@id/closeArchive"
+                    android:backgroundTint="@color/brandred"
+                    app:cornerRadius="16dp" />
+
+            <Button
+                    android:text="@string/close_page"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:id="@+id/closeArchive"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="15dp"
+                    android:backgroundTint="@color/brandred"
+                    app:cornerRadius="16dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

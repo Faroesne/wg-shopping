@@ -24,6 +24,7 @@ import com.example.communityshopping.database.models.Item
 import com.example.communityshopping.databinding.ActivityPurchasingBinding
 import com.example.communityshopping.mainActivity.MainActivity
 
+
 class PurchasingActivity : AppCompatActivity() {
 
     private lateinit var singleButton: Button
@@ -69,20 +70,27 @@ class PurchasingActivity : AppCompatActivity() {
                 }
             })
         }
+        window.setNavigationBarColor(Color.parseColor("#0C0B0B"))
     }
 
     private fun changeToTotal() {
         val iterator = binding.scroll.iterator()
         for (item in iterator) {
-            val card = item.findViewById<EditText>(R.id.itemPrice)
-            if (card.visibility == View.VISIBLE) {
-                card.visibility = View.INVISIBLE
+            val cardPrice = item.findViewById<EditText>(R.id.itemPrice)
+            if (cardPrice.visibility == View.VISIBLE) {
+                cardPrice.visibility = View.INVISIBLE
+            }
+            val cardEuro = item.findViewById<TextView>(R.id.euroSignItem)
+            if (cardEuro.visibility == View.VISIBLE) {
+                cardEuro.visibility = View.INVISIBLE
             }
         }
         binding.totalPrice.visibility = View.VISIBLE
         binding.totalPrice.isEnabled = true
-        totalButton.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
-        singleButton.backgroundTintList = ColorStateList.valueOf(Color.GRAY)
+        totalButton.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#0C0B0B"))
+        totalButton.setTextColor(Color.WHITE)
+        singleButton.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
+        singleButton.setTextColor(Color.parseColor("#0C0B0B"))
         isTotal = true
     }
 
@@ -123,11 +131,17 @@ class PurchasingActivity : AppCompatActivity() {
             if (card.visibility == View.INVISIBLE) {
                 card.visibility = View.VISIBLE
             }
+            val cardEuro = item.findViewById<TextView>(R.id.euroSignItem)
+            if (cardEuro.visibility == View.INVISIBLE) {
+                cardEuro.visibility = View.VISIBLE
+            }
         }
         updateText()
         binding.totalPrice.isEnabled = false
-        singleButton.backgroundTintList = ColorStateList.valueOf(Color.BLACK)
-        totalButton.backgroundTintList = ColorStateList.valueOf(Color.GRAY)
+        singleButton.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#0C0B0B"))
+        singleButton.setTextColor(Color.WHITE)
+        totalButton.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
+        totalButton.setTextColor(Color.parseColor("#0C0B0B"))
         isTotal = false
     }
 
@@ -140,14 +154,19 @@ class PurchasingActivity : AppCompatActivity() {
                 getString(R.string.app_preferences), Context.MODE_PRIVATE
             )
             val username = sharedPref.getString(getString(R.string.user_name), "unknown")
-            val archiveId = db.addArchiveListItem(binding.totalPrice.text.toString().toDouble(), username!!)
+            val archiveId =
+                db.addArchiveListItem(binding.totalPrice.text.toString().toDouble(), username!!)
             for (item in itemList) {
                 db.deleteShoppingListItem(item.id)
                 var price = item.view.findViewById<EditText>(R.id.itemPrice).text
                 if (isTotal) {
                     db.addArchiveItem(null, item.id.toInt(), archiveId.toInt())
                 } else {
-                    db.addArchiveItem(price.toString().toDouble(), item.id.toInt(), archiveId.toInt())
+                    db.addArchiveItem(
+                        price.toString().toDouble(),
+                        item.id.toInt(),
+                        archiveId.toInt()
+                    )
                 }
             }
             val i = Intent(this, MainActivity::class.java)
@@ -155,8 +174,7 @@ class PurchasingActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateText()
-    {
+    private fun updateText() {
         val totalPriceArrayList = arrayListOf<Float>()
         val iterator = binding.scroll.iterator()
         for (item in iterator) {
