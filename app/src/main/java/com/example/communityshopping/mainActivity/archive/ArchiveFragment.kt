@@ -56,7 +56,7 @@ class ArchiveFragment : Fragment() {
                         cursor.getColumnIndexOrThrow
                             (ShoppingListDB.COLUMN_ITEM_FULL_PRICE)
                     ),
-                    this.getString(R.string.Einkauf_vom) +" "+
+                    this.getString(R.string.Einkauf_vom) + " " +
                             SimpleDateFormat
                                 ("dd.MM.yyyy").format
                                 (

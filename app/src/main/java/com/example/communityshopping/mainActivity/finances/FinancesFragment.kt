@@ -33,7 +33,11 @@ class FinancesFragment : Fragment() {
 
         clear = root.findViewById(R.id.clearFinances)
         clear.setOnClickListener {
-            Toast.makeText(this.context, this.getString(R.string.clear_finances), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this.context,
+                this.getString(R.string.clear_finances),
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
         return root
