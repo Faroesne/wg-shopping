@@ -105,12 +105,13 @@ class ShoppingListDB(
             null
         )
     }
-    // TODO: Test method
+
     fun getArchiveItemData(index: Int): Cursor? {
         val db = this.readableDatabase
         val selection = "${COLUMN_ARCHIVE_ID} = ${index}"
+
         return db.query(
-            "${TABLE_ARCHIVE_ITEM} INNER JOIN ${TABLE_SHOPPING_LIST} USING '${COLUMN_ITEM_ID}'",
+            "${TABLE_ARCHIVE_ITEM} INNER JOIN ${TABLE_SHOPPING_LIST} USING (${COLUMN_ITEM_ID})",
             null,
             selection,
             null,
