@@ -66,28 +66,61 @@ class ShoppingListDB(
 
     fun getShoppingListData(): Cursor? {
         val db = this.readableDatabase
-        return db.rawQuery("SELECT * FROM " + TABLE_SHOPPING_LIST, null)
+        return db.query(
+            TABLE_SHOPPING_LIST,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        )
     }
 
     fun getShoppingListDataByID(index: Int):Cursor?
     {
         val db = this.readableDatabase
-        return db.rawQuery("SELECT "+ COLUMN_ITEM_NAME + " FROM " + TABLE_SHOPPING_LIST + " WHERE " + COLUMN_ITEM_ID + " = " + index, null)
+        val projection = arrayOf(COLUMN_ITEM_NAME)
+        val selection = "${COLUMN_ITEM_ID} = ${index}"
+        return db.query(
+            TABLE_SHOPPING_LIST,
+            projection,
+            selection,
+            null,
+            null,
+            null,
+            null
+        )
     }
 
     fun getArchiveData(): Cursor? {
         val db = this.readableDatabase
-        return db.rawQuery("SELECT * FROM " + TABLE_ARCHIVE, null)
+        return db.query(
+            TABLE_ARCHIVE,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        )
     }
 
     fun getArchiveItemData(index: Int): Cursor? {
         val db = this.readableDatabase
-        return db.rawQuery(
-            "SELECT * FROM " + TABLE_ARCHIVE_ITEM + " INNER JOIN " +
-                    TABLE_SHOPPING_LIST + " USING (" + COLUMN_ITEM_ID + ")" +
-                    " WHERE " + COLUMN_ARCHIVE_ID + " = " + index, null
+        val selection = "${COLUMN_ARCHIVE_ID} = ${index}"
+
+        return db.query(
+            "${TABLE_ARCHIVE_ITEM} INNER JOIN ${TABLE_SHOPPING_LIST} USING (${COLUMN_ITEM_ID})",
+            null,
+            selection,
+            null,
+            null,
+            null,
+            null
         )
     }
+
 
     fun addShoppingListItem(name: String): Long {
         val db = this.writableDatabase
