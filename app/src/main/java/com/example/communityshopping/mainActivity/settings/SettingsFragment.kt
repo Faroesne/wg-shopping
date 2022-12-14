@@ -99,7 +99,7 @@ class SettingsFragment : Fragment() {
     private fun loadLocate() {
         val sharedPreferences =
             this.activity?.getSharedPreferences("Settings", Activity.MODE_PRIVATE)
-        val language = sharedPreferences?.getString("My_Lang", "en")
+        val language = sharedPreferences?.getString("My_Lang", "de")
         setLocate(language)
     }
 
