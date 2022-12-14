@@ -3,6 +3,7 @@ package com.example.communityshopping.welcome
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -25,6 +26,8 @@ class CreateGroupActivity : AppCompatActivity() {
         setContentView(R.layout.activity_create_group)
         createButton = findViewById(R.id.gruppeErstellen)
         createButton.setOnClickListener { createGroup() }
+
+        window.setNavigationBarColor(Color.WHITE)
     }
 
     private fun createGroup() {

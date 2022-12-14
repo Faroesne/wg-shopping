@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -42,6 +43,8 @@ class JoinGroupActivity : AppCompatActivity() {
         registerReceiver(mReceiver, intentFilter)
 
         bluetoothHelper.startSearching()
+
+        window.setNavigationBarColor(Color.WHITE)
     }
 
     private fun joinGroup() {

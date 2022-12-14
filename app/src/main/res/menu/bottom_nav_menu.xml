@@ -3,17 +3,22 @@
 
     <item
             android:id="@+id/navigation_home"
-            android:icon="?attr/actionModePasteDrawable"
+            android:icon="@drawable/baseline_receipt_long_black_24dp"
             android:title="@string/title_home" />
 
     <item
-            android:id="@+id/navigation_dashboard"
-            android:icon="@drawable/ic_dashboard_black_24dp"
+            android:id="@+id/navigation_archive"
+            android:icon="@drawable/baseline_inventory_black_24dp"
             android:title="@string/title_dashboard"/>
 
     <item
-            android:id="@+id/navigation_notifications"
-            android:icon="@android:drawable/ic_menu_preferences"
+            android:id="@+id/navigation_finances"
+            android:icon="@drawable/baseline_account_balance_black_24dp"
             android:title="@string/title_notifications" />
+
+    <item
+            android:id="@+id/navigation_settings"
+            android:icon="@drawable/baseline_settings_black_24dp"
+            android:title="@string/title_settings" />
 
 </menu>

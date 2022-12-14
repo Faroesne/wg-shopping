@@ -7,7 +7,8 @@
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp">
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp">
 
         <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -15,13 +16,13 @@
                 android:layout_margin="10dp"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="10dp"
-                android:background="@color/coolgrey">
+                android:background="@color/icegrey">
 
             <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:background="@color/coolgrey">
+                    android:background="@color/icegrey">
 
                 <TextView
                         android:id="@+id/name"
@@ -31,7 +32,9 @@
                         android:textColor="@color/deepblack"
                         android:textFontWeight="1000"
                         android:textSize="20dp"
-                        android:layout_marginTop="10dp" />
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"/>
 
                 <CheckBox
                         android:id="@+id/checkbox"

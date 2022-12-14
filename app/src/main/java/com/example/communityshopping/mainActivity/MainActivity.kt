@@ -1,11 +1,6 @@
 package com.example.communityshopping.mainActivity
 
-import android.app.Activity
-import android.app.AlertDialog
-import android.content.Context
-import android.content.res.Configuration
 import android.os.Bundle
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -14,12 +9,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.communityshopping.R
 import com.example.communityshopping.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var sprache: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,12 +28,18 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
-
+                R.id.navigation_home,
+                R.id.navigation_archive,
+                R.id.navigation_finances,
+                R.id.navigation_settings
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    override fun onBackPressed() {
+        //super.onBackPressed()
     }
 
 }
