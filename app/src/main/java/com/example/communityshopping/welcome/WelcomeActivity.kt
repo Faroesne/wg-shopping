@@ -27,7 +27,7 @@ class WelcomeActivity : AppCompatActivity() {
     @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.title = "Willkommen"
+        this.title = getString(R.string.welcome)
 
         setContentView(R.layout.activity_welcome)
         joinBtn = findViewById(R.id.gruppeBeitreten)

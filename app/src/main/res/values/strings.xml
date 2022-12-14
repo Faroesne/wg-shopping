@@ -45,5 +45,6 @@
     <string name="Einkauf_vom">Einkauf vom</string>
     <string name="Artikel_gekauft_von">Artikel gekauft von</string>
     <string name="wähle_sprache_aus">Wähle Sprache</string>
+    <string name="welcome">Willkommen</string>
 
 </resources>
