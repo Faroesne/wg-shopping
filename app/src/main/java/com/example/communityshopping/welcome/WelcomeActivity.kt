@@ -37,6 +37,7 @@ class WelcomeActivity : AppCompatActivity() {
 
         checkForExistingSetup()
         bluetoothHelper = BluetoothHelper(this)
+
     }
 
 
