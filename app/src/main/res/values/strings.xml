@@ -3,14 +3,17 @@
     <string name="app_name">CommunityShopping</string>
     <string name="title_home">Einkaufsliste</string>
     <string name="title_dashboard">Archiv</string>
-    <string name="title_notifications">Einstellungen</string>
+    <string name="title_notifications">Finanzen</string>
+    <string name="title_settings">Einstellungen</string>
+    <string name="title_info">Info</string>
     <string name="gesamt">GESAMT</string>
     <string name="einzeln">EINZELN</string>
     <string name="einkaufspreis">Einkaufspreis</string>
     <string name="einkauf_best_tigen">EINKAUF BESTÄTIGEN</string>
     <string name="willkommen">WILLKOMMEN</string>
     <string name="title_activity_create_group">CreateGroup</string>
-
+    <string name="price_placeholder">0.00</string>
+    <string name="euro_placeholder">€</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -24,21 +27,24 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <!-- Strings to delete -->
-    <string name="gruppe_erstellen">Gruppe erstellen</string>
-    <string name="gruppe_beitreten">Gruppe beitreten</string>
+    <string name="gruppe_erstellen">Gruppe Erstellen</string>
+    <string name="gruppe_beitreten">Gruppe Beitreten</string>
+    <string name="name_info">Dein Nutzername ist für andere Nutzer sichtbar</string>
+    <string name="group_info">Setze den Namen deiner Gruppe fest</string>
     <string name="gruppenname">Gruppenname</string>
     <string name="Gruppen_in_der_Nähe_gefunden">Gruppen in der Nähe gefunden</string>
     <string name="einkaufspreise">Einkaufspreise</string>
     <string name="gesamt_bezahlt">Gesamt Bezahlt</string>
     <string name="name">Name</string>
-    <string name="Einkauf_vom_01.01.1970">Einkauf vom 01.01.1970</string>
-    <string name="_Artikel_gekauft_von_Nutzer">999 Artikel gekauft von Nutzer</string>
-    <string name="Artikel1">Artikel1</string>
     <string name="Artikel_gekauft">Artikel gekauft</string>
+    <string name="show_receipt">Quittung Anzeigen</string>
+    <string name="clear_finances">Finanzen Begleichen</string>
+    <string name="close_page">Schließen</string>
     <string name="sprache">Deutsch</string>
     <string name="sprache2">Sprache</string>
-    <string name="Einkauf_vom">Einkauf vom   </string>
-    <string name="Artikel_gekauft_von">  Artikel gekauft von  </string>
-    <string name="wähle_sprache_aus">Wähle die Sprache aus </string>
+    <string name="Einkauf_vom">Einkauf vom</string>
+    <string name="Artikel_gekauft_von">Artikel gekauft von</string>
+    <string name="wähle_sprache_aus">Wähle Sprache</string>
+    <string name="welcome">Willkommen</string>
 
 </resources>

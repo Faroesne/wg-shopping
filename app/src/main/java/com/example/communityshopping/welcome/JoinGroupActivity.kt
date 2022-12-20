@@ -1,23 +1,15 @@
 package com.example.communityshopping.welcome
 
-import android.Manifest
-import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothDevice
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
-import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import com.example.communityshopping.R
-import com.example.communityshopping.communication.BluetoothHelper
 import com.example.communityshopping.mainActivity.MainActivity
 
 class JoinGroupActivity : AppCompatActivity() {
@@ -25,9 +17,7 @@ class JoinGroupActivity : AppCompatActivity() {
     lateinit var joinBtn: Button
     var totalLayout: LinearLayout? = null
     lateinit var view: View
-    var deviceList: MutableSet<BluetoothDevice> = mutableSetOf()
 
-    private lateinit var bluetoothHelper: BluetoothHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,12 +26,9 @@ class JoinGroupActivity : AppCompatActivity() {
         joinBtn.setOnClickListener { joinGroup() }
         totalLayout = findViewById(R.id.containerList)
 
+        //registerReceiver(mReceiver, intentFilter)
 
-        bluetoothHelper = BluetoothHelper(this)
-        val intentFilter = IntentFilter(BluetoothDevice.ACTION_FOUND)
-        registerReceiver(mReceiver, intentFilter)
-
-        bluetoothHelper.startSearching()
+        window.setNavigationBarColor(Color.WHITE)
     }
 
     private fun joinGroup() {
@@ -51,9 +38,9 @@ class JoinGroupActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        bluetoothHelper.onActivityResult(requestCode, resultCode, data)
     }
 
+    /*
     var mReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent) {
             val action = intent.action
@@ -66,8 +53,6 @@ class JoinGroupActivity : AppCompatActivity() {
                         Manifest.permission.BLUETOOTH_CONNECT
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
-                    //TODO activate Bluetooth permission
-                    bluetoothHelper.enableBluetoothPermissions()
                     return
                 }
 
@@ -84,17 +69,12 @@ class JoinGroupActivity : AppCompatActivity() {
                     BluetoothAdapter.ACTION_DISCOVERY_FINISHED
                 )
             ) {
-                // discoveryFinished
-                Log.i("BluetoothReceiver", "finshed")
             } else if (action.equals(
                     BluetoothAdapter.ACTION_DISCOVERY_STARTED
                 )
-            ) {
-                // discoveryStarted
-                Log.i("BluetoothReceiver", "started")
-            }
+            ) { }
         }
-    }
+    } */
 
     private fun saveBluetoothStatus() {
         val sharedPref = this.getSharedPreferences(

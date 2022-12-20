@@ -21,8 +21,8 @@ class ArchiveDetailAdapter(
         val inflater: LayoutInflater = LayoutInflater.from(context)
         val view: View = inflater.inflate(R.layout.archivearticles_card, null)
 
-        val product: TextView = view.findViewById(R.id.archive_product)
-        val price: TextView = view.findViewById(R.id.archive_price)
+        val product: TextView = view.findViewById(R.id.finances_name)
+        val price: TextView = view.findViewById(R.id.finances_money)
 
         product.text = arrayList[position].articleName
         if (arrayList[position].price != null) {

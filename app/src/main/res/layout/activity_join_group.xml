@@ -22,22 +22,23 @@
                 android:id="@+id/containerList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"></LinearLayout>
+                android:orientation="vertical" />
     </ScrollView>
 
     <Button
             android:text="@string/gruppe_beitreten"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:id="@+id/gruppeBeitreten2"
             app:layout_constraintEnd_toEndOf="parent"
-            android:backgroundTint="#000000"
+            android:backgroundTint="@color/deepblack"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="40dp" />
+            android:layout_marginBottom="15dp"
+            app:cornerRadius="16dp" />
 
     <TextView
             android:text="@string/Gruppen_in_der_Nähe_gefunden"
@@ -46,10 +47,11 @@
             android:id="@+id/textView4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:textColor="@color/brandred"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="20dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

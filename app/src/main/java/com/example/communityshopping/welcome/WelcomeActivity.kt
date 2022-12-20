@@ -3,6 +3,7 @@ package com.example.communityshopping.welcome
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -26,7 +27,7 @@ class WelcomeActivity : AppCompatActivity() {
     @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.title = "Willkommen"
+        this.title = getString(R.string.welcome)
 
         setContentView(R.layout.activity_welcome)
         joinBtn = findViewById(R.id.gruppeBeitreten)
@@ -36,8 +37,8 @@ class WelcomeActivity : AppCompatActivity() {
         textField = findViewById(R.id.textFieldName)
 
         checkForExistingSetup()
-        bluetoothHelper = BluetoothHelper(this)
 
+        window.setNavigationBarColor(Color.parseColor("#0C0B0B"))
     }
 
 
@@ -53,7 +54,6 @@ class WelcomeActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        bluetoothHelper.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun saveUserName() {
@@ -61,7 +61,11 @@ class WelcomeActivity : AppCompatActivity() {
             getString(R.string.app_preferences), Context.MODE_PRIVATE
         )
         with(sharedPref.edit()) {
-            putString(getString(R.string.user_name), textField.text.toString())
+            if (textField.text.isBlank()) {
+                putString(getString(R.string.user_name), "Default")
+            } else {
+                putString(getString(R.string.user_name), textField.text.toString())
+            }
             Log.i("sharedPref", "UserName gespeichert.")
             apply()
         }

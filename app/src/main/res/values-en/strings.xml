@@ -3,15 +3,18 @@
     <!-- English-->
     <string name="app_name">CommunityShopping</string>
     <string name="title_home">Shopping List</string>
-    <string name="title_dashboard">archive</string>
-    <string name="title_notifications">Settings</string>
-    <string name="gesamt">total</string>
-    <string name="einzeln">Individually</string>
-    <string name="einkaufspreis">purchasing price</string>
-    <string name="einkauf_best_tigen">confirm purchase</string>
-    <string name="willkommen">welcome</string>
+    <string name="title_dashboard">Archive</string>
+    <string name="title_notifications">Finances</string>
+    <string name="title_settings">Settings</string>
+    <string name="title_info">Info</string>
+    <string name="gesamt">TOTAL</string>
+    <string name="einzeln">INDIVIDUALLY</string>
+    <string name="einkaufspreis">Price</string>
+    <string name="einkauf_best_tigen">CONFIRM PURCHASE</string>
+    <string name="willkommen">WELCOME</string>
     <string name="title_activity_create_group">CreateGroup</string>
-
+    <string name="price_placeholder">0.00</string>
+    <string name="euro_placeholder">€</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -25,21 +28,24 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <!-- Strings to delete -->
-    <string name="gruppe_erstellen">create group</string>
-    <string name="gruppe_beitreten">join a group</string>
-    <string name="gruppenname">groupname</string>
+    <string name="gruppe_erstellen">Create Group</string>
+    <string name="gruppe_beitreten">Join Group</string>
+    <string name="name_info">Your username is visible to other users</string>
+    <string name="group_info">Enter a name for your group</string>
+    <string name="gruppenname">Groupname</string>
     <string name="Gruppen_in_der_Nähe_gefunden">Groups found nearby</string>
-    <string name="einkaufspreise">purchase prices</string>
-    <string name="gesamt_bezahlt">total paid</string>
+    <string name="einkaufspreise">Prices</string>
+    <string name="gesamt_bezahlt">Total Paid</string>
     <string name="name">Name</string>
-    <string name="Einkauf_vom_01.01.1970">purchase from 01.01.1970</string>
-    <string name="_Artikel_gekauft_von_Nutzer">999 Item purchased by user</string>
-    <string name="Artikel1">Item1</string>
     <string name="Artikel_gekauft">Item purchased</string>
+    <string name="show_receipt">View Receipt</string>
+    <string name="clear_finances">Clear Finances</string>
+    <string name="close_page">Close</string>
     <string name="sprache">English</string>
     <string name="sprache2">Language</string>
-    <string name="Einkauf_vom">Purchase from   </string>
-    <string name="Artikel_gekauft_von">Item bought from </string>
-    <string name="wähle_sprache_aus">Choose Language </string>
+    <string name="Einkauf_vom">Purchase from</string>
+    <string name="Artikel_gekauft_von">Item(s) bought by</string>
+    <string name="wähle_sprache_aus">Choose Language</string>
+    <string name="welcome">Welcome</string>
 
 </resources>

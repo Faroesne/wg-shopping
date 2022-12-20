@@ -8,48 +8,74 @@
         tools:ignore="LabelFor"
         android:id="@+id/welcome">
 
-    <Button
-            android:text="@string/gruppe_erstellen"
-            android:layout_width="0dp"
+    <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/gruppeErstellen"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textFieldName"
-            android:backgroundTint="#000000"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.506"
-            android:layout_marginTop="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@drawable/rounded">
 
-    <Button
-            android:text="@string/gruppe_beitreten"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/gruppeBeitreten"
-            app:layout_constraintTop_toBottomOf="@+id/gruppeErstellen"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:backgroundTint="#000000"
-            android:layout_marginTop="24dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="0.502"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp">
+
+            <Button
+                    android:text="@string/gruppe_erstellen"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:id="@+id/gruppeErstellen"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:backgroundTint="@color/brandred"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintBottom_toTopOf="@+id/gruppeBeitreten"
+                    app:cornerRadius="16dp" />
+
+            <Button
+                    android:text="@string/gruppe_beitreten"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:id="@+id/gruppeBeitreten"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:backgroundTint="@color/brandred"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:cornerRadius="16dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
 
     <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:text="@string/name"
+            android:hint="@string/name"
             android:ems="10"
             android:id="@+id/textFieldName"
+            android:textColor="@color/deepblack"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:minHeight="48dp"
             app:layout_constraintHorizontal_bias="0.0"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="80dp" />
+            android:layout_marginTop="20dp" />
+
+    <TextView
+            android:text="@string/name_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewNameInfo"
+            android:textColor="@color/brandred"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textFieldName"
+            android:layout_marginStart="24dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
