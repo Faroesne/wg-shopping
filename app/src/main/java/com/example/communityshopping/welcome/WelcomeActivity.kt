@@ -12,7 +12,6 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.communityshopping.R
-import com.example.communityshopping.communication.BluetoothHelper
 import com.example.communityshopping.mainActivity.MainActivity
 
 class WelcomeActivity : AppCompatActivity() {
@@ -20,8 +19,6 @@ class WelcomeActivity : AppCompatActivity() {
     lateinit var joinBtn: Button
     lateinit var createButton: Button
     lateinit var textField: TextView
-
-    private lateinit var bluetoothHelper: BluetoothHelper
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("SuspiciousIndentation")
@@ -37,7 +34,6 @@ class WelcomeActivity : AppCompatActivity() {
         textField = findViewById(R.id.textFieldName)
 
         checkForExistingSetup()
-        bluetoothHelper = BluetoothHelper(this)
 
         window.setNavigationBarColor(Color.parseColor("#0C0B0B"))
     }
@@ -55,7 +51,6 @@ class WelcomeActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        bluetoothHelper.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun saveUserName() {

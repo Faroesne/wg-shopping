@@ -1,22 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         package="com.example.communityshopping">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-    <uses-permission
-            android:name="android.permission.BLUETOOTH_SCAN"
-            android:usesPermissionFlags="neverForLocation" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
-    <uses-permission
-            android:name="android.permission.BLUETOOTH_ADMIN"
-            android:maxSdkVersion="30" />
-    <uses-permission
-            android:name="android.permission.BLUETOOTH"
-            android:maxSdkVersion="30" />
 
     <application
             android:allowBackup="true"
