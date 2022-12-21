@@ -1,22 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         package="com.example.communityshopping">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-    <uses-permission
-            android:name="android.permission.BLUETOOTH_SCAN"
-            android:usesPermissionFlags="neverForLocation" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
-    <uses-permission
-            android:name="android.permission.BLUETOOTH_ADMIN"
-            android:maxSdkVersion="30" />
-    <uses-permission
-            android:name="android.permission.BLUETOOTH"
-            android:maxSdkVersion="30" />
 
     <application
             android:allowBackup="true"
@@ -24,18 +12,19 @@
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
+            android:configChanges="locale"
             android:theme="@style/Theme.CommunityShopping">
         <activity
                 android:name=".welcome.CreateGroupActivity"
-                android:exported="true"
+                android:exported="false"
                 android:label="@string/gruppe_erstellen" />
         <activity
                 android:name=".welcome.JoinGroupActivity"
-                android:exported="true"
+                android:exported="false"
                 android:label="@string/gruppe_beitreten" />
         <activity
                 android:name=".purchasing.PurchasingActivity"
-                android:exported="true"
+                android:exported="false"
                 android:label="@string/einkaufspreise"
                 android:windowSoftInputMode="stateHidden">
             <meta-data
@@ -44,7 +33,7 @@
         </activity>
         <activity
                 android:name=".mainActivity.archive.ArchiveActivity"
-                android:exported="true"
+                android:exported="false"
                 android:windowSoftInputMode="adjustPan" />
         <activity
                 android:name=".welcome.WelcomeActivity"
@@ -57,9 +46,7 @@
         </activity>
         <activity
                 android:name=".mainActivity.MainActivity"
-                android:exported="true">
-            <intent-filter tools:node="removeAll" />
-        </activity>
+                android:exported="true" />
     </application>
 
 </manifest>
