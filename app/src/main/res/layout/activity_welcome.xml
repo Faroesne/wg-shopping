@@ -5,8 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".welcome.WelcomeActivity"
-        tools:ignore="LabelFor"
-        android:id="@+id/welcome">
+        tools:ignore="LabelFor">
 
     <FrameLayout
             android:layout_width="match_parent"
