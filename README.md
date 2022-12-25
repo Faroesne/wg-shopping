@@ -1,3 +1,6 @@
+# About this project
+The WG-Shopping app is an app that provides a shared shopping list for a flat share and serves as a help to buy things that are needed together and to settle the finances within the flat share. The app allows the members of the shared apartment to create a shopping list together and to keep track of which items have already been procured and which are still missing. It can also help to balance finances within the community by keeping a record of who paid how much, when, and who still owes money.
+
 # How to Download and Install an Android APK from GitHub
 
 ## Prerequisites
