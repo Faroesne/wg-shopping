@@ -1,8 +1,10 @@
 package com.example.communityshopping.welcome
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -11,6 +13,8 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.communityshopping.R
 import com.example.communityshopping.mainActivity.MainActivity
 
@@ -19,6 +23,7 @@ class WelcomeActivity : AppCompatActivity() {
     lateinit var joinBtn: Button
     lateinit var createButton: Button
     lateinit var textField: TextView
+    private var REQUEST_PERMISSIONS = 101
 
     @RequiresApi(Build.VERSION_CODES.M)
     @SuppressLint("SuspiciousIndentation")
@@ -36,6 +41,41 @@ class WelcomeActivity : AppCompatActivity() {
         checkForExistingSetup()
 
         window.setNavigationBarColor(Color.parseColor("#0C0B0B"))
+
+        checkPermissions()
+    }
+
+    private fun checkPermissions() {
+        val requiredPermissions = arrayOf(
+            Manifest.permission.ACCESS_WIFI_STATE,
+            Manifest.permission.CHANGE_WIFI_STATE,
+            Manifest.permission.CHANGE_WIFI_MULTICAST_STATE,
+            Manifest.permission.INTERNET,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
+
+        val neededPermissions = requiredPermissions.filter {
+            ContextCompat.checkSelfPermission(this,it) != PackageManager.PERMISSION_GRANTED
+        }
+
+        if (neededPermissions.isNotEmpty()) {
+            ActivityCompat.requestPermissions(this, neededPermissions.toTypedArray(), REQUEST_PERMISSIONS)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == REQUEST_PERMISSIONS){
+            if (grantResults.all { it == PackageManager.PERMISSION_GRANTED }){
+                // Permissions added
+            } else{
+                // Permission failed
+            }
+        }
     }
 
 

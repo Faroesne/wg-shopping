@@ -38,8 +38,6 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
-    override fun onBackPressed() {
-        //super.onBackPressed()
-    }
+
 
 }
