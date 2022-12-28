@@ -38,7 +38,7 @@ class JoinGroupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_join_group)
         joinBtn = findViewById(R.id.gruppeBeitreten2)
-        joinBtn.setOnClickListener {  }
+        joinBtn.setOnClickListener { }
         linearLayout = findViewById(R.id.containerList)
 
         setupWifiP2P()
@@ -77,9 +77,17 @@ class JoinGroupActivity : AppCompatActivity() {
                     // Check if WiFi Direct is enabled
                     val state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1)
                     if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
-                        Toast.makeText(this@JoinGroupActivity, "WiFi Direct is enabled", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@JoinGroupActivity,
+                            "WiFi Direct is enabled",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     } else {
-                        Toast.makeText(this@JoinGroupActivity, "WiFi Direct is disabled", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@JoinGroupActivity,
+                            "WiFi Direct is disabled",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION == action) {
                     // Request the updated list of peers
@@ -97,6 +105,7 @@ class JoinGroupActivity : AppCompatActivity() {
                 Toast.makeText(this@JoinGroupActivity, "Discovery started", Toast.LENGTH_SHORT)
                     .show()
             }
+
             override fun onFailure(reason: Int) {
                 Toast.makeText(
                     this@JoinGroupActivity,
@@ -109,7 +118,11 @@ class JoinGroupActivity : AppCompatActivity() {
     }
 
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
 
     }
 }

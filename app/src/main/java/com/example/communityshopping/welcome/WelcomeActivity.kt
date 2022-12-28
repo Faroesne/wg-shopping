@@ -56,11 +56,15 @@ class WelcomeActivity : AppCompatActivity() {
         )
 
         val neededPermissions = requiredPermissions.filter {
-            ContextCompat.checkSelfPermission(this,it) != PackageManager.PERMISSION_GRANTED
+            ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED
         }
 
         if (neededPermissions.isNotEmpty()) {
-            ActivityCompat.requestPermissions(this, neededPermissions.toTypedArray(), REQUEST_PERMISSIONS)
+            ActivityCompat.requestPermissions(
+                this,
+                neededPermissions.toTypedArray(),
+                REQUEST_PERMISSIONS
+            )
         }
     }
 
@@ -69,10 +73,10 @@ class WelcomeActivity : AppCompatActivity() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        if (requestCode == REQUEST_PERMISSIONS){
-            if (grantResults.all { it == PackageManager.PERMISSION_GRANTED }){
+        if (requestCode == REQUEST_PERMISSIONS) {
+            if (grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
                 // Permissions added
-            } else{
+            } else {
                 // Permission failed
             }
         }
