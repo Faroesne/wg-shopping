@@ -60,9 +60,9 @@ class JoinGroupActivity : AppCompatActivity() {
                 // Clear the linear layout
                 linearLayout?.removeAllViews()
 
-                // Add a view for each device found in the peer list
+                // Add a view for each device_card found in the peer list
                 for (device in peerList.deviceList) {
-                    val view: View = layoutInflater.inflate(R.layout.device, null)
+                    val view: View = layoutInflater.inflate(R.layout.device_card, null)
                     val nameView: TextView = view.findViewById(R.id.name)
                     nameView.text = device.deviceName
                     linearLayout?.addView(view)
