@@ -181,7 +181,6 @@ class ShoppingListDB(
         const val COLUMN_ARCHIVE_ITEM_ID = "archive_item_id"
         const val COLUMN_ARCHIVE_ID = "archive_id"
         const val COLUMN_ITEM_PRICE = "item_price"
-        const val COLUMN_IMAGE_NAME = "image_name"
         const val COLUMN_ITEM_IMAGE = "item_image"
     }
 }
