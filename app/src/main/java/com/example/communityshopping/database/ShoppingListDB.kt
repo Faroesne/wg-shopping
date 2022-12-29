@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.graphics.Bitmap
 import com.example.communityshopping.database.DbSettings.Companion.DATABASE_NAME
 import com.example.communityshopping.database.DbSettings.Companion.DATABASE_VERSION
 
@@ -19,12 +20,13 @@ class ShoppingListDB(
                 " (" + COLUMN_ITEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_ITEM_NAME + " TEXT, " +
                 COLUMN_TIMESTAMP + " LONG, " +
-                COLUMN_DELETED + " INTEGER" + ")";
+                COLUMN_DELETED + " INTEGER);"
         val queryArchive = "CREATE TABLE " + TABLE_ARCHIVE +
                 " (" + COLUMN_ARCHIVE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_ITEM_FULL_PRICE + " REAL, " +
                 COLUMN_ARCHIVE_USERNAME + " TEXT, " +
-                COLUMN_ARCHIVE_DATE + " LONG);"
+                COLUMN_ARCHIVE_DATE + " LONG, " +
+                COLUMN_ITEM_IMAGE + " BLOB);"
         val queryArchiveItem = "CREATE TABLE " + TABLE_ARCHIVE_ITEM +
                 " (" + COLUMN_ARCHIVE_ITEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_ITEM_PRICE + " REAL, " +
@@ -41,9 +43,9 @@ class ShoppingListDB(
                 "('Ziegenmilchkonzentrat', 5, 1);"
         val queryFillArchiveDB = "INSERT INTO " + TABLE_ARCHIVE + " (" +
                 COLUMN_ITEM_FULL_PRICE + ", " + COLUMN_ARCHIVE_USERNAME + ", " +
-                COLUMN_ARCHIVE_DATE +
-                ") VALUES (8.97, 'Fabian', 1669724179533), " +
-                "(5.00, 'Alen', 1669824179533);"
+                COLUMN_ARCHIVE_DATE + ", " + COLUMN_ITEM_IMAGE +
+                ") VALUES (8.97, 'Fabian', 1669724179533, ), " +
+                "(5.00, 'Alen', 1669824179533, 123);"
         val queryFillArchiveItemDB = "INSERT INTO " + TABLE_ARCHIVE_ITEM + " (" +
                 COLUMN_ITEM_PRICE + ", " + COLUMN_ITEM_ID + ", " +
                 COLUMN_ARCHIVE_ID + ") VALUES (2.99, 1, 1), " +
@@ -54,9 +56,11 @@ class ShoppingListDB(
         db!!.execSQL(queryShoppingList)
         db!!.execSQL(queryArchive)
         db!!.execSQL(queryArchiveItem)
+        /*
         db!!.execSQL(queryFillShoppingDB)
         db!!.execSQL(queryFillArchiveDB)
         db!!.execSQL(queryFillArchiveItemDB)
+         */
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -77,8 +81,7 @@ class ShoppingListDB(
         )
     }
 
-    fun getShoppingListDataByID(index: Int):Cursor?
-    {
+    fun getShoppingListDataByID(index: Int): Cursor? {
         val db = this.readableDatabase
         val projection = arrayOf(COLUMN_ITEM_NAME)
         val selection = "${COLUMN_ITEM_ID} = ${index}"
@@ -121,7 +124,6 @@ class ShoppingListDB(
         )
     }
 
-
     fun addShoppingListItem(name: String): Long {
         val db = this.writableDatabase
         val values = ContentValues()
@@ -133,12 +135,14 @@ class ShoppingListDB(
         return id
     }
 
-    fun addArchiveListItem(price: Double, name: String): Long {
+
+    fun addArchiveListItem(price: Double, name: String, img: ByteArray): Long {
         val db = this.writableDatabase
         val values = ContentValues()
         values.put(COLUMN_ITEM_FULL_PRICE, price)
         values.put(COLUMN_ARCHIVE_USERNAME, name)
         values.put(COLUMN_ARCHIVE_DATE, System.currentTimeMillis())
+        values.put(COLUMN_ITEM_IMAGE, img)
         val id = db.insert(TABLE_ARCHIVE, null, values)
         db.close()
         return id
@@ -179,5 +183,7 @@ class ShoppingListDB(
         const val COLUMN_ARCHIVE_ITEM_ID = "archive_item_id"
         const val COLUMN_ARCHIVE_ID = "archive_id"
         const val COLUMN_ITEM_PRICE = "item_price"
+        const val COLUMN_IMAGE_NAME = "image_name"
+        const val COLUMN_ITEM_IMAGE = "item_image"
     }
 }
