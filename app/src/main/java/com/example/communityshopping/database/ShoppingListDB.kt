@@ -44,8 +44,8 @@ class ShoppingListDB(
         val queryFillArchiveDB = "INSERT INTO " + TABLE_ARCHIVE + " (" +
                 COLUMN_ITEM_FULL_PRICE + ", " + COLUMN_ARCHIVE_USERNAME + ", " +
                 COLUMN_ARCHIVE_DATE + ", " + COLUMN_ITEM_IMAGE +
-                ") VALUES (8.97, 'Fabian', 1669724179533, ), " +
-                "(5.00, 'Alen', 1669824179533, 123);"
+                ") VALUES (8.97, 'Fabian', 1669724179533, '1A'), " +
+                "(5.00, 'Alen', 1669824179533, '1A');"
         val queryFillArchiveItemDB = "INSERT INTO " + TABLE_ARCHIVE_ITEM + " (" +
                 COLUMN_ITEM_PRICE + ", " + COLUMN_ITEM_ID + ", " +
                 COLUMN_ARCHIVE_ID + ") VALUES (2.99, 1, 1), " +
@@ -56,11 +56,9 @@ class ShoppingListDB(
         db!!.execSQL(queryShoppingList)
         db!!.execSQL(queryArchive)
         db!!.execSQL(queryArchiveItem)
-        /*
         db!!.execSQL(queryFillShoppingDB)
         db!!.execSQL(queryFillArchiveDB)
         db!!.execSQL(queryFillArchiveItemDB)
-         */
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
