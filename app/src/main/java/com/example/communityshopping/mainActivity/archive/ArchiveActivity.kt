@@ -1,9 +1,13 @@
 package com.example.communityshopping.mainActivity.archive
 
+import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.database.getDoubleOrNull
@@ -19,6 +23,7 @@ class ArchiveActivity : AppCompatActivity() {
     private lateinit var binding: ActivityArchiveBinding
     lateinit var receiptButton: Button
     lateinit var closeButton: Button
+    lateinit var image: ByteArray
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,9 +31,6 @@ class ArchiveActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         receiptButton = findViewById(R.id.findReceipt)
-        receiptButton.setOnClickListener {
-            Toast.makeText(this, "Quittung", Toast.LENGTH_SHORT).show()
-        }
         closeButton = findViewById(R.id.closeArchive)
         closeButton.setOnClickListener {
             finish()
@@ -43,6 +45,24 @@ class ArchiveActivity : AppCompatActivity() {
         binding.infoArchive.text = archiveArrayList[position].info
 
         val db = ShoppingListDB(this, null)
+        val sharedPref = this.getSharedPreferences(
+            getString(R.string.app_preferences), Context.MODE_PRIVATE
+        )
+        val username = sharedPref.getString(getString(R.string.user_name), "unknown")
+        val dbUsername = archiveArrayList[position].username
+        if (dbUsername != username) {
+            receiptButton.backgroundTintList = ColorStateList.valueOf(Color.GRAY)
+            receiptButton.isEnabled = false
+        }
+        receiptButton.setOnClickListener {
+            setContentView(R.layout.receipt_image)
+            val receiptImage: ImageView = findViewById(R.id.receiptImage)
+            image = archiveArrayList[position].bmp
+            val bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
+            receiptImage.setImageBitmap(bitmap)
+
+        }
+
         val archiveItem = db.getArchiveItemData(archiveArrayList[position].index)
         var archiveList = ArrayList<archiveItem>()
 
