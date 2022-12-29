@@ -87,6 +87,9 @@ class PurchasingActivity : AppCompatActivity() {
         }
         binding.totalPrice.visibility = View.VISIBLE
         binding.totalPrice.isEnabled = true
+        if (binding.totalPrice.text.toString() == "0.0") {
+            binding.totalPrice.setText("")
+        }
         totalButton.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#0C0B0B"))
         totalButton.setTextColor(Color.WHITE)
         singleButton.backgroundTintList = ColorStateList.valueOf(Color.WHITE)

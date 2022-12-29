@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.view.isEmpty
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.communityshopping.R
@@ -52,6 +54,7 @@ class HomeFragment : Fragment() {
         btnDelete.setOnClickListener({ removeItems() })
         btnSubmit.setOnClickListener({ submitItems() })
         dbGetShoppingList()
+        checkIfListEmpty()
         return root
     }
 
@@ -60,12 +63,12 @@ class HomeFragment : Fragment() {
         val view: View = layoutInflater.inflate(R.layout.dialog, null)
         val name = view.findViewById<EditText>(R.id.nameEdit)
         builder.setView(view)
-        builder.setTitle("Enter article")
+        builder.setTitle(this.getString(R.string.enter_article))
             .setPositiveButton(
-                "OK"
+                this.getString(R.string.submit)
             ) { dialog, which -> addCard(name.text.toString()) }
             .setNegativeButton(
-                "Cancel"
+                this.getString(R.string.cancel)
             ) { dialog, which -> }
         dialog = builder.create()
     }
@@ -107,7 +110,7 @@ class HomeFragment : Fragment() {
             name + " wurde der Einkaufsliste hinzugefügt",
             Toast.LENGTH_LONG
         ).show()
-
+        checkIfListEmpty()
     }
 
     private fun removeItems() {
@@ -119,6 +122,7 @@ class HomeFragment : Fragment() {
                 iterator.remove()
             }
         }
+        checkIfListEmpty()
     }
 
     private fun dbDeleteItem(id: Long) {
@@ -133,13 +137,32 @@ class HomeFragment : Fragment() {
                 itemIdList.add(item.id.toInt())
             }
         }
-        val i = Intent(activity, PurchasingActivity::class.java)
-        i.putExtra("ids", itemIdList)
-        startActivity(i)
+        if (itemIdList.isEmpty()) {
+            Toast.makeText(this.context, this.getString(R.string.no_article_selected), Toast.LENGTH_SHORT).show()
+        } else {
+            val i = Intent(activity, PurchasingActivity::class.java)
+            i.putExtra("ids", itemIdList)
+            startActivity(i)
+        }
+    }
+
+    private fun checkIfListEmpty() {
+        if (layout?.childCount!! <= 0) {
+            btnDelete.isVisible = false
+            btnSubmit.isVisible = false
+        } else {
+            btnDelete.isVisible = true
+            btnSubmit.isVisible = true
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onResume() {
+        checkIfListEmpty()
+        super.onResume()
     }
 }

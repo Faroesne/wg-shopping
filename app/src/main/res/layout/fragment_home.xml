@@ -30,7 +30,7 @@
     </ScrollView>
 
     <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -57,7 +57,7 @@
 
         </RelativeLayout>
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -65,28 +65,33 @@
 
             <Button
                     android:text="@string/Artikel_gekauft"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="50dp"
+                    app:layout_constraintEnd_toStartOf="@id/btn_addItem"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="6dp"
                     android:id="@+id/btn_submit"
                     app:iconTint="#040404"
                     android:textSize="16dp"
                     android:backgroundTint="@color/brandred"
-                    android:layout_weight="6"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="6dp"
-                    android:layout_marginTop="10dp"
                     app:cornerRadius="16dp" />
 
             <ImageButton
                     android:layout_width="70dp"
                     android:layout_height="70dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/baseline_add_black_24dp"
                     android:id="@+id/btn_addItem"
                     android:backgroundTint="@color/deepblack"
                     android:tint="@color/coolgrey"
                     android:background="@drawable/custom_image_button" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 
