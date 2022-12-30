@@ -47,6 +47,7 @@
     <string name="wähle_sprache_aus">Wähle Sprache</string>
     <string name="enter_article">Artikel Eingeben</string>
     <string name="no_article_selected">Keine Artikel ausgewählt</string>
+    <string name="no_price">Bitte Preis angeben</string>
     <string name="submit">Bestätigen</string>
     <string name="cancel">Abbrechen</string>
     <string name="welcome">Willkommen</string>

@@ -12,10 +12,7 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.iterator
@@ -25,13 +22,6 @@ import com.example.communityshopping.database.models.Item
 import com.example.communityshopping.databinding.ActivityPurchasingBinding
 import com.example.communityshopping.mainActivity.MainActivity
 import java.io.ByteArrayOutputStream
-import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.jvm.internal.Intrinsics.Kotlin
 
 
 class PurchasingActivity : AppCompatActivity() {
@@ -55,7 +45,26 @@ class PurchasingActivity : AppCompatActivity() {
         scroll = findViewById(R.id.scroll)
         totalButton.setOnClickListener { changeToTotal() }
         confirmBtn = findViewById(R.id.confirmBuyBtn2)
-        confirmBtn.setOnClickListener { pickCameraOrGallery() }
+        confirmBtn.setOnClickListener {
+            if (isTotal) {
+                if (binding.totalPrice.text.toString() == "") {
+                    Toast.makeText(this, this.getString(R.string.no_price), Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    pickCameraOrGallery()
+                }
+            } else {
+                for (item in itemList) {
+                    var price = item.view.findViewById<EditText>(R.id.itemPrice).text
+                    if (price.toString() == "") {
+                        Toast.makeText(this, this.getString(R.string.no_price), Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        pickCameraOrGallery()
+                    }
+                }
+            }
+        }
         idList = intent.getSerializableExtra("ids") as ArrayList<Int>
         addCards(idList)
         for (item in binding.scroll) {

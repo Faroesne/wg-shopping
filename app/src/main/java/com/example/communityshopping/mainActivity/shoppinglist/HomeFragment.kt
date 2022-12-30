@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.view.isEmpty
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -104,6 +103,7 @@ class HomeFragment : Fragment() {
         nameView.text = name
         itemList.add(item)
         layout!!.addView(view)
+        checkIfListEmpty()
     }
 
     private fun removeItems() {
@@ -136,7 +136,11 @@ class HomeFragment : Fragment() {
             }
         }
         if (itemIdList.isEmpty()) {
-            Toast.makeText(this.context, this.getString(R.string.no_article_selected), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this.context,
+                this.getString(R.string.no_article_selected),
+                Toast.LENGTH_SHORT
+            ).show()
         } else {
             val i = Intent(activity, PurchasingActivity::class.java)
             i.putExtra("ids", itemIdList)
