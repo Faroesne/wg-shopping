@@ -46,6 +46,11 @@
     <string name="Einkauf_vom">Purchase from</string>
     <string name="Artikel_gekauft_von">Item(s) bought by</string>
     <string name="wähle_sprache_aus">Choose Language</string>
+    <string name="enter_article">Enter article</string>
+    <string name="no_article_selected">No article selected</string>
+    <string name="no_price">Please enter price</string>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
     <string name="welcome">Welcome</string>
 
 </resources>
