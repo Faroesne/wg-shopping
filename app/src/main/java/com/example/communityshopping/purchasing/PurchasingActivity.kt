@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
 import android.provider.MediaStore
@@ -23,6 +24,14 @@ import com.example.communityshopping.database.ShoppingListDB
 import com.example.communityshopping.database.models.Item
 import com.example.communityshopping.databinding.ActivityPurchasingBinding
 import com.example.communityshopping.mainActivity.MainActivity
+import java.io.ByteArrayOutputStream
+import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.jvm.internal.Intrinsics.Kotlin
 
 
 class PurchasingActivity : AppCompatActivity() {
@@ -151,14 +160,21 @@ class PurchasingActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 123) {
-            //var bmp: Bitmap = data?.extras?.get("data") as Bitmap
+            val bmp: Bitmap = data?.extras?.get("data") as Bitmap
+            val stream = ByteArrayOutputStream()
+            bmp.compress(Bitmap.CompressFormat.PNG, 90, stream)
+            val imageAsByteArray = stream.toByteArray()
             val db = ShoppingListDB(this, null)
             val sharedPref = this.getSharedPreferences(
                 getString(R.string.app_preferences), Context.MODE_PRIVATE
             )
             val username = sharedPref.getString(getString(R.string.user_name), "unknown")
             val archiveId =
-                db.addArchiveListItem(binding.totalPrice.text.toString().toDouble(), username!!)
+                db.addArchiveListItem(
+                    binding.totalPrice.text.toString().toDouble(),
+                    username!!,
+                    imageAsByteArray
+                )
             for (item in itemList) {
                 db.deleteShoppingListItem(item.id)
                 var price = item.view.findViewById<EditText>(R.id.itemPrice).text
@@ -195,5 +211,4 @@ class PurchasingActivity : AppCompatActivity() {
         }
         binding.totalPrice.setText(totalPrice.toString())
     }
-
 }

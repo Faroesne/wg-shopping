@@ -72,7 +72,9 @@ class ArchiveFragment : Fragment() {
                             ShoppingListDB.COLUMN_ARCHIVE_USERNAME
                         )
                     ),
-                    cursor.getInt(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_ID))
+                    cursor.getInt(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_ID)),
+                    cursor.getBlob(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ITEM_IMAGE)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_USERNAME))
                 )
                 archiveArrayList.add(archive)
             }

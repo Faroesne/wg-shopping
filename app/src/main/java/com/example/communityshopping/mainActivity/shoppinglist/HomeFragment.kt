@@ -3,7 +3,6 @@ package com.example.communityshopping.mainActivity.shoppinglist
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -105,22 +104,21 @@ class HomeFragment : Fragment() {
         nameView.text = name
         itemList.add(item)
         layout!!.addView(view)
-        Toast.makeText(
-            this.context,
-            name + " wurde der Einkaufsliste hinzugefügt",
-            Toast.LENGTH_LONG
-        ).show()
-        checkIfListEmpty()
     }
 
     private fun removeItems() {
+        var i = 0
         val iterator = itemList.iterator()
         for (item in iterator) {
             if (item.view.findViewById<CheckBox>(R.id.checkbox).isChecked) {
                 dbDeleteItem(item.id)
                 layout!!.removeView(item.view)
                 iterator.remove()
+                i++
             }
+        }
+        if (i > 0) {
+            Toast.makeText(this.context, "Artikel wurden gelöscht.", Toast.LENGTH_SHORT).show()
         }
         checkIfListEmpty()
     }
