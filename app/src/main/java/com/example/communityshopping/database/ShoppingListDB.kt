@@ -34,6 +34,10 @@ class ShoppingListDB(
                 TABLE_SHOPPING_LIST + " (" + COLUMN_ITEM_ID + "), " +
                 COLUMN_ARCHIVE_ID + " INTEGER REFERENCES " +
                 TABLE_ARCHIVE + " (" + COLUMN_ARCHIVE_ID + "));"
+        val queryUserFinances = "CREATE TABLE " + TABLE_USER_FINANCES +
+                " (" + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_USER_NAME + " TEXT, " +
+                COLUMN_USER_FINANCES + " REAL);"
         val queryFillShoppingDB = "INSERT INTO " + TABLE_SHOPPING_LIST + " (" +
                 COLUMN_ITEM_NAME + ", " + COLUMN_TIMESTAMP + ", " + COLUMN_DELETED +
                 ") VALUES ('Karotten', 5, 1), " +
@@ -53,12 +57,18 @@ class ShoppingListDB(
                 "(3.99, 3, 1), " +
                 "(null, 4, 2), " +
                 "(null, 5, 2);"
+        val queryFillUserFinancesDB = "INSERT INTO " + TABLE_USER_FINANCES + " (" +
+                COLUMN_USER_NAME + ", " + COLUMN_USER_FINANCES +
+                ") VALUES ('Alen', 9.99), " +
+                "('Fabian', 6.85);"
         db!!.execSQL(queryShoppingList)
         db!!.execSQL(queryArchive)
         db!!.execSQL(queryArchiveItem)
+        db!!.execSQL(queryUserFinances)
         db!!.execSQL(queryFillShoppingDB)
         db!!.execSQL(queryFillArchiveDB)
         db!!.execSQL(queryFillArchiveItemDB)
+        db!!.execSQL(queryFillUserFinancesDB)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -122,6 +132,19 @@ class ShoppingListDB(
         )
     }
 
+    fun getUserFinancesData(): Cursor? {
+        val db = this.readableDatabase
+        return db.query(
+            TABLE_USER_FINANCES,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        )
+    }
+
     fun addShoppingListItem(name: String): Long {
         val db = this.writableDatabase
         val values = ContentValues()
@@ -157,6 +180,16 @@ class ShoppingListDB(
         return id
     }
 
+    fun addUser(username: String): Long {
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put(COLUMN_USER_NAME, username)
+        values.put(COLUMN_USER_FINANCES, 0)
+        val id = db.insert(TABLE_USER_FINANCES, null, values)
+        db.close()
+        return id
+    }
+
     fun deleteShoppingListItem(id: Long) {
         val db = this.writableDatabase
         val values = ContentValues()
@@ -182,5 +215,10 @@ class ShoppingListDB(
         const val COLUMN_ARCHIVE_ID = "archive_id"
         const val COLUMN_ITEM_PRICE = "item_price"
         const val COLUMN_ITEM_IMAGE = "item_image"
+
+        const val TABLE_USER_FINANCES = "user_finances"
+        const val COLUMN_USER_ID = "user_id"
+        const val COLUMN_USER_NAME = "user_name"
+        const val COLUMN_USER_FINANCES = "user_finances"
     }
 }
