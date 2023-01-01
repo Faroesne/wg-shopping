@@ -25,16 +25,29 @@
                     android:background="@color/icegrey">
 
                 <TextView
+                        android:text="@string/device_status_available"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/connectionStatus"
+                        android:layout_marginTop="1dp"
+                        android:layout_below="@+id/name"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="1dp"
+                        android:textSize="10sp" />
+
+                <TextView
                         android:id="@+id/name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/name"
                         android:textColor="@color/deepblack"
                         android:textFontWeight="1000"
-                        android:textSize="20dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"/>
+                        android:textSize="16dp"
+                        android:layout_marginStart="1dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="1dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentStart="true" />
 
             </RelativeLayout>
         </androidx.cardview.widget.CardView>

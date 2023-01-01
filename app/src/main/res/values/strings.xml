@@ -36,6 +36,9 @@
     <string name="einkaufspreise">Einkaufspreise</string>
     <string name="gesamt_bezahlt">Gesamt Bezahlt</string>
     <string name="name">Name</string>
+    <string name="device_status_available">Verfügbar</string>
+    <string name="device_status_connected">Verbunden</string>
+    <string name="device_status_invited">Angefragt</string>
     <string name="Artikel_gekauft">Artikel gekauft</string>
     <string name="show_receipt">Quittung Anzeigen</string>
     <string name="clear_finances">Finanzen Begleichen</string>
