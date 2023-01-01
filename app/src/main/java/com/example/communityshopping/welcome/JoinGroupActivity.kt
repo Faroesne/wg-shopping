@@ -6,6 +6,8 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
 import android.net.wifi.WifiManager
+import android.net.wifi.p2p.WifiP2pConfig
+import android.net.wifi.p2p.WifiP2pDevice
 import android.net.wifi.p2p.WifiP2pManager
 import android.os.Bundle
 import android.view.View
@@ -15,6 +17,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.communityshopping.R
+import com.example.communityshopping.mainActivity.MainActivity
 
 class JoinGroupActivity : AppCompatActivity() {
 
@@ -65,9 +68,38 @@ class JoinGroupActivity : AppCompatActivity() {
                     val view: View = layoutInflater.inflate(R.layout.device_card, null)
                     val nameView: TextView = view.findViewById(R.id.name)
                     nameView.text = device.deviceName
+
+                    view.setOnClickListener {
+                        val config = WifiP2pConfig().apply {
+                            deviceAddress = device.deviceAddress
+                        }
+                        wifiP2pManager.connect(
+                            wifiP2pChannel,
+                            config,
+                            object : WifiP2pManager.ActionListener {
+                                override fun onSuccess() {
+                                    Toast.makeText(
+                                        view.context,
+                                        "Connection initiated",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+
+                                override fun onFailure(p0: Int) {
+                                    Toast.makeText(
+                                        view.context,
+                                        "Connection failed",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            })
+                    }
+                    checkDeviceStatus(device, view)
+
                     linearLayout?.addView(view)
                 }
             }
+
         }
 
         wifiDirectBroadcastReceiver = object : BroadcastReceiver() {
@@ -96,6 +128,23 @@ class JoinGroupActivity : AppCompatActivity() {
             }
         }
         wifiP2pManager.requestPeers(wifiP2pChannel, peerListListener)
+    }
+
+    private fun checkDeviceStatus(device: WifiP2pDevice?, view: View) {
+        if (device != null) {
+            if (device.status == WifiP2pDevice.CONNECTED) {
+                val nameView: TextView = view.findViewById(R.id.connectionStatus)
+                nameView.text = resources.getString(R.string.device_status_connected)
+                startActivity(Intent(this, MainActivity::class.java))
+            } else if (device.status == WifiP2pDevice.AVAILABLE) {
+                val nameView: TextView = view.findViewById(R.id.connectionStatus)
+                nameView.text = resources.getString(R.string.device_status_available)
+            } else if (device.status == WifiP2pDevice.INVITED) {
+                val nameView: TextView = view.findViewById(R.id.connectionStatus)
+                nameView.text = resources.getString(R.string.device_status_invited)
+            }
+
+        }
     }
 
     private fun searchPeers() {

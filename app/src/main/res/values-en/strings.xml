@@ -37,6 +37,9 @@
     <string name="einkaufspreise">Prices</string>
     <string name="gesamt_bezahlt">Total Paid</string>
     <string name="name">Name</string>
+    <string name="device_status_available">Available</string>
+    <string name="device_status_connected">Connected</string>
+    <string name="device_status_invited">Invited</string>
     <string name="Artikel_gekauft">Item purchased</string>
     <string name="show_receipt">View Receipt</string>
     <string name="clear_finances">Clear Finances</string>
