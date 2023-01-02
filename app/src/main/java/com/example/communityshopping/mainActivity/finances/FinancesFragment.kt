@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.database.getDoubleOrNull
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -39,15 +38,10 @@ class FinancesFragment : Fragment() {
         scroll = root.findViewById(R.id.financeList)
         clear = root.findViewById(R.id.clearFinances)
         clear.setOnClickListener {
-            Toast.makeText(
-                this.context,
-                this.getString(R.string.clear_finances),
-                Toast.LENGTH_SHORT
-            ).show()
+            clearFinance()
         }
 
         addUserList()
-
         return root
     }
 
@@ -70,6 +64,13 @@ class FinancesFragment : Fragment() {
             }
             cursor.close()
         }
+    }
+
+    private fun clearFinance() {
+        val db = ShoppingListDB(this.context, null)
+        db.clearFinance()
+        scroll!!.removeAllViews()
+        addUserList()
     }
 
     override fun onDestroyView() {
