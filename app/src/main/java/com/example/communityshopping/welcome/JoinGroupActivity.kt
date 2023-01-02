@@ -1,5 +1,6 @@
 package com.example.communityshopping.welcome
 
+import android.app.Application
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -16,6 +17,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.communityshopping.CommunityShoppingApplication
 import com.example.communityshopping.R
 import com.example.communityshopping.mainActivity.MainActivity
 
@@ -26,9 +28,8 @@ class JoinGroupActivity : AppCompatActivity() {
     lateinit var view: View
 
     private lateinit var wifiManager: WifiManager
-    private lateinit var wifiP2pManager: WifiP2pManager
-    private lateinit var wifiP2pChannel: WifiP2pManager.Channel
     private lateinit var wifiDirectBroadcastReceiver: BroadcastReceiver
+    private lateinit var global: CommunityShoppingApplication.Global
 
     private val intentFilter = IntentFilter().apply {
         addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION)
@@ -40,6 +41,9 @@ class JoinGroupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_join_group)
+
+        global = (application as CommunityShoppingApplication).global
+
         joinBtn = findViewById(R.id.gruppeBeitreten2)
         joinBtn.setOnClickListener { }
         linearLayout = findViewById(R.id.containerList)
@@ -54,8 +58,8 @@ class JoinGroupActivity : AppCompatActivity() {
 
     private fun setupWifiP2P() {
         wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        wifiP2pManager = getSystemService(Context.WIFI_P2P_SERVICE) as WifiP2pManager
-        wifiP2pChannel = wifiP2pManager.initialize(this, mainLooper, null)
+        global.wifiP2pManager = getSystemService(Context.WIFI_P2P_SERVICE) as WifiP2pManager
+        global.wifiP2pChannel = global.wifiP2pManager!!.initialize(this, mainLooper, null)
 
         val peerListListener = WifiP2pManager.PeerListListener { peerList ->
             // Update the linear layout on the UI thread
@@ -73,8 +77,8 @@ class JoinGroupActivity : AppCompatActivity() {
                         val config = WifiP2pConfig().apply {
                             deviceAddress = device.deviceAddress
                         }
-                        wifiP2pManager.connect(
-                            wifiP2pChannel,
+                        global.wifiP2pManager!!.connect(
+                            global.wifiP2pChannel,
                             config,
                             object : WifiP2pManager.ActionListener {
                                 override fun onSuccess() {
@@ -123,11 +127,11 @@ class JoinGroupActivity : AppCompatActivity() {
                     }
                 } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION == action) {
                     // Request the updated list of peers
-                    wifiP2pManager.requestPeers(wifiP2pChannel, peerListListener)
+                    global.wifiP2pManager!!.requestPeers(global.wifiP2pChannel, peerListListener)
                 }
             }
         }
-        wifiP2pManager.requestPeers(wifiP2pChannel, peerListListener)
+        global.wifiP2pManager!!.requestPeers(global.wifiP2pChannel, peerListListener)
     }
 
     private fun checkDeviceStatus(device: WifiP2pDevice?, view: View) {
@@ -135,7 +139,10 @@ class JoinGroupActivity : AppCompatActivity() {
             if (device.status == WifiP2pDevice.CONNECTED) {
                 val nameView: TextView = view.findViewById(R.id.connectionStatus)
                 nameView.text = resources.getString(R.string.device_status_connected)
+
                 startActivity(Intent(this, MainActivity::class.java))
+
+
             } else if (device.status == WifiP2pDevice.AVAILABLE) {
                 val nameView: TextView = view.findViewById(R.id.connectionStatus)
                 nameView.text = resources.getString(R.string.device_status_available)
@@ -149,7 +156,7 @@ class JoinGroupActivity : AppCompatActivity() {
 
     private fun searchPeers() {
         // Start the search for devices
-        wifiP2pManager.discoverPeers(wifiP2pChannel, object : WifiP2pManager.ActionListener {
+        global.wifiP2pManager?.discoverPeers(global.wifiP2pChannel, object : WifiP2pManager.ActionListener {
             override fun onSuccess() {
                 Toast.makeText(this@JoinGroupActivity, "Discovery started", Toast.LENGTH_SHORT)
                     .show()
