@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.communityshopping.R
+import com.example.communityshopping.database.ShoppingListDB
 import com.example.communityshopping.mainActivity.MainActivity
 
 class WelcomeActivity : AppCompatActivity() {
@@ -101,12 +102,16 @@ class WelcomeActivity : AppCompatActivity() {
         val sharedPref = this.getSharedPreferences(
             getString(R.string.app_preferences), Context.MODE_PRIVATE
         )
+        var userName = "Default"
         with(sharedPref.edit()) {
             if (textField.text.isBlank()) {
                 putString(getString(R.string.user_name), "Default")
             } else {
-                putString(getString(R.string.user_name), textField.text.toString())
+                userName = textField.text.toString()
+                putString(getString(R.string.user_name), userName)
             }
+            val db = ShoppingListDB(applicationContext, null)
+            db.addUser(userName)
             Log.i("sharedPref", "UserName gespeichert.")
             apply()
         }

@@ -5,9 +5,9 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.graphics.Bitmap
 import com.example.communityshopping.database.DbSettings.Companion.DATABASE_NAME
 import com.example.communityshopping.database.DbSettings.Companion.DATABASE_VERSION
+import java.math.RoundingMode
 
 class ShoppingListDB(
     context: Context?,
@@ -34,6 +34,10 @@ class ShoppingListDB(
                 TABLE_SHOPPING_LIST + " (" + COLUMN_ITEM_ID + "), " +
                 COLUMN_ARCHIVE_ID + " INTEGER REFERENCES " +
                 TABLE_ARCHIVE + " (" + COLUMN_ARCHIVE_ID + "));"
+        val queryUserFinances = "CREATE TABLE " + TABLE_USER_FINANCES +
+                " (" + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_USER_NAME + " TEXT, " +
+                COLUMN_USER_FINANCES + " REAL);"
         val queryFillShoppingDB = "INSERT INTO " + TABLE_SHOPPING_LIST + " (" +
                 COLUMN_ITEM_NAME + ", " + COLUMN_TIMESTAMP + ", " + COLUMN_DELETED +
                 ") VALUES ('Karotten', 5, 1), " +
@@ -53,12 +57,18 @@ class ShoppingListDB(
                 "(3.99, 3, 1), " +
                 "(null, 4, 2), " +
                 "(null, 5, 2);"
+        val queryFillUserFinancesDB = "INSERT INTO " + TABLE_USER_FINANCES + " (" +
+                COLUMN_USER_NAME + ", " + COLUMN_USER_FINANCES +
+                ") VALUES ('Alen', 9.99), " +
+                "('Fabian', 6.85);"
         db!!.execSQL(queryShoppingList)
         db!!.execSQL(queryArchive)
         db!!.execSQL(queryArchiveItem)
+        db!!.execSQL(queryUserFinances)
         db!!.execSQL(queryFillShoppingDB)
         db!!.execSQL(queryFillArchiveDB)
         db!!.execSQL(queryFillArchiveItemDB)
+        db!!.execSQL(queryFillUserFinancesDB)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -157,6 +167,69 @@ class ShoppingListDB(
         return id
     }
 
+    fun addUser(username: String): Long {
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put(COLUMN_USER_NAME, username)
+        values.put(COLUMN_USER_FINANCES, 0)
+        val id = db.insert(TABLE_USER_FINANCES, null, values)
+        db.close()
+        return id
+    }
+
+
+    fun getUserFinancesData(): Cursor? {
+        val db = this.readableDatabase
+        return db.query(
+            TABLE_USER_FINANCES,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        )
+    }
+
+    fun addFinanceToUsers(name: String, price: Double): Double {
+        val db = this.writableDatabase
+        var financeDataCursor = getUserFinancesData()
+        var personalPrice = price / financeDataCursor!!.count
+        personalPrice = personalPrice.toBigDecimal().setScale(2, RoundingMode.DOWN).toDouble()
+        while (financeDataCursor.moveToNext()) {
+            if (financeDataCursor.getString(financeDataCursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_USER_NAME)) != name) {
+                val values = ContentValues()
+                var finance = financeDataCursor.getDouble(
+                    financeDataCursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_USER_FINANCES)
+                )
+                values.put(COLUMN_USER_FINANCES, finance.plus(personalPrice))
+                db.update(
+                    TABLE_USER_FINANCES, values, "$COLUMN_USER_ID LIKE ?",
+                    arrayOf(
+                        financeDataCursor.getInt(
+                            financeDataCursor.getColumnIndexOrThrow(
+                                ShoppingListDB.COLUMN_USER_ID
+                            )
+                        ).toString()
+                    )
+                )
+            }
+        }
+        financeDataCursor.close()
+        db.close()
+        return personalPrice
+    }
+
+    fun clearFinance() {
+        val db = this.writableDatabase
+        var financeDataCursor = getUserFinancesData()
+        while (financeDataCursor!!.moveToNext()) {
+            val values = ContentValues()
+            values.put(COLUMN_USER_FINANCES, 0)
+            db.update(TABLE_USER_FINANCES, values, null, null)
+        }
+    }
+
     fun deleteShoppingListItem(id: Long) {
         val db = this.writableDatabase
         val values = ContentValues()
@@ -182,5 +255,10 @@ class ShoppingListDB(
         const val COLUMN_ARCHIVE_ID = "archive_id"
         const val COLUMN_ITEM_PRICE = "item_price"
         const val COLUMN_ITEM_IMAGE = "item_image"
+
+        const val TABLE_USER_FINANCES = "user_finances"
+        const val COLUMN_USER_ID = "user_id"
+        const val COLUMN_USER_NAME = "user_name"
+        const val COLUMN_USER_FINANCES = "user_finance"
     }
 }
