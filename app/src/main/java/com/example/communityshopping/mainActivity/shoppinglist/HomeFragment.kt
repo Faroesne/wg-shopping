@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
 import android.widget.*
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -27,6 +28,7 @@ class HomeFragment : Fragment() {
     private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
     var itemIdList = arrayListOf<Int>()
+    private var buttonClick: AlphaAnimation = AlphaAnimation(1F, 0.7F)
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -48,9 +50,12 @@ class HomeFragment : Fragment() {
         btnSubmit = root.findViewById(R.id.btn_submit)
         layout = root.findViewById(R.id.containerList)
         buildDialog()
-        add.setOnClickListener({ dialog!!.show() })
-        btnDelete.setOnClickListener({ removeItems() })
-        btnSubmit.setOnClickListener({ submitItems() })
+        add.setOnClickListener {
+            dialog!!.show()
+            add.startAnimation(buttonClick)
+        }
+        btnDelete.setOnClickListener { removeItems() }
+        btnSubmit.setOnClickListener { submitItems() }
         dbGetShoppingList()
         checkIfListEmpty()
         return root
@@ -64,7 +69,8 @@ class HomeFragment : Fragment() {
         builder.setTitle(this.getString(R.string.enter_article))
             .setPositiveButton(
                 this.getString(R.string.submit)
-            ) { dialog, which -> addCard(name.text.toString()) }
+            ) { dialog, which -> addCard(name.text.toString())
+            name.setText("")}
             .setNegativeButton(
                 this.getString(R.string.cancel)
             ) { dialog, which -> }
@@ -107,6 +113,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun removeItems() {
+        btnDelete.startAnimation(buttonClick)
         var i = 0
         val iterator = itemList.iterator()
         for (item in iterator) {
