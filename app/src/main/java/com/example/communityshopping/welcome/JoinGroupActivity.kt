@@ -1,6 +1,5 @@
 package com.example.communityshopping.welcome
 
-import android.app.Application
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -156,20 +155,22 @@ class JoinGroupActivity : AppCompatActivity() {
 
     private fun searchPeers() {
         // Start the search for devices
-        global.wifiP2pManager?.discoverPeers(global.wifiP2pChannel, object : WifiP2pManager.ActionListener {
-            override fun onSuccess() {
-                Toast.makeText(this@JoinGroupActivity, "Discovery started", Toast.LENGTH_SHORT)
-                    .show()
-            }
+        global.wifiP2pManager?.discoverPeers(
+            global.wifiP2pChannel,
+            object : WifiP2pManager.ActionListener {
+                override fun onSuccess() {
+                    Toast.makeText(this@JoinGroupActivity, "Discovery started", Toast.LENGTH_SHORT)
+                        .show()
+                }
 
-            override fun onFailure(reason: Int) {
-                Toast.makeText(
-                    this@JoinGroupActivity,
-                    "Discovery failed: $reason",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        })
+                override fun onFailure(reason: Int) {
+                    Toast.makeText(
+                        this@JoinGroupActivity,
+                        "Discovery failed: $reason",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
         //startActivity(Intent(this, MainActivity::class.java))
     }
 

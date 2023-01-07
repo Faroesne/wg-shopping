@@ -13,14 +13,6 @@ import com.example.communityshopping.communication.WifiP2pClientSocket
 import com.example.communityshopping.communication.WifiP2pServerSocket
 import com.example.communityshopping.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.io.PrintWriter
-import java.net.ServerSocket
-import java.net.Socket
-import kotlin.coroutines.coroutineContext
 
 
 class MainActivity : AppCompatActivity() {
@@ -55,15 +47,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupP2pSocket() {
+
         val connectionInfoListener = WifiP2pManager.ConnectionInfoListener { info ->
-            // Check if the device is the group owner
+            //Check if the device is the group owner
             if (info.isGroupOwner) {
                 // Device is the group owner, so start the server
-                WifiP2pServerSocket().execute()
-                //WifiP2pServerSocket().start()
+                WifiP2pServerSocket(8888).startServer()
             } else {
                 // Device is the client, so connect to the group owner
-                WifiP2pClientSocket(info.groupOwnerAddress).execute()
+                WifiP2pClientSocket(8888).connectToServer(info.groupOwnerAddress)
             }
         }
 

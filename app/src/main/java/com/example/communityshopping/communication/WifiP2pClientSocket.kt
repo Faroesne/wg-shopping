@@ -1,25 +1,45 @@
 package com.example.communityshopping.communication
 
-import android.os.AsyncTask
-import java.io.PrintWriter
+import android.util.Log
+import java.io.*
 import java.net.InetAddress
+import java.net.InetSocketAddress
 import java.net.Socket
 
 
-class WifiP2pClientSocket(private val groupOwnerAddress: InetAddress) :
-    AsyncTask<Unit, Unit, Unit>() {
+class WifiP2pClientSocket(private val port: Int) {
 
-    private val socket: Socket = Socket(groupOwnerAddress, 8980)
+    private var socket: Socket? = null
+    private var clientThread: Thread? = null
 
-    fun stopClient() {
-        socket.close()
+    fun connectToServer(serverAddress: InetAddress) {
+        clientThread = Thread {
+            try {
+                // Connect to the server
+                socket = Socket()
+                socket?.bind(null)
+                socket?.connect(InetSocketAddress(serverAddress, 8888))
+
+                // Send and receive data through the socket
+                val out = BufferedWriter(OutputStreamWriter(socket?.getOutputStream()))
+                out.write("Hello World")
+                out.newLine()
+                out.flush()
+                Log.i("ClientSocket", "Message sent.")
+
+                val `in` = BufferedReader(InputStreamReader(socket!!.getInputStream()))
+                val message = `in`.readLine()
+                Log.i("ClientSocket", "Message received: " + message)
+
+            } catch (e: IOException) {
+                // Handle exceptions
+            }
+        }
+        clientThread?.start()
     }
 
-    override fun doInBackground(vararg params: Unit?) {
-        val socket: Socket = Socket(groupOwnerAddress, 8980)
-        val out = PrintWriter(socket.getOutputStream(), true)
-        out.println("Hello, world!")
-        out.close()
-        socket.close()
+    fun disconnectFromServer() {
+        clientThread?.interrupt()
+        socket?.close()
     }
 }
