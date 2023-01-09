@@ -24,11 +24,13 @@ class JoinGroupActivity : AppCompatActivity() {
 
     lateinit var joinBtn: Button
     var linearLayout: LinearLayout? = null
+
     lateinit var view: View
 
     private lateinit var wifiManager: WifiManager
     private lateinit var wifiDirectBroadcastReceiver: BroadcastReceiver
     private lateinit var global: CommunityShoppingApplication.Global
+    private var connectionEstablished = false
 
     private val intentFilter = IntentFilter().apply {
         addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION)
@@ -134,13 +136,12 @@ class JoinGroupActivity : AppCompatActivity() {
     }
 
     private fun checkDeviceStatus(device: WifiP2pDevice?, view: View) {
-        if (device != null) {
+        if (device != null && !connectionEstablished) {
             if (device.status == WifiP2pDevice.CONNECTED) {
                 val nameView: TextView = view.findViewById(R.id.connectionStatus)
                 nameView.text = resources.getString(R.string.device_status_connected)
-
+                connectionEstablished = true
                 startActivity(Intent(this, MainActivity::class.java))
-
 
             } else if (device.status == WifiP2pDevice.AVAILABLE) {
                 val nameView: TextView = view.findViewById(R.id.connectionStatus)
