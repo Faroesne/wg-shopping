@@ -1,9 +1,7 @@
 package com.example.communityshopping.communication
 
 import android.util.Log
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
+import java.io.*
 import java.net.InetSocketAddress
 import java.net.ServerSocket
 import java.net.Socket
@@ -24,8 +22,15 @@ class WifiP2pServerSocket(private val port: Int) {
 
                 // Accept incoming client connections
                 clientSocket = serverSocket?.accept()
-                Log.i("WIFIP2P", "Connection to clientsocket" + clientSocket.toString())
+                Log.i("ServerSocket", "Connection to clientsocket" + clientSocket.toString())
                 // Start the client thread to handle the connection
+
+                val out = BufferedWriter(OutputStreamWriter(clientSocket?.getOutputStream()))
+                out.write("Hello World222")
+                out.newLine()
+                out.flush()
+                Log.i("ServerSocket", "Message sent")
+
                 startClientThread(clientSocket)
             } catch (e: IOException) {
                 // Handle exceptions
