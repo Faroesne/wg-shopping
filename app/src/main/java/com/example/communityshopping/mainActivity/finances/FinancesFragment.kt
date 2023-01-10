@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.communityshopping.R
 import com.example.communityshopping.database.ShoppingListDB
 import com.example.communityshopping.databinding.FragmentFinancesBinding
+import java.util.*
 
 class FinancesFragment : Fragment() {
 
@@ -57,8 +58,10 @@ class FinancesFragment : Fragment() {
                     textViewName.text =
                         cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_USER_NAME))
                     textViewFinances.text =
-                        cursor.getDoubleOrNull(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_USER_FINANCES))
-                            .toString()
+                        "%,.2f".format(
+                            Locale.GERMAN,
+                            cursor.getDoubleOrNull(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_USER_FINANCES))
+                        ) + "€"
                 }
                 scroll!!.addView(view)
             }
