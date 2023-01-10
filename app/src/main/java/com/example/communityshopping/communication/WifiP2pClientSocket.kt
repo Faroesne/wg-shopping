@@ -1,6 +1,7 @@
 package com.example.communityshopping.communication
 
 import android.util.Log
+import com.example.communityshopping.communication.SocketStatus.*
 import java.io.*
 import java.net.InetAddress
 import java.net.InetSocketAddress
@@ -11,26 +12,75 @@ class WifiP2pClientSocket(private val port: Int) {
 
     private var socket: Socket? = null
     private var clientThread: Thread? = null
+    private var status: SocketStatus = NOT_CONNECTED
 
     fun connectToServer(serverAddress: InetAddress) {
+        Log.i("ClientSocket", "$status")
         clientThread = Thread {
             try {
-                // Connect to the server
-                socket = Socket()
-                socket?.bind(null)
-                socket?.connect(InetSocketAddress(serverAddress, 8888))
+                Log.i("ClientSocket", "$status in thread loop")
+                when (status) {
+                    NOT_CONNECTED -> {
+                        Log.i("ClientSocket", "$status ot connected loop")
+                        // Connect to the server
+                        socket = Socket()
+                        socket?.bind(null)
+                        socket?.connect(InetSocketAddress(serverAddress, 8888))
+                        val bufferedReader =
+                            BufferedReader(InputStreamReader(socket!!.getInputStream()))
+                        val message = bufferedReader.readLine()
+                        Log.i("ClientSocket", "Received message: $message")
+                        if (message.equals(CONNECTED.toString())) {
+                            // Send SYN_ALL message data through the socket
+                            val out = BufferedWriter(OutputStreamWriter(socket?.getOutputStream()))
+                            out.write(SYNC_ALL.toString())
+                            out.newLine()
+                            out.flush()
+                            Log.i("ClientSocket", "SYNC_ALL Message sent.")
 
-                // Send and receive data through the socket
-                val out = BufferedWriter(OutputStreamWriter(socket?.getOutputStream()))
-                out.write("Hello World")
-                out.newLine()
-                out.flush()
-                Log.i("ClientSocket", "Message sent.")
-
-                val `in` = BufferedReader(InputStreamReader(socket!!.getInputStream()))
-                val message = `in`.readLine()
-                Log.i("ClientSocket", "Message received: " + message)
-
+                            status = UN_SYNCHRONIZED
+                        } else {
+                            Log.i(
+                                "ClientSocket",
+                                "Unknown Message while in $status with message: $message"
+                            )
+                        }
+                    }
+                    UN_SYNCHRONIZED -> {
+                        val bufferedReader =
+                            BufferedReader(InputStreamReader(socket!!.getInputStream()))
+                        val message = bufferedReader.readLine()
+                        Log.i("ClientSocket", "Received message: $message")
+                        if (message.equals(SYNC_ALL.toString())) {
+                            // Send SYN_ALL message data through the socket
+                            Log.i("ClientSocket", "Sync ALL here.")
+                            status = SYNCHRONIZED
+                        } else {
+                            Log.i(
+                                "ClientSocket",
+                                "Unknown Message while in $status with message: $message"
+                            )
+                        }
+                    }
+                    SYNCHRONIZED -> {
+                        val bufferedReader =
+                            BufferedReader(InputStreamReader(socket!!.getInputStream()))
+                        val message = bufferedReader.readLine()
+                        if (message.equals(SYNC_ALL.toString())) {
+                            // Send SYN_ALL message data through the socket
+                            Log.i("ClientSocket", "Sync ALL here.")
+                            status = SYNCHRONIZED
+                        } else {
+                            Log.i(
+                                "ClientSocket",
+                                "Unknown Message while in $status with message: $message"
+                            )
+                        }
+                    }
+                    else -> {
+                        Log.i("ClientSocket", "Client is in an unknown status.")
+                    }
+                }
             } catch (e: IOException) {
                 // Handle exceptions
             }

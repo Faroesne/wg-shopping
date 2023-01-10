@@ -39,11 +39,10 @@ class WelcomeActivity : AppCompatActivity() {
         createButton.setOnClickListener { createGroup() }
         textField = findViewById(R.id.textFieldName)
 
-        checkForExistingSetup()
-
         window.setNavigationBarColor(Color.parseColor("#0C0B0B"))
 
         checkPermissions()
+        checkForExistingSetup()
     }
 
     private fun checkPermissions() {
@@ -121,11 +120,11 @@ class WelcomeActivity : AppCompatActivity() {
         val sharedPref = this.getSharedPreferences(
             getString(R.string.app_preferences), Context.MODE_PRIVATE
         )
-        val bluetoothSetup = sharedPref.getInt(getString(R.string.bluetooth_setup_status), 0)
-        Log.i("sharedPref", bluetoothSetup.toString())
-        if (bluetoothSetup == 1) {
+        val nameSetup = sharedPref.getString(getString(R.string.user_name), null)
+        Log.i("sharedPref", nameSetup.toString())
+        if (nameSetup != null) {
             Log.i("sharedPref", "Main screen loaded")
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, JoinGroupActivity::class.java))
         }
     }
 }

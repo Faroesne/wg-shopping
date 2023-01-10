@@ -1,6 +1,7 @@
 package com.example.communityshopping.communication
 
 import android.util.Log
+import com.example.communityshopping.communication.SocketStatus.*
 import java.io.*
 import java.net.InetSocketAddress
 import java.net.ServerSocket
@@ -12,26 +13,35 @@ class WifiP2pServerSocket(private val port: Int) {
     private var clientSocket: Socket? = null
     private var serverThread: Thread? = null
     private var clientThread: Thread? = null
+    private var status: SocketStatus = NOT_CONNECTED
 
     fun startServer() {
+        Log.i("ServerSocket", "$status")
         serverThread = Thread {
             try {
+                Log.i("ServerSocket", "$status in thread loop")
                 // Bind the server socket to a specific port
-                serverSocket = ServerSocket()
-                serverSocket?.bind(InetSocketAddress(8888))
+                if (status == NOT_CONNECTED) {
+                    Log.i("ServerSocket", "$status in creation loop")
+                    serverSocket = ServerSocket()
+                    serverSocket?.bind(InetSocketAddress(8888))
 
-                // Accept incoming client connections
-                clientSocket = serverSocket?.accept()
-                Log.i("ServerSocket", "Connection to clientsocket" + clientSocket.toString())
-                // Start the client thread to handle the connection
-
-                val out = BufferedWriter(OutputStreamWriter(clientSocket?.getOutputStream()))
-                out.write("Hello World222")
-                out.newLine()
-                out.flush()
-                Log.i("ServerSocket", "Message sent")
-
-                startClientThread(clientSocket)
+                    // Accept incoming client connections
+                    clientSocket = serverSocket?.accept()
+                    Log.i(
+                        "ServerSocket",
+                        "Connection to clientsocket " + clientSocket.toString()
+                    )
+                    // Start the client thread to handle the connection
+                    startClientThread(clientSocket)
+                    val out =
+                        BufferedWriter(OutputStreamWriter(clientSocket?.getOutputStream()))
+                    out.write(CONNECTED.toString())
+                    out.newLine()
+                    out.flush()
+                    Log.i("ServerSocket", "$CONNECTED message send.")
+                    status = CONNECTED
+                }
             } catch (e: IOException) {
                 // Handle exceptions
             }
@@ -41,11 +51,41 @@ class WifiP2pServerSocket(private val port: Int) {
 
     private fun startClientThread(clientSocket: Socket?) {
         clientThread = Thread {
+            Log.i("ServerSocket", "$status in client - thread loop")
             try {
                 // Send and receive data through the client socket
                 val `in` = BufferedReader(InputStreamReader(clientSocket?.getInputStream()))
                 val message = `in`.readLine()
                 Log.i("ServerSocket", message)
+                when (status) {
+                    CONNECTED -> {
+                        if (message.equals(SYNC_ALL.toString())) {
+                            // Send SYN_ALL message data through the socket
+                            Log.i("ServerSocket", "Sync ALL here.")
+                            status = SYNCHRONIZED
+                        } else {
+                            Log.i(
+                                "ServerSocket",
+                                "Unknown Message while in $status with message: $message"
+                            )
+                        }
+                    }
+                    SYNCHRONIZED -> {
+                        if (message.equals(SYNC_ALL.toString())) {
+                            // Send SYN_ALL message data through the socket
+                            Log.i("ServerSocket", "Sync ALL here.")
+                            status = SYNCHRONIZED
+                        } else {
+                            Log.i(
+                                "ServerSocket",
+                                "Unknown Message while in $status with message: $message"
+                            )
+                        }
+                    }
+                    else -> {
+                        Log.i("ServerSocket", "Client is in an unknown status.")
+                    }
+                }
             } catch (e: IOException) {
                 // Handle exceptions
             }
