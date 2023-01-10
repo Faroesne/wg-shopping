@@ -1,5 +1,6 @@
 package com.example.communityshopping.communication
 
+import android.content.Context
 import android.util.Log
 import com.example.communityshopping.communication.SocketStatus.*
 import java.io.*
@@ -8,7 +9,7 @@ import java.net.InetSocketAddress
 import java.net.Socket
 
 
-class WifiP2pClientSocket(private val port: Int) {
+class WifiP2pClientSocket(private val port: Int, private val context: Context) {
 
     private var socket: Socket? = null
     private var clientThread: Thread? = null
@@ -32,10 +33,16 @@ class WifiP2pClientSocket(private val port: Int) {
                         Log.i("ClientSocket", "Received message: $message")
                         if (message.equals(CONNECTED.toString())) {
                             // Send SYN_ALL message data through the socket
-                            val out = BufferedWriter(OutputStreamWriter(socket?.getOutputStream()))
-                            out.write(SYNC_ALL.toString())
-                            out.newLine()
-                            out.flush()
+
+                            //val out = BufferedWriter(OutputStreamWriter(socket?.getOutputStream()))
+                            //out.write(SYNC_ALL.toString())
+                            //out.newLine()
+                            //out.flush()
+
+                            val messageJSON = DbJSONWrapper(context).writeShoppingListDbJSON()
+
+                            val outputStream = DataOutputStream(socket?.getOutputStream())
+                            outputStream.writeUTF(messageJSON.toString())
                             Log.i("ClientSocket", "SYNC_ALL Message sent.")
 
                             status = UN_SYNCHRONIZED

@@ -1,13 +1,15 @@
 package com.example.communityshopping.communication
 
+import android.content.Context
 import android.util.Log
 import com.example.communityshopping.communication.SocketStatus.*
+import org.json.JSONObject
 import java.io.*
 import java.net.InetSocketAddress
 import java.net.ServerSocket
 import java.net.Socket
 
-class WifiP2pServerSocket(private val port: Int) {
+class WifiP2pServerSocket(private val port: Int, private val context: Context) {
 
     private var serverSocket: ServerSocket? = null
     private var clientSocket: Socket? = null
@@ -54,31 +56,42 @@ class WifiP2pServerSocket(private val port: Int) {
             Log.i("ServerSocket", "$status in client - thread loop")
             try {
                 // Send and receive data through the client socket
-                val `in` = BufferedReader(InputStreamReader(clientSocket?.getInputStream()))
-                val message = `in`.readLine()
-                Log.i("ServerSocket", message)
+                //val `in` = BufferedReader(InputStreamReader(clientSocket?.getInputStream()))
+                //val message = `in`.readLine()
+                val input = DataInputStream(clientSocket!!.getInputStream())
+                val jsonString = input.readUTF()
+                val jsonObject = JSONObject(jsonString)
+                val messageType = jsonObject.getString("MessageType")
+
+                Log.i("JSON", jsonObject.toString())
+                Log.i("ServerSocket", messageType)
+
+
                 when (status) {
                     CONNECTED -> {
-                        if (message.equals(SYNC_ALL.toString())) {
+                        if (messageType.equals(SYNC_ALL.toString())) {
                             // Send SYN_ALL message data through the socket
                             Log.i("ServerSocket", "Sync ALL here.")
+
+                            DbJSONWrapper(context).synchronizeDataWithCurrentDB(jsonObject)
+
                             status = SYNCHRONIZED
                         } else {
                             Log.i(
                                 "ServerSocket",
-                                "Unknown Message while in $status with message: $message"
+                                "Unknown Message while in $status with message: $messageType"
                             )
                         }
                     }
                     SYNCHRONIZED -> {
-                        if (message.equals(SYNC_ALL.toString())) {
+                        if (messageType.equals(SYNC_ALL.toString())) {
                             // Send SYN_ALL message data through the socket
                             Log.i("ServerSocket", "Sync ALL here.")
                             status = SYNCHRONIZED
                         } else {
                             Log.i(
                                 "ServerSocket",
-                                "Unknown Message while in $status with message: $message"
+                                "Unknown Message while in $status with message: $messageType"
                             )
                         }
                     }

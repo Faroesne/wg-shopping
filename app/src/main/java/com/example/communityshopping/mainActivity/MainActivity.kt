@@ -10,10 +10,12 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.communityshopping.CommunityShoppingApplication
 import com.example.communityshopping.R
+import com.example.communityshopping.communication.DbJSONWrapper
 import com.example.communityshopping.communication.WifiP2pClientSocket
 import com.example.communityshopping.communication.WifiP2pServerSocket
 import com.example.communityshopping.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import org.json.JSONStringer
 import kotlin.system.exitProcess
 
 
@@ -24,6 +26,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
         global = (application as CommunityShoppingApplication).global
         setupP2pSocket()
@@ -60,11 +63,11 @@ class MainActivity : AppCompatActivity() {
             if (info.isGroupOwner) {
                 // Device is the group owner, so start the server
                 Log.i("ClientSocket", "server")
-                WifiP2pServerSocket(8888).startServer()
+                WifiP2pServerSocket(8888, this).startServer()
             } else {
                 // Device is the client, so connect to the group owner
                 Log.i("ClientSocket", "client")
-                WifiP2pClientSocket(8888).connectToServer(info.groupOwnerAddress)
+                WifiP2pClientSocket(8888, this).connectToServer(info.groupOwnerAddress)
             }
         }
 
