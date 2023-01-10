@@ -19,8 +19,8 @@ class ShoppingListDB(
         val queryShoppingList = "CREATE TABLE " + TABLE_SHOPPING_LIST +
                 " (" + COLUMN_ITEM_ID + " TEXT PRIMARY KEY, " +
                 COLUMN_ITEM_NAME + " TEXT, " +
-                COLUMN_TIMESTAMP + " LONG, " +
-                COLUMN_DELETED + " INTEGER);"
+                COLUMN_ITEM_TIMESTAMP + " LONG, " +
+                COLUMN_ITEM_DELETED + " INTEGER);"
         val queryArchive = "CREATE TABLE " + TABLE_ARCHIVE +
                 " (" + COLUMN_ARCHIVE_ID + " TEXT PRIMARY KEY, " +
                 COLUMN_ARCHIVE_FULL_PRICE + " REAL, " +
@@ -40,7 +40,7 @@ class ShoppingListDB(
                 COLUMN_USER_NAME + " TEXT );"
         val queryFillShoppingDB = "INSERT INTO " + TABLE_SHOPPING_LIST + " (" +
                 COLUMN_ITEM_ID + ", " +
-                COLUMN_ITEM_NAME + ", " + COLUMN_TIMESTAMP + ", " + COLUMN_DELETED +
+                COLUMN_ITEM_NAME + ", " + COLUMN_ITEM_TIMESTAMP + ", " + COLUMN_ITEM_DELETED +
                 ") VALUES ('0', 'Karotten', 5, 1), " +
                 "('1', 'Rinderkennzeichnungsfleischetikettierungsmaschine', 5, 1), " +
                 "('2', 'Äpfel', 5, 1), " +
@@ -92,7 +92,41 @@ class ShoppingListDB(
         )
     }
 
-    fun getShoppingListDataByID(index: String): Cursor? {
+    fun insertOrUpdateShoppingListItem(id: String, name: String, timestamp: Long, deleted: Int) {
+        val db = this.writableDatabase
+        var values = ContentValues()
+        values.put(COLUMN_ITEM_ID, id)
+        values.put(COLUMN_ITEM_NAME, name)
+        values.put(COLUMN_ITEM_TIMESTAMP, timestamp)
+        values.put(COLUMN_ITEM_DELETED, deleted)
+
+        var cursor = getShoppingListDataByID(id)
+        if (cursor.count < 1) {
+            db.insert(TABLE_SHOPPING_LIST, null, values)
+        } else {
+            cursor.moveToNext()
+            if (cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_ITEM_ID)) < timestamp) {
+                db.update(TABLE_SHOPPING_LIST, values, "$COLUMN_ITEM_ID = '$id'", null)
+            }
+        }
+    }
+
+    fun getShoppingListDataByID(index: String): Cursor {
+        val db = this.readableDatabase
+        val projection = arrayOf(COLUMN_ITEM_ID, COLUMN_ITEM_NAME, COLUMN_ITEM_TIMESTAMP)
+        val selection = "${COLUMN_ITEM_ID} = '${index}'"
+        return db.query(
+            TABLE_SHOPPING_LIST,
+            projection,
+            selection,
+            null,
+            null,
+            null,
+            null
+        )
+    }
+
+    fun getShoppingListDataNameByID(index: String): Cursor {
         val db = this.readableDatabase
         val projection = arrayOf(COLUMN_ITEM_NAME)
         val selection = "${COLUMN_ITEM_ID} = '${index}'"
@@ -141,8 +175,8 @@ class ShoppingListDB(
         val id = UUID.randomUUID().toString()
         values.put(COLUMN_ITEM_ID, id)
         values.put(COLUMN_ITEM_NAME, name)
-        values.put(COLUMN_TIMESTAMP, System.currentTimeMillis())
-        values.put(COLUMN_DELETED, 0)
+        values.put(COLUMN_ITEM_TIMESTAMP, System.currentTimeMillis())
+        values.put(COLUMN_ITEM_DELETED, 0)
         db.insert(TABLE_SHOPPING_LIST, null, values)
         db.close()
         return id
@@ -228,7 +262,7 @@ class ShoppingListDB(
     fun deleteShoppingListItem(id: String) {
         val db = this.writableDatabase
         val values = ContentValues()
-        values.put(COLUMN_DELETED, 1)
+        values.put(COLUMN_ITEM_DELETED, 1)
         db.update(TABLE_SHOPPING_LIST, values, "$COLUMN_ITEM_ID = '$id'", null)
     }
 
@@ -237,8 +271,8 @@ class ShoppingListDB(
         const val TABLE_SHOPPING_LIST = "shopping_list"
         const val COLUMN_ITEM_ID = "shopping_list_id"
         const val COLUMN_ITEM_NAME = "shopping_item"
-        const val COLUMN_TIMESTAMP = "timestamp"
-        const val COLUMN_DELETED = "deleteStatus"
+        const val COLUMN_ITEM_TIMESTAMP = "timestamp"
+        const val COLUMN_ITEM_DELETED = "deleteStatus"
 
         const val TABLE_ARCHIVE = "archive_list"
         const val COLUMN_ARCHIVE_USERNAME = "archive_name"
