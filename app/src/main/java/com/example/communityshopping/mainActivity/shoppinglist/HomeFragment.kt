@@ -28,7 +28,7 @@ class HomeFragment : Fragment() {
     var layout: LinearLayout? = null
     private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
-    var itemIdList = arrayListOf<Int>()
+    var itemIdList = arrayListOf<String>()
     private var buttonClick: AlphaAnimation = AlphaAnimation(1F, 0.7F)
 
     // This property is only valid between onCreateView and
@@ -93,7 +93,7 @@ class HomeFragment : Fragment() {
                         cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ITEM_NAME))
                     val item = Item(
                         view,
-                        cursor.getLong(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ITEM_ID))
+                        cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ITEM_ID))
                     )
                     itemList.add(item)
                     layout!!.addView(view)
@@ -139,7 +139,7 @@ class HomeFragment : Fragment() {
         checkIfListEmpty()
     }
 
-    private fun dbDeleteItem(id: Long) {
+    private fun dbDeleteItem(id: String) {
         val db = ShoppingListDB(this.context, null)
         db.deleteShoppingListItem(id)
     }
@@ -148,7 +148,7 @@ class HomeFragment : Fragment() {
         val iterator = itemList.iterator()
         for (item in iterator) {
             if (item.view.findViewById<CheckBox>(R.id.checkbox).isChecked) {
-                itemIdList.add(item.id.toInt())
+                itemIdList.add(item.id)
             }
         }
         if (itemIdList.isEmpty()) {
