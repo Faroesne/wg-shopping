@@ -42,7 +42,7 @@ class WelcomeActivity : AppCompatActivity() {
         window.setNavigationBarColor(Color.parseColor("#0C0B0B"))
 
         checkPermissions()
-        //checkForExistingSetup()
+        checkForExistingSetup()
     }
 
     private fun checkPermissions() {
