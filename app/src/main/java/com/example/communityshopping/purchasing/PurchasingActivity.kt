@@ -214,7 +214,6 @@ class PurchasingActivity : AppCompatActivity() {
                     )
                 }
             }
-            db.addFinanceToUsers(username, binding.totalPrice.text.toString().toDouble())
             val i = Intent(this, MainActivity::class.java)
             startActivity(i)
         }

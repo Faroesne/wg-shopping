@@ -6,7 +6,8 @@ class Archive(
     var info: String,
     var index: String,
     var bmp: ByteArray,
-    var username: String
+    var username: String,
+    var paid: Int
 ) :
     java.io.Serializable {
 
