@@ -46,7 +46,7 @@ class JoinGroupActivity : AppCompatActivity() {
         global = (application as CommunityShoppingApplication).global
 
         joinBtn = findViewById(R.id.gruppeBeitreten2)
-        joinBtn.setOnClickListener { }
+        joinBtn.setOnClickListener { startActivity(Intent(this, MainActivity::class.java)) }
         linearLayout = findViewById(R.id.containerList)
 
         setupWifiP2P()
@@ -142,7 +142,6 @@ class JoinGroupActivity : AppCompatActivity() {
                 nameView.text = resources.getString(R.string.device_status_connected)
                 connectionEstablished = true
                 startActivity(Intent(this, MainActivity::class.java))
-
             } else if (device.status == WifiP2pDevice.AVAILABLE) {
                 val nameView: TextView = view.findViewById(R.id.connectionStatus)
                 nameView.text = resources.getString(R.string.device_status_available)
