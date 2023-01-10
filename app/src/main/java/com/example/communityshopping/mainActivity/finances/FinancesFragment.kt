@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.database.getDoubleOrNull
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.communityshopping.R
@@ -55,18 +54,18 @@ class FinancesFragment : Fragment() {
                 val view: View = layoutInflater.inflate(R.layout.finances_card, null)
                 val textViewName: TextView = view.findViewById(R.id.finances_name)
                 val textViewFinances: TextView = view.findViewById(R.id.finances_money)
-                if (cursor != null) {
-                    var username = cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_USER_NAME))
-                    textViewName.text = username
-                    var finance = db.getArchivesToBePaid(username)
-                    var personalFinance = finance / cursor!!.count
-                    personalFinance = personalFinance.toBigDecimal().setScale(2, RoundingMode.DOWN).toDouble()
-                    textViewFinances.text =
-                        "%,.2f".format(
-                            Locale.GERMAN,
-                            personalFinance
-                        ) + "€"
-                }
+                val username =
+                    cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_USER_NAME))
+                textViewName.text = username
+                val finance = db.getArchivesToBePaid(username)
+                var personalFinance = finance / cursor.count
+                personalFinance =
+                    personalFinance.toBigDecimal().setScale(2, RoundingMode.DOWN).toDouble()
+                textViewFinances.text =
+                    "%,.2f".format(
+                        Locale.GERMAN,
+                        personalFinance
+                    ) + "€"
                 scroll!!.addView(view)
             }
             cursor.close()
