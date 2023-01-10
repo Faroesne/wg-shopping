@@ -23,9 +23,9 @@ class DbJSONWrapper(private var context: Context) {
                 val columnName =
                     cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ITEM_NAME))
                 val columnTimeStamp =
-                    cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_TIMESTAMP))
+                    cursor.getLong(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ITEM_TIMESTAMP))
                 val columnDeleteStatus =
-                    cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_DELETED))
+                    cursor.getInt(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ITEM_DELETED))
 
                 val singleItemJSON = JSONObject()
                 singleItemJSON.put("itemID",columnID)
@@ -43,7 +43,19 @@ class DbJSONWrapper(private var context: Context) {
     }
 
     fun synchronizeDataWithCurrentDB(jsonObject: JSONObject) {
+        val db = ShoppingListDB(context, null)
         val itemList = jsonObject.getJSONArray("Data")
+
+        var i = 0
+        while (i<itemList.length()){
+            var uuid = (itemList[i] as JSONObject).getString("itemID")
+            var name = (itemList[i] as JSONObject).getString("itemName")
+            var timeStamp = (itemList[i] as JSONObject).getLong("itemTimeStamp")
+            var deleteStatus = (itemList[i] as JSONObject).getInt("itemDeleteStatus")
+            db.insertOrUpdateShoppingListItem(uuid, name, timeStamp, deleteStatus)
+            i++
+        }
+
     }
 
 }

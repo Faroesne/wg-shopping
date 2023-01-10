@@ -43,6 +43,7 @@ class WifiP2pClientSocket(private val port: Int, private val context: Context) {
 
                             val outputStream = DataOutputStream(socket?.getOutputStream())
                             outputStream.writeUTF(messageJSON.toString())
+                            outputStream.flush()
                             Log.i("ClientSocket", "SYNC_ALL Message sent.")
 
                             status = UN_SYNCHRONIZED

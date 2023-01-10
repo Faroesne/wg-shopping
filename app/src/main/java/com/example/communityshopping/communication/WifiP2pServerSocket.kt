@@ -87,7 +87,8 @@ class WifiP2pServerSocket(private val port: Int, private val context: Context) {
                         if (messageType.equals(SYNC_ALL.toString())) {
                             // Send SYN_ALL message data through the socket
                             Log.i("ServerSocket", "Sync ALL here.")
-                            status = SYNCHRONIZED
+
+                            DbJSONWrapper(context).synchronizeDataWithCurrentDB(jsonObject)
                         } else {
                             Log.i(
                                 "ServerSocket",
