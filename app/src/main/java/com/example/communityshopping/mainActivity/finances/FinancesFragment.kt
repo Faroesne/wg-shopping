@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.communityshopping.R
 import com.example.communityshopping.database.ShoppingListDB
 import com.example.communityshopping.databinding.FragmentFinancesBinding
+import java.math.RoundingMode
 import java.util.*
 
 class FinancesFragment : Fragment() {
@@ -55,12 +56,15 @@ class FinancesFragment : Fragment() {
                 val textViewName: TextView = view.findViewById(R.id.finances_name)
                 val textViewFinances: TextView = view.findViewById(R.id.finances_money)
                 if (cursor != null) {
-                    textViewName.text =
-                        cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_USER_NAME))
+                    var username = cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_USER_NAME))
+                    textViewName.text = username
+                    var finance = db.getArchivesToBePaid(username)
+                    var personalFinance = finance / cursor!!.count
+                    personalFinance = personalFinance.toBigDecimal().setScale(2, RoundingMode.DOWN).toDouble()
                     textViewFinances.text =
                         "%,.2f".format(
                             Locale.GERMAN,
-                            cursor.getDoubleOrNull(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_USER_FINANCES))
+                            personalFinance
                         ) + "€"
                 }
                 scroll!!.addView(view)
