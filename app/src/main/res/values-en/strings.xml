@@ -51,6 +51,11 @@
     <string name="wähle_sprache_aus">Choose Language</string>
     <string name="enter_article">Enter article</string>
     <string name="no_article_selected">No article selected</string>
+    <string name="articles_deleted">Selected articles removed</string>
+    <string name="general_settings">General Settings</string>
+    <string name="imprint">Imprint</string>
+    <string name="imprint_head">Developed by</string>
+    <string name="imprint_content">Fabian Coenen\nFabian Rösner\nEduard Zitlau\nAlexander Schlothauer\nAlen Zukic\nMehdy Abbas</string>
     <string name="no_price">Please enter price</string>
     <string name="submit">Submit</string>
     <string name="cancel">Cancel</string>

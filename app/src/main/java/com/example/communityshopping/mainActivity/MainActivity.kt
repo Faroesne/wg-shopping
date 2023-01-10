@@ -14,6 +14,7 @@ import com.example.communityshopping.communication.WifiP2pClientSocket
 import com.example.communityshopping.communication.WifiP2pServerSocket
 import com.example.communityshopping.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlin.system.exitProcess
 
 
 class MainActivity : AppCompatActivity() {
@@ -45,6 +46,11 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    override fun onBackPressed() {
+        moveTaskToBack (true)
+        finish();
     }
 
     private fun setupP2pSocket() {

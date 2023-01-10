@@ -51,6 +51,11 @@
     <string name="enter_article">Artikel Eingeben</string>
     <string name="no_article_selected">Keine Artikel ausgewählt</string>
     <string name="no_price">Bitte Preis angeben</string>
+    <string name="articles_deleted">Ausgewählte Artikel entfernt</string>
+    <string name="general_settings">Allgemeine Einstellungen</string>
+    <string name="imprint">Impressum</string>
+    <string name="imprint_head">Entwickelt von</string>
+    <string name="imprint_content">Fabian Coenen\nFabian Rösner\nEduard Zitlau\nAlexander Schlothauer\nAlen Zukic\nMehdy Abbas</string>
     <string name="submit">Bestätigen</string>
     <string name="cancel">Abbrechen</string>
     <string name="welcome">Willkommen</string>
