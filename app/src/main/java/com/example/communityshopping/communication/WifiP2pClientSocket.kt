@@ -15,15 +15,17 @@ class WifiP2pClientSocket(private val port: Int) {
     private var status: SocketStatus = NOT_CONNECTED
 
     fun connectToServer(serverAddress: InetAddress) {
+        Log.i("ClientSocket", "$status")
         clientThread = Thread {
             try {
+                Log.i("ClientSocket", "$status in thread loop")
                 when (status) {
                     NOT_CONNECTED -> {
+                        Log.i("ClientSocket", "$status ot connected loop")
                         // Connect to the server
                         socket = Socket()
                         socket?.bind(null)
                         socket?.connect(InetSocketAddress(serverAddress, 8888))
-                        status = UN_SYNCHRONIZED
                         val bufferedReader =
                             BufferedReader(InputStreamReader(socket!!.getInputStream()))
                         val message = bufferedReader.readLine()

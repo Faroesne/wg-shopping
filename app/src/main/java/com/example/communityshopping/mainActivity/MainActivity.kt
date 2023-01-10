@@ -2,6 +2,7 @@ package com.example.communityshopping.mainActivity
 
 import android.net.wifi.p2p.WifiP2pManager
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -52,9 +53,11 @@ class MainActivity : AppCompatActivity() {
             //Check if the device is the group owner
             if (info.isGroupOwner) {
                 // Device is the group owner, so start the server
+                Log.i("ClientSocket", "server")
                 WifiP2pServerSocket(8888).startServer()
             } else {
                 // Device is the client, so connect to the group owner
+                Log.i("ClientSocket", "client")
                 WifiP2pClientSocket(8888).connectToServer(info.groupOwnerAddress)
             }
         }

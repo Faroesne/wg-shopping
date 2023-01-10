@@ -16,10 +16,13 @@ class WifiP2pServerSocket(private val port: Int) {
     private var status: SocketStatus = NOT_CONNECTED
 
     fun startServer() {
+        Log.i("ServerSocket", "$status")
         serverThread = Thread {
             try {
+                Log.i("ServerSocket", "$status in thread loop")
                 // Bind the server socket to a specific port
-                if (status.equals(NOT_CONNECTED.toString())) {
+                if (status == NOT_CONNECTED) {
+                    Log.i("ServerSocket", "$status in creation loop")
                     serverSocket = ServerSocket()
                     serverSocket?.bind(InetSocketAddress(8888))
 
@@ -48,6 +51,7 @@ class WifiP2pServerSocket(private val port: Int) {
 
     private fun startClientThread(clientSocket: Socket?) {
         clientThread = Thread {
+            Log.i("ServerSocket", "$status in client - thread loop")
             try {
                 // Send and receive data through the client socket
                 val `in` = BufferedReader(InputStreamReader(clientSocket?.getInputStream()))
