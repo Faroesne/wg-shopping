@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.database.getDoubleOrNull
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.communityshopping.R
 import com.example.communityshopping.database.ShoppingListDB
 import com.example.communityshopping.databinding.FragmentFinancesBinding
+import java.math.RoundingMode
 import java.util.*
 
 class FinancesFragment : Fragment() {
@@ -54,15 +54,18 @@ class FinancesFragment : Fragment() {
                 val view: View = layoutInflater.inflate(R.layout.finances_card, null)
                 val textViewName: TextView = view.findViewById(R.id.finances_name)
                 val textViewFinances: TextView = view.findViewById(R.id.finances_money)
-                if (cursor != null) {
-                    textViewName.text =
-                        cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_USER_NAME))
-                    textViewFinances.text =
-                        "%,.2f".format(
-                            Locale.GERMAN,
-                            cursor.getDoubleOrNull(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_USER_FINANCES))
-                        ) + "€"
-                }
+                val username =
+                    cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_USER_NAME))
+                textViewName.text = username
+                val finance = db.getArchivesToBePaid(username)
+                var personalFinance = finance / cursor.count
+                personalFinance =
+                    personalFinance.toBigDecimal().setScale(2, RoundingMode.DOWN).toDouble()
+                textViewFinances.text =
+                    "%,.2f".format(
+                        Locale.GERMAN,
+                        personalFinance
+                    ) + "€"
                 scroll!!.addView(view)
             }
             cursor.close()

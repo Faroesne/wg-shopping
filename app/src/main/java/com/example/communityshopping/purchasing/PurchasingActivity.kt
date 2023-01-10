@@ -135,7 +135,7 @@ class PurchasingActivity : AppCompatActivity() {
     private fun addCards(list: ArrayList<String>) {
         val db = ShoppingListDB(this, null)
         for (itemId in list) {
-            val cursor = db.getShoppingListDataByID(itemId)
+            val cursor = db.getShoppingListDataNameByID(itemId)
             val view: View = layoutInflater.inflate(R.layout.pricing_card, null)
             val textView: TextView = view.findViewById(R.id.pricingName)
             if (cursor != null) {
@@ -214,7 +214,6 @@ class PurchasingActivity : AppCompatActivity() {
                     )
                 }
             }
-            db.addFinanceToUsers(username, binding.totalPrice.text.toString().toDouble())
             val i = Intent(this, MainActivity::class.java)
             startActivity(i)
         }
