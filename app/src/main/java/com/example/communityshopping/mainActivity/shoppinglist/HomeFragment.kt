@@ -16,6 +16,7 @@ import com.example.communityshopping.database.ShoppingListDB
 import com.example.communityshopping.database.models.Item
 import com.example.communityshopping.databinding.FragmentHomeBinding
 import com.example.communityshopping.purchasing.PurchasingActivity
+import io.github.muddz.styleabletoast.StyleableToast
 
 class HomeFragment : Fragment() {
 
@@ -69,8 +70,10 @@ class HomeFragment : Fragment() {
         builder.setTitle(this.getString(R.string.enter_article))
             .setPositiveButton(
                 this.getString(R.string.submit)
-            ) { dialog, which -> addCard(name.text.toString())
-            name.setText("")}
+            ) { dialog, which ->
+                addCard(name.text.toString())
+                name.setText("")
+            }
             .setNegativeButton(
                 this.getString(R.string.cancel)
             ) { dialog, which -> }
@@ -125,7 +128,13 @@ class HomeFragment : Fragment() {
             }
         }
         if (i > 0) {
-            Toast.makeText(this.context, "Artikel wurden gelöscht.", Toast.LENGTH_SHORT).show()
+            this.context?.let {
+                StyleableToast.makeText(
+                    it,
+                    this.getString(R.string.articles_deleted),
+                    R.style.toastStyle
+                ).show()
+            }
         }
         checkIfListEmpty()
     }
@@ -143,11 +152,13 @@ class HomeFragment : Fragment() {
             }
         }
         if (itemIdList.isEmpty()) {
-            Toast.makeText(
-                this.context,
-                this.getString(R.string.no_article_selected),
-                Toast.LENGTH_SHORT
-            ).show()
+            this.context?.let {
+                StyleableToast.makeText(
+                    it,
+                    this.getString(R.string.no_article_selected),
+                    R.style.toastStyle
+                ).show()
+            }
         } else {
             val i = Intent(activity, PurchasingActivity::class.java)
             i.putExtra("ids", itemIdList)

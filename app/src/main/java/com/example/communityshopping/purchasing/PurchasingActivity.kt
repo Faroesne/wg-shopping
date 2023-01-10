@@ -21,6 +21,7 @@ import com.example.communityshopping.database.ShoppingListDB
 import com.example.communityshopping.database.models.Item
 import com.example.communityshopping.databinding.ActivityPurchasingBinding
 import com.example.communityshopping.mainActivity.MainActivity
+import io.github.muddz.styleabletoast.StyleableToast
 import java.io.ByteArrayOutputStream
 
 
@@ -48,20 +49,33 @@ class PurchasingActivity : AppCompatActivity() {
         confirmBtn.setOnClickListener {
             if (isTotal) {
                 if (binding.totalPrice.text.toString() == "") {
-                    Toast.makeText(this, this.getString(R.string.no_price), Toast.LENGTH_SHORT)
-                        .show()
+                    StyleableToast.makeText(
+                        this,
+                        this.getString(R.string.no_price),
+                        R.style.toastStyle
+                    ).show()
                 } else {
                     pickCameraOrGallery()
                 }
             } else {
+                var allowNext = false
                 for (item in itemList) {
                     var price = item.view.findViewById<EditText>(R.id.itemPrice).text
-                    if (price.toString() == "") {
-                        Toast.makeText(this, this.getString(R.string.no_price), Toast.LENGTH_SHORT)
-                            .show()
+                    if (price.toString() != "") {
+                        allowNext = true
                     } else {
-                        pickCameraOrGallery()
+                        allowNext = false
+                        break
                     }
+                }
+                if (allowNext) {
+                    pickCameraOrGallery()
+                } else {
+                    StyleableToast.makeText(
+                        this,
+                        this.getString(R.string.no_price),
+                        R.style.toastStyle
+                    ).show()
                 }
             }
         }

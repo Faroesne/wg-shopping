@@ -1,46 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".mainActivity.settings.SettingsFragment">
 
-    <RelativeLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:orientation="vertical">
+                android:text="@string/general_settings"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/deepblack"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
 
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/icegrey"
+                android:padding="10dp">
 
-            <TextView
-                    android:id="@+id/text_notifications"
+            <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:textSize="20sp"
-                    android:textColor="@color/deepblack"
-                    android:text="@string/sprache2"
-                    android:visibility="visible" />
+                    android:layout_marginStart="4dp"
+                    android:orientation="vertical">
 
-        </LinearLayout>
 
-        <Button
-                android:text="@string/sprache"
+                <TextView
+                        android:id="@+id/text_notifications"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:textSize="20sp"
+                        android:textColor="@color/deepblack"
+                        android:text="@string/sprache2"
+                        android:visibility="visible" />
+
+            </LinearLayout>
+
+            <Button
+                    android:text="@string/sprache"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/changeMyLang"
+                    android:layout_marginEnd="4dp"
+                    android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+
+        <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/changeMyLang"
-                tools:ignore="MissingConstraints"
-                android:layout_marginEnd="4dp"
-                android:padding="10dp"
-                android:layout_alignParentEnd="true" />
-    </RelativeLayout>
+                android:text="@string/imprint"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/deepblack"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
 
-</LinearLayout>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/imprint_head"
+                android:textSize="16sp"
+                android:textColor="@color/deepblack"
+                android:layout_marginStart="20dp"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/imprint_content"
+                android:textSize="14sp"
+                android:textColor="#757575"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"/>
+
+    </LinearLayout>
+
+    <ImageView
+            android:id="@+id/logo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/logo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="10dp"
+            app:tint="#757575" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

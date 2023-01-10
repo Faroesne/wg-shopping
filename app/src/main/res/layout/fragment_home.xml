@@ -51,9 +51,9 @@
                     app:srcCompat="@drawable/baseline_delete_black_24dp"
                     android:id="@+id/btn_delete"
                     android:backgroundTint="@color/deepblack"
-                    android:tint="@color/coolgrey"
                     android:layout_alignParentEnd="true"
-                    android:background="@drawable/custom_image_button" />
+                    android:background="@drawable/custom_image_button"
+                    app:tint="@color/coolgrey" />
 
         </RelativeLayout>
 
@@ -88,8 +88,8 @@
                     app:srcCompat="@drawable/baseline_add_black_24dp"
                     android:id="@+id/btn_addItem"
                     android:backgroundTint="@color/deepblack"
-                    android:tint="@color/coolgrey"
-                    android:background="@drawable/custom_image_button" />
+                    android:background="@drawable/custom_image_button"
+                    app:tint="@color/coolgrey" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
