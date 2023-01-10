@@ -47,14 +47,14 @@ class ArchiveFragment : Fragment() {
             while (cursor.moveToNext()) {
                 val archiveItem =
                     db.getArchiveItemData(
-                        cursor.getInt
+                        cursor.getString
                             (cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_ID))
                     )
                 val archive = Archive(
                     cursor.getDouble
                         (
                         cursor.getColumnIndexOrThrow
-                            (ShoppingListDB.COLUMN_ITEM_FULL_PRICE)
+                            (ShoppingListDB.COLUMN_ARCHIVE_FULL_PRICE)
                     ),
                     this.getString(R.string.Einkauf_vom) + " " +
                             SimpleDateFormat
@@ -72,8 +72,8 @@ class ArchiveFragment : Fragment() {
                             ShoppingListDB.COLUMN_ARCHIVE_USERNAME
                         )
                     ),
-                    cursor.getInt(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_ID)),
-                    cursor.getBlob(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ITEM_IMAGE)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_ID)),
+                    cursor.getBlob(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_IMAGE)),
                     cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_USERNAME))
                 )
                 archiveArrayList.add(archive)

@@ -12,7 +12,10 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.iterator
@@ -31,7 +34,7 @@ class PurchasingActivity : AppCompatActivity() {
     private lateinit var totalButton: Button
     lateinit var confirmBtn: Button
     private lateinit var binding: ActivityPurchasingBinding
-    private var idList = arrayListOf<Int>()
+    private var idList = arrayListOf<String>()
     var scroll: LinearLayout? = null
     private var itemList = arrayListOf<Item>()
     private var isTotal: Boolean = true
@@ -79,7 +82,7 @@ class PurchasingActivity : AppCompatActivity() {
                 }
             }
         }
-        idList = intent.getSerializableExtra("ids") as ArrayList<Int>
+        idList = intent.getSerializableExtra("ids") as ArrayList<String>
         addCards(idList)
         for (item in binding.scroll) {
             val firstCard = item.findViewById<EditText>(R.id.itemPrice)
@@ -129,7 +132,7 @@ class PurchasingActivity : AppCompatActivity() {
         isTotal = true
     }
 
-    private fun addCards(list: ArrayList<Int>) {
+    private fun addCards(list: ArrayList<String>) {
         val db = ShoppingListDB(this, null)
         for (itemId in list) {
             val cursor = db.getShoppingListDataByID(itemId)
@@ -140,7 +143,7 @@ class PurchasingActivity : AppCompatActivity() {
                 textView.text =
                     cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ITEM_NAME))
             }
-            val item = Item(view, itemId.toLong())
+            val item = Item(view, itemId)
             itemList.add(item)
             scroll!!.addView(view)
         }
@@ -202,12 +205,12 @@ class PurchasingActivity : AppCompatActivity() {
                 db.deleteShoppingListItem(item.id)
                 var price = item.view.findViewById<EditText>(R.id.itemPrice).text
                 if (isTotal) {
-                    db.addArchiveItem(null, item.id.toInt(), archiveId.toInt())
+                    db.addArchiveItem(null, item.id, archiveId)
                 } else {
                     db.addArchiveItem(
                         price.toString().toDouble(),
-                        item.id.toInt(),
-                        archiveId.toInt()
+                        item.id,
+                        archiveId
                     )
                 }
             }
