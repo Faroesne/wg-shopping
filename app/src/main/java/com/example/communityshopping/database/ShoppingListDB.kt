@@ -105,7 +105,8 @@ class ShoppingListDB(
             db.insert(TABLE_SHOPPING_LIST, null, values)
         } else {
             cursor.moveToNext()
-            if (cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_ITEM_TIMESTAMP)) < timestamp) {
+            var timestampOld = cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_ITEM_TIMESTAMP))
+            if (timestampOld < timestamp) {
                 db.update(TABLE_SHOPPING_LIST, values, "$COLUMN_ITEM_ID = '$id'", null)
             }
         }
@@ -348,7 +349,7 @@ class ShoppingListDB(
         val db = this.writableDatabase
         val values = ContentValues()
         val id = UUID.randomUUID().toString()
-        values.put(COLUMN_USER_ID,id)
+        values.put(COLUMN_USER_ID, id)
         values.put(COLUMN_USER_NAME, username)
         db.insert(TABLE_USER, null, values)
         db.close()
@@ -379,6 +380,7 @@ class ShoppingListDB(
     fun deleteShoppingListItem(id: String) {
         val db = this.writableDatabase
         val values = ContentValues()
+        values.put(COLUMN_ITEM_TIMESTAMP, System.currentTimeMillis())
         values.put(COLUMN_ITEM_DELETED, 1)
         db.update(TABLE_SHOPPING_LIST, values, "$COLUMN_ITEM_ID = '$id'", null)
     }
