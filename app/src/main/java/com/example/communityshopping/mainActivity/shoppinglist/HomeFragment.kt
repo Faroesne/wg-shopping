@@ -15,6 +15,7 @@ import com.example.communityshopping.R
 import com.example.communityshopping.database.ShoppingListDB
 import com.example.communityshopping.database.models.Item
 import com.example.communityshopping.databinding.FragmentHomeBinding
+import com.example.communityshopping.mainActivity.MainActivity
 import com.example.communityshopping.purchasing.PurchasingActivity
 import io.github.muddz.styleabletoast.StyleableToast
 
@@ -113,6 +114,7 @@ class HomeFragment : Fragment() {
         itemList.add(item)
         layout!!.addView(view)
         checkIfListEmpty()
+
     }
 
     private fun removeItems() {

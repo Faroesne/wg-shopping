@@ -2,6 +2,7 @@ package com.example.communityshopping.communication
 
 import android.content.Context
 import android.util.Log
+import com.example.communityshopping.CommunityShoppingApplication
 import com.example.communityshopping.communication.SocketStatus.*
 import org.json.JSONObject
 import java.io.*
@@ -9,20 +10,19 @@ import java.net.InetSocketAddress
 import java.net.ServerSocket
 import java.net.Socket
 
-class WifiP2pServerSocket(private val port: Int, private val context: Context) {
+class WifiP2pServerSocket(private val port: Int, private val context: Context, private val global: CommunityShoppingApplication.Global) {
 
     private var serverSocket: ServerSocket? = null
     private var clientSocket: Socket? = null
     private var serverThread: Thread? = null
     private var clientThread: Thread? = null
-    private var status: SocketStatus = NOT_CONNECTED
 
     fun startServer() {
-        Log.i("ServerSocket", "$status")
+        Log.i("ServerSocket", "${global.status}")
         serverThread = Thread {
                 try {
                     // Bind the server socket to a specific port
-                    if (status == NOT_CONNECTED) {
+                    if (global.status == NOT_CONNECTED) {
                         serverSocket = ServerSocket()
                         serverSocket?.bind(InetSocketAddress(8888))
 
@@ -43,7 +43,7 @@ class WifiP2pServerSocket(private val port: Int, private val context: Context) {
                         outputStream.flush()
 
                         Log.i("ServerSocket", "$CONNECTED message send.")
-                        status = CONNECTED
+                        global.status = CONNECTED
                         startClientThread(clientSocket)
                     }
                 } catch (e: IOException) {
@@ -56,17 +56,15 @@ class WifiP2pServerSocket(private val port: Int, private val context: Context) {
 
     private fun startClientThread(clientSocket: Socket?) {
         clientThread = Thread {
+            while (true) {
                 try {
-                    val input = DataInputStream(clientSocket!!.getInputStream())
-                    val jsonString = input.readUTF()
-                    val jsonObject = JSONObject(jsonString)
-                    val messageType = jsonObject.getString("MessageType")
-
-                    Log.i("JSON", jsonObject.toString())
-                    Log.i("ServerSocket", messageType)
-
-                    when (status) {
+                    when (global.status) {
                         CONNECTED -> {
+                            if (clientSocket!!.isConnected) {
+                                val input = DataInputStream(clientSocket!!.getInputStream())
+                                val jsonString = input.readUTF()
+                                val jsonObject = JSONObject(jsonString)
+                                val messageType = jsonObject.getString("MessageType")
                                 Log.i("ServerSocket", "Received message: $jsonObject")
                                 if (messageType.equals(SYNC_ALL.toString())) {
                                     Log.i("ServerSocket", "Got SYNC_ALL MESSAGE")
@@ -82,33 +80,51 @@ class WifiP2pServerSocket(private val port: Int, private val context: Context) {
 
                                     //UpdateData
                                     DbJSONWrapper(context).synchronizeDataWithCurrentDB(jsonObject)
-
-                                    status = SYNCHRONIZED
+                                    Log.i("ServerSocket", "Database Updated")
+                                    global.status = SYNCHRONIZED
                                 } else {
                                     Log.i(
                                         "ServerSocket",
-                                        "Unknown Message while in $status with message:  $jsonObject"
+                                        "Unknown Message while in ${global.status} with message:  $jsonObject"
                                     )
                                 }
-
+                            }
                         }
                         SYNCHRONIZED -> {
-                            val input = DataInputStream(clientSocket!!.getInputStream())
-                            val jsonString = input.readUTF()
-                            val jsonObject = JSONObject(jsonString)
-                            val messageType = jsonObject.getString("MessageType")
+                            Log.i(
+                                "ServerSocket",
+                                "Reached ${global.status}"
+                            )
+                            if (clientSocket!!.isConnected) {
+                                val input = DataInputStream(clientSocket!!.getInputStream())
+                                val jsonString = input.readUTF()
+                                val jsonObject = JSONObject(jsonString)
+                                val messageType = jsonObject.getString("MessageType")
+                                Log.i("ServerSocket", "Received message: $jsonObject")
+                                if (messageType.equals(SYNC_ALL.toString())) {
+                                    Log.i("ServerSocket", "Got SYNC_ALL MESSAGE")
 
-                            if (messageType.equals(SYNC_ALL.toString())) {
-                                Log.i("ServerSocket", "Got SYNC_ALL MESSAGE")
-
-                                //UpdateData
-                                DbJSONWrapper(context).synchronizeDataWithCurrentDB(jsonObject)
-                            } else {
-                                Log.i(
-                                    "ServerSocket",
-                                    "Unknown Message while in $status with message: $jsonObject"
-                                )
+                                    //UpdateData
+                                    DbJSONWrapper(context).synchronizeDataWithCurrentDB(jsonObject)
+                                } else {
+                                    Log.i(
+                                        "ServerSocket",
+                                        "Unknown Message while in ${global.status} with message: $jsonObject"
+                                    )
+                                }
                             }
+                        }
+                        SYNC_ALL -> {
+                            val outputStream =
+                                DataOutputStream(clientSocket?.getOutputStream())
+                            val messageJSON =
+                                DbJSONWrapper(context).writeShoppingListDbJSON()
+                            outputStream.writeUTF(messageJSON.toString())
+                            outputStream.flush()
+
+                            Log.i("ServerSocket", "SYNC_ALL Message sent: $messageJSON")
+
+                            global.status = SYNCHRONIZED
                         }
                         else -> {
                             Log.i("ServerSocket", "Client is in an unknown status.")
@@ -116,15 +132,15 @@ class WifiP2pServerSocket(private val port: Int, private val context: Context) {
                     }
                 } catch (e: IOException) {
                     // Handle exceptions
-                     e.printStackTrace()
+                    e.printStackTrace()
                 }
-
+            }
         }
         clientThread?.start()
     }
 
     fun stopServer() {
-        status = NOT_CONNECTED
+        global.status = NOT_CONNECTED
         serverThread?.interrupt()
         clientThread?.interrupt()
         serverSocket?.close()
