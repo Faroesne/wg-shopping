@@ -111,6 +111,33 @@ class ShoppingListDB(
         }
     }
 
+    fun insertOrUpdateUser(id: String, name: String) {
+        val db = this.writableDatabase
+        var values = ContentValues()
+        values.put(COLUMN_USER_ID, id)
+        values.put(COLUMN_USER_NAME, name)
+
+        var cursor = getUserById(id)
+        if (cursor.count < 1) {
+            db.insert(TABLE_USER, null, values)
+        }
+    }
+
+    private fun getUserById(id: String): Cursor {
+        val db = this.readableDatabase
+        val projection = arrayOf(COLUMN_USER_ID, COLUMN_USER_NAME)
+        val selection = "$COLUMN_USER_ID = '${id}'"
+        return db.query(
+            TABLE_USER,
+            projection,
+            selection,
+            null,
+            null,
+            null,
+            null
+        )
+    }
+
     fun getShoppingListDataByID(index: String): Cursor {
         val db = this.readableDatabase
         val projection = arrayOf(COLUMN_ITEM_ID, COLUMN_ITEM_NAME, COLUMN_ITEM_TIMESTAMP)
