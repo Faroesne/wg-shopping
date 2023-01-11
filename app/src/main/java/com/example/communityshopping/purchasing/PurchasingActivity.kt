@@ -19,6 +19,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.iterator
+import com.example.communityshopping.CommunityShoppingApplication
 import com.example.communityshopping.R
 import com.example.communityshopping.database.ShoppingListDB
 import com.example.communityshopping.database.models.Item
@@ -38,9 +39,11 @@ class PurchasingActivity : AppCompatActivity() {
     var scroll: LinearLayout? = null
     private var itemList = arrayListOf<Item>()
     private var isTotal: Boolean = true
+    private lateinit var global: CommunityShoppingApplication.Global
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        global = (application as CommunityShoppingApplication).global
         binding = ActivityPurchasingBinding.inflate(layoutInflater)
         setContentView(binding.root)
         singleButton = findViewById(R.id.singleBtn2)
@@ -215,6 +218,7 @@ class PurchasingActivity : AppCompatActivity() {
                 }
             }
             val i = Intent(this, MainActivity::class.java)
+            global.resend = true
             startActivity(i)
         }
     }

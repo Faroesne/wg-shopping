@@ -10,7 +10,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.communityshopping.CommunityShoppingApplication
 import com.example.communityshopping.R
-import com.example.communityshopping.communication.DbJSONWrapper
 import com.example.communityshopping.communication.WifiP2pClientSocket
 import com.example.communityshopping.communication.WifiP2pServerSocket
 import com.example.communityshopping.databinding.ActivityMainBinding
@@ -57,14 +56,18 @@ class MainActivity : AppCompatActivity() {
 
         val connectionInfoListener = WifiP2pManager.ConnectionInfoListener { info ->
             //Check if the device is the group owner
-            if (info.isGroupOwner) {
-                // Device is the group owner, so start the server
-                Log.i("ClientSocket", "server")
-                WifiP2pServerSocket(8888, this, global).startServer()
-            } else {
-                // Device is the client, so connect to the group owner
-                Log.i("ClientSocket", "client")
-                WifiP2pClientSocket(8888, this, global).connectToServer(info.groupOwnerAddress)
+            if (!global.socketRunning) {
+                if (info.isGroupOwner) {
+                    // Device is the group owner, so start the server
+                    Log.i("ClientSocket", "server")
+                    WifiP2pServerSocket(8888, this, global).startServer()
+                    global.socketRunning = true
+                } else {
+                    // Device is the client, so connect to the group owner
+                    Log.i("ClientSocket", "client")
+                    WifiP2pClientSocket(8888, this, global).connectToServer(info.groupOwnerAddress)
+                    global.socketRunning = true
+                }
             }
         }
 

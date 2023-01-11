@@ -117,7 +117,7 @@ class HomeFragment : Fragment() {
         itemList.add(item)
         layout!!.addView(view)
         checkIfListEmpty()
-        global.resend = 1
+        global.resend = true
     }
 
     private fun removeItems() {

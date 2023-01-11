@@ -68,8 +68,6 @@ class WifiP2pClientSocket(
                                         "Unknown Message while in $status with message: $jsonObject"
                                     )
                                 }
-                            } else {
-                                socket?.close()
                             }
                         }
                     }
@@ -97,7 +95,7 @@ class WifiP2pClientSocket(
                                 status = SYNCHRONIZED
                                 updateThread = Thread {
                                     while (status == SYNCHRONIZED) {
-                                        if (global.resend == 1) {
+                                        if (global.resend) {
                                             val messageJSON =
                                                 DbJSONWrapper(context).createCompleteDbJSON()
 
@@ -110,7 +108,7 @@ class WifiP2pClientSocket(
 
 
                                             Log.i("ClientSocket", "Update Executed")
-                                            global.resend = 0
+                                            global.resend = false
                                         }
                                     }
                                 }
@@ -130,43 +128,61 @@ class WifiP2pClientSocket(
                             "Reached $status"
                         )
                         if (socket!!.isConnected) {
-                            val input = DataInputStream(socket!!.getInputStream())
-                            val jsonString = input.readUTF()
-                            val jsonObject = JSONObject(jsonString)
-                            val messageType = jsonObject.getString("MessageType")
+                            try {
 
-                            Log.i("ClientSocket", "Received message: $jsonObject")
 
-                            if (messageType.equals(SYNC_ALL.toString())) {
-                                // Send SYN_ALL message data through the socket
-                                Log.i("ClientSocket", "Got SYNC_ALL MESSAGE")
+                                val input = DataInputStream(socket!!.getInputStream())
+                                val jsonString = input.readUTF()
+                                val jsonObject = JSONObject(jsonString)
+                                val messageType = jsonObject.getString("MessageType")
 
-                                //UpdateData
-                                DbJSONWrapper(context).synchronizeDataWithCurrentDB(jsonObject)
-                            } else {
+                                Log.i("ClientSocket", "Received message: $jsonObject")
+
+                                if (messageType.equals(SYNC_ALL.toString())) {
+                                    // Send SYN_ALL message data through the socket
+                                    Log.i("ClientSocket", "Got SYNC_ALL MESSAGE")
+
+                                    //UpdateData
+                                    DbJSONWrapper(context).synchronizeDataWithCurrentDB(jsonObject)
+                                } else {
+                                    Log.i(
+                                        "ClientSocket",
+                                        "Unknown Message while in $status with message: $jsonObject"
+                                    )
+                                }
+                            } catch (e: Exception) {
                                 Log.i(
                                     "ClientSocket",
-                                    "Unknown Message while in $status with message: $jsonObject"
+                                    "Socket read not possible. Restarting connection"
                                 )
+                                reconnectToServer(serverAddress)
                             }
+                        } else {
+                            Log.i("ClientSocket", "Socket not connected")
+                            reconnectToServer(serverAddress)
                         }
                     }
                     else -> {
                         Log.i("ClientSocket", "Client is in an unknown status.")
                     }
                 }
-
-
             }
-
         }
         clientThread?.start()
     }
 
     fun disconnectFromServer() {
-        status = NOT_CONNECTED
         clientThread?.interrupt()
         updateThread?.interrupt()
         socket?.close()
+        status = NOT_CONNECTED
+    }
+
+    fun reconnectToServer(serverAddress: InetAddress) {
+        status = NOT_CONNECTED
+        clientThread = null
+        updateThread = null
+        socket?.close()
+        this.connectToServer(serverAddress)
     }
 }
