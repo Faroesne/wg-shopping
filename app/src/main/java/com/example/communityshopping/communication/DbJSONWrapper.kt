@@ -141,7 +141,7 @@ class DbJSONWrapper(private var context: Context) {
             var archiveUserName = (archiveList[i] as JSONObject).getString(ShoppingListDB.COLUMN_ARCHIVE_USERNAME)
             var archiveDate = (archiveList[i] as JSONObject).getLong(ShoppingListDB.COLUMN_ARCHIVE_DATE)
             var archivePaid = (archiveList[i] as JSONObject).getInt(ShoppingListDB.COLUMN_ARCHIVE_PAID)
-            //db.insertOrUpdateArchiveListItem(archiveID, archiveFullPrice, archiveUserName, archiveDate, archivePaid)
+            db.insertOrUpdateArchiveListItem(archiveID, archiveFullPrice, archiveUserName, archiveDate, archivePaid)
             i++
         }
 
@@ -152,7 +152,7 @@ class DbJSONWrapper(private var context: Context) {
             var archivePrice = (archiveItemList[i] as JSONObject).getDouble(ShoppingListDB.COLUMN_ITEM_PRICE)
             var itemID = (archiveItemList[i] as JSONObject).getString(ShoppingListDB.COLUMN_ITEM_ID)
             var archiveID = (archiveItemList[i] as JSONObject).getString(ShoppingListDB.COLUMN_ARCHIVE_ID)
-            //db.insertOrUpdateArchiveItemListItem(archiveItemID, archivePrice, itemID, archiveID)
+            db.insertOrUpdateArchiveItemListItem(archiveItemID, archivePrice, itemID, archiveID)
             i++
         }
 

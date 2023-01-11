@@ -154,12 +154,83 @@ class ShoppingListDB(
         )
     }
 
+    fun insertOrUpdateArchiveListItem(
+        archiveID: String,
+        archiveFullPrice: Double,
+        archiveUserName: String,
+        archiveDate: Long,
+        archivePaid: Int
+    ){
+        val db = this.writableDatabase
+        var values = ContentValues()
+        values.put(COLUMN_ARCHIVE_ID, archiveID)
+        values.put(COLUMN_ARCHIVE_FULL_PRICE, archiveFullPrice)
+        values.put(COLUMN_ARCHIVE_USERNAME, archiveUserName)
+        values.put(COLUMN_ARCHIVE_DATE, archiveDate)
+        values.put(COLUMN_ARCHIVE_PAID, archivePaid)
+        values.put(COLUMN_ARCHIVE_IMAGE, "1A")
+
+        var cursor = getArchiveListDataByID(archiveID)
+        if (cursor.count < 1) {
+            db.insert(TABLE_ARCHIVE, null, values)
+        }
+    }
+
+    fun getArchiveListDataByID(index: String): Cursor {
+        val db = this.readableDatabase
+        val projection = arrayOf(COLUMN_ARCHIVE_ID)
+        val selection = "${COLUMN_ARCHIVE_ID} = '${index}'"
+        return db.query(
+            TABLE_ARCHIVE,
+            projection,
+            selection,
+            null,
+            null,
+            null,
+            null
+        )
+    }
+
     fun getArchiveItemData(): Cursor? {
         val db = this.readableDatabase
         return db.query(
             TABLE_ARCHIVE_ITEM,
             null,
             null,
+            null,
+            null,
+            null,
+            null
+        )
+    }
+
+    fun insertOrUpdateArchiveItemListItem(
+        archiveItemID: String,
+        archivePrice: Double,
+        itemID: String,
+        archiveID: String
+    ) {
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put(COLUMN_ARCHIVE_ITEM_ID, archiveItemID)
+        values.put(COLUMN_ITEM_PRICE, archivePrice)
+        values.put(COLUMN_ITEM_ID, itemID)
+        values.put(COLUMN_ARCHIVE_ID, archiveID)
+
+        val cursor = getSingleArchiveItemDataByID(archiveItemID)
+        if (cursor.count < 1) {
+            db.insert(TABLE_ARCHIVE_ITEM, null, values)
+        }
+    }
+
+    private fun getSingleArchiveItemDataByID(index: String): Cursor {
+        val db = this.readableDatabase
+        val projection = arrayOf(COLUMN_ARCHIVE_ITEM_ID)
+        val selection = "${COLUMN_ARCHIVE_ITEM_ID} = '${index}'"
+        return db.query(
+            TABLE_ARCHIVE_ITEM,
+            projection,
+            selection,
             null,
             null,
             null,
