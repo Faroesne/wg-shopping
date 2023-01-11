@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.communityshopping.CommunityShoppingApplication
 import com.example.communityshopping.R
 import com.example.communityshopping.database.ShoppingListDB
 import com.example.communityshopping.databinding.FragmentFinancesBinding
@@ -20,6 +21,7 @@ class FinancesFragment : Fragment() {
     private lateinit var financesViewModel: FinancesViewModel
     private var _binding: FragmentFinancesBinding? = null
     var scroll: LinearLayout? = null
+    private lateinit var global: CommunityShoppingApplication.Global
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -35,7 +37,7 @@ class FinancesFragment : Fragment() {
 
         _binding = FragmentFinancesBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
+        global = (activity?.application as CommunityShoppingApplication).global
         scroll = root.findViewById(R.id.financeList)
         clear = root.findViewById(R.id.clearFinances)
         clear.setOnClickListener {
@@ -75,6 +77,7 @@ class FinancesFragment : Fragment() {
     private fun clearFinance() {
         val db = ShoppingListDB(this.context, null)
         db.clearFinance()
+        global.resend = true
         scroll!!.removeAllViews()
         addUserList()
     }
