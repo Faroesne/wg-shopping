@@ -46,7 +46,7 @@ class ArchiveFragment : Fragment() {
         if (cursor!!.count >= 1) {
             while (cursor.moveToNext()) {
                 val archiveItem =
-                    db.getArchiveItemData(
+                    db.getArchiveItemByID(
                         cursor.getString
                             (cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_ID))
                     )

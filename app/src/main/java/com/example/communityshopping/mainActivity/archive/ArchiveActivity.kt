@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.database.getDoubleOrNull
 import com.example.communityshopping.R
@@ -63,7 +62,7 @@ class ArchiveActivity : AppCompatActivity() {
 
         }
 
-        val archiveItem = db.getArchiveItemData(archiveArrayList[position].index)
+        val archiveItem = db.getArchiveItemByID(archiveArrayList[position].index)
         var archiveList = ArrayList<archiveItem>()
 
         if (archiveItem!!.count >= 1) {

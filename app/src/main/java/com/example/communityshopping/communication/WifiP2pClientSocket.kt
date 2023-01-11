@@ -49,7 +49,7 @@ class WifiP2pClientSocket(
                                 if (messageType.equals(CONNECTED.toString())) {
                                     // Send SYN_ALL message data through the socket
                                     val messageJSON =
-                                        DbJSONWrapper(context).writeShoppingListDbJSON()
+                                        DbJSONWrapper(context).createCompleteDbJSON()
 
                                     val outputStream =
                                         DataOutputStream(socket?.getOutputStream())
@@ -99,7 +99,7 @@ class WifiP2pClientSocket(
                                     while (status == SYNCHRONIZED) {
                                         if (global.resend == 1) {
                                             val messageJSON =
-                                                DbJSONWrapper(context).writeShoppingListDbJSON()
+                                                DbJSONWrapper(context).createCompleteDbJSON()
 
                                             val outputStream =
                                                 DataOutputStream(socket?.getOutputStream())

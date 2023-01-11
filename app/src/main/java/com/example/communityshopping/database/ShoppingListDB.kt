@@ -154,7 +154,20 @@ class ShoppingListDB(
         )
     }
 
-    fun getArchiveItemData(index: String): Cursor? {
+    fun getArchiveItemData(): Cursor? {
+        val db = this.readableDatabase
+        return db.query(
+            TABLE_ARCHIVE_ITEM,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        )
+    }
+
+    fun getArchiveItemByID(index: String): Cursor? {
         val db = this.readableDatabase
         val selection = "$COLUMN_ARCHIVE_ID = '${index}'"
 

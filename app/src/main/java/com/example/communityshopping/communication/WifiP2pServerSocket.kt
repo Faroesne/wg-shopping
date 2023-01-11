@@ -80,7 +80,7 @@ class WifiP2pServerSocket(
                                     val outputStream =
                                         DataOutputStream(clientSocket?.getOutputStream())
                                     val messageJSON =
-                                        DbJSONWrapper(context).writeShoppingListDbJSON()
+                                        DbJSONWrapper(context).createCompleteDbJSON()
                                     outputStream.writeUTF(messageJSON.toString())
                                     outputStream.flush()
 
@@ -94,7 +94,7 @@ class WifiP2pServerSocket(
                                         while (status == SYNCHRONIZED) {
                                             if (global.resend == 1) {
                                                 val messageJSON =
-                                                    DbJSONWrapper(context).writeShoppingListDbJSON()
+                                                    DbJSONWrapper(context).createCompleteDbJSON()
 
                                                 val outputStream =
                                                     DataOutputStream(clientSocket?.getOutputStream())

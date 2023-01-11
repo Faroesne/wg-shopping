@@ -8,13 +8,20 @@ import org.json.JSONObject
 
 class DbJSONWrapper(private var context: Context) {
 
-    fun writeShoppingListDbJSON(): JSONObject {
+    fun createCompleteDbJSON(): JSONObject {
+        val dbCompleteJSON = JSONObject()
+        dbCompleteJSON.put("MessageType", SYNC_ALL.toString())
+        dbCompleteJSON.put(ShoppingListDB.TABLE_SHOPPING_LIST,writeShoppingListDbJSON())
+        dbCompleteJSON.put(ShoppingListDB.TABLE_ARCHIVE,writeArchiveListDbJSON())
+        dbCompleteJSON.put(ShoppingListDB.TABLE_ARCHIVE_ITEM,writeArchiveItemListDbJSON())
+
+        return dbCompleteJSON
+    }
+
+    private fun writeShoppingListDbJSON(): JSONArray {
 
         val db = ShoppingListDB(context, null)
         val cursor = db.getShoppingListData()
-
-        val dbShoppingListJSON = JSONObject()
-        dbShoppingListJSON.put("MessageType", SYNC_ALL.toString())
         val itemList = arrayListOf<JSONObject>()
 
         if (cursor!!.count >= 1) {
@@ -37,23 +44,115 @@ class DbJSONWrapper(private var context: Context) {
                 itemList.add(singleItemJSON)
             }
             cursor.close()
-
-            dbShoppingListJSON.put(ShoppingListDB.TABLE_SHOPPING_LIST,JSONArray(itemList))
         }
-        return dbShoppingListJSON
+        return JSONArray(itemList)
+    }
+
+    private fun writeArchiveListDbJSON(): JSONArray {
+        val db = ShoppingListDB(context, null)
+        val cursor = db.getArchiveData()
+
+        val dbArchiveListJSON = JSONObject()
+        val itemList = arrayListOf<JSONObject>()
+
+        if (cursor!!.count >= 1) {
+            while (cursor.moveToNext()) {
+                val columnID =
+                    cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_ID))
+                val columnPrice =
+                    cursor.getDouble(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_FULL_PRICE))
+                val columnUserName =
+                    cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_USERNAME))
+                val columnArchiveDate =
+                    cursor.getLong(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_DATE))
+                val columnArchivePaid =
+                    cursor.getInt(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_PAID))
+
+                val singleItemJSON = JSONObject()
+                singleItemJSON.put(ShoppingListDB.COLUMN_ARCHIVE_ID,columnID)
+                singleItemJSON.put(ShoppingListDB.COLUMN_ARCHIVE_FULL_PRICE,columnPrice)
+                singleItemJSON.put(ShoppingListDB.COLUMN_ARCHIVE_USERNAME,columnUserName)
+                singleItemJSON.put(ShoppingListDB.COLUMN_ARCHIVE_DATE,columnArchiveDate)
+                singleItemJSON.put(ShoppingListDB.COLUMN_ARCHIVE_PAID,columnArchivePaid)
+
+                itemList.add(singleItemJSON)
+            }
+            cursor.close()
+
+            dbArchiveListJSON.put(ShoppingListDB.TABLE_ARCHIVE,JSONArray(itemList))
+        }
+
+        return JSONArray(itemList)
+    }
+
+    private fun writeArchiveItemListDbJSON(): JSONArray {
+        val db = ShoppingListDB(context, null)
+        val cursor = db.getArchiveItemData()
+
+        val dbArchiveItemListJSON = JSONObject()
+        val itemList = arrayListOf<JSONObject>()
+
+        if (cursor!!.count >= 1) {
+            while (cursor.moveToNext()) {
+                val columnArchiveItemID =
+                    cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_ITEM_ID))
+                val columnPrice =
+                    cursor.getDouble(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ITEM_PRICE))
+                val columnItemID =
+                    cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ITEM_ID))
+                val columnArchiveID =
+                    cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_ARCHIVE_ID))
+
+                val singleItemJSON = JSONObject()
+                singleItemJSON.put(ShoppingListDB.COLUMN_ARCHIVE_ITEM_ID,columnArchiveItemID)
+                singleItemJSON.put(ShoppingListDB.COLUMN_ITEM_PRICE,columnPrice)
+                singleItemJSON.put(ShoppingListDB.COLUMN_ITEM_ID,columnItemID)
+                singleItemJSON.put(ShoppingListDB.COLUMN_ARCHIVE_ID,columnArchiveID)
+
+                itemList.add(singleItemJSON)
+            }
+            cursor.close()
+
+            dbArchiveItemListJSON.put(ShoppingListDB.TABLE_ARCHIVE_ITEM,JSONArray(itemList))
+        }
+
+        return JSONArray(itemList)
     }
 
     fun synchronizeDataWithCurrentDB(jsonObject: JSONObject) {
         val db = ShoppingListDB(context, null)
-        val itemList = jsonObject.getJSONArray(ShoppingListDB.TABLE_SHOPPING_LIST)
 
+        val shoppingList = jsonObject.getJSONArray(ShoppingListDB.TABLE_SHOPPING_LIST)
         var i = 0
-        while (i<itemList.length()){
-            var uuid = (itemList[i] as JSONObject).getString(ShoppingListDB.COLUMN_ITEM_ID)
-            var name = (itemList[i] as JSONObject).getString(ShoppingListDB.COLUMN_ITEM_NAME)
-            var timeStamp = (itemList[i] as JSONObject).getLong(ShoppingListDB.COLUMN_ITEM_TIMESTAMP)
-            var deleteStatus = (itemList[i] as JSONObject).getInt(ShoppingListDB.COLUMN_ITEM_DELETED)
+        while (i<shoppingList.length()){
+            var uuid = (shoppingList[i] as JSONObject).getString(ShoppingListDB.COLUMN_ITEM_ID)
+            var name = (shoppingList[i] as JSONObject).getString(ShoppingListDB.COLUMN_ITEM_NAME)
+            var timeStamp = (shoppingList[i] as JSONObject).getLong(ShoppingListDB.COLUMN_ITEM_TIMESTAMP)
+            var deleteStatus = (shoppingList[i] as JSONObject).getInt(ShoppingListDB.COLUMN_ITEM_DELETED)
             db.insertOrUpdateShoppingListItem(uuid, name, timeStamp, deleteStatus)
+            i++
+        }
+
+        val archiveList = jsonObject.getJSONArray(ShoppingListDB.TABLE_SHOPPING_LIST)
+        i = 0
+        while (i<shoppingList.length()){
+            var archiveID = (archiveList[i] as JSONObject).getString(ShoppingListDB.COLUMN_ARCHIVE_ID)
+            var archiveFullPrice = (archiveList[i] as JSONObject).getDouble(ShoppingListDB.COLUMN_ARCHIVE_FULL_PRICE)
+            var archiveUserName = (archiveList[i] as JSONObject).getString(ShoppingListDB.COLUMN_ARCHIVE_USERNAME)
+            var archiveDate = (archiveList[i] as JSONObject).getLong(ShoppingListDB.COLUMN_ARCHIVE_DATE)
+            var archivePaid = (archiveList[i] as JSONObject).getInt(ShoppingListDB.COLUMN_ARCHIVE_PAID)
+            //db.insertOrUpdateArchiveListItem(archiveID, archiveFullPrice, archiveUserName, archiveDate, archivePaid)
+            i++
+        }
+
+        val archiveItemList = jsonObject.getJSONArray(ShoppingListDB.TABLE_SHOPPING_LIST)
+        i = 0
+        while (i<shoppingList.length()){
+            var archiveItemID = (archiveItemList[i] as JSONObject).getString(ShoppingListDB.COLUMN_ARCHIVE_ITEM_ID)
+            var archivePrice = (archiveItemList[i] as JSONObject).getDouble(ShoppingListDB.COLUMN_ITEM_PRICE)
+            var itemID = (archiveItemList[i] as JSONObject).getString(ShoppingListDB.COLUMN_ITEM_ID)
+            var archiveID = (archiveItemList[i] as JSONObject).getString(ShoppingListDB.COLUMN_ARCHIVE_ID)
+            //db.insertOrUpdateArchiveItemListItem(archiveItemID, archivePrice, itemID, archiveID)
             i++
         }
 

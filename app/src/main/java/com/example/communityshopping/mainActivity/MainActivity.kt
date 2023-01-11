@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val testJSON = DbJSONWrapper(this).createCompleteDbJSON()
+        Log.i("JSON",testJSON.toString())
 
         global = (application as CommunityShoppingApplication).global
         setupP2pSocket()
