@@ -11,13 +11,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.communityshopping.CommunityShoppingApplication
 import com.example.communityshopping.R
 import com.example.communityshopping.communication.DbJSONWrapper
-import com.example.communityshopping.communication.SocketStatus
 import com.example.communityshopping.communication.WifiP2pClientSocket
 import com.example.communityshopping.communication.WifiP2pServerSocket
 import com.example.communityshopping.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import org.json.JSONStringer
-import kotlin.system.exitProcess
 
 
 class MainActivity : AppCompatActivity() {
@@ -27,9 +24,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val testJSON = DbJSONWrapper(this).createCompleteDbJSON()
-        Log.i("JSON",testJSON.toString())
 
         global = (application as CommunityShoppingApplication).global
         setupP2pSocket()
@@ -55,7 +49,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        moveTaskToBack (true)
+        moveTaskToBack(true)
         finish();
     }
 
