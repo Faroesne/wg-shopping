@@ -68,10 +68,13 @@ class ShoppingListDB(
         db!!.execSQL(queryArchive)
         db!!.execSQL(queryArchiveItem)
         db!!.execSQL(queryUser)
+        //Testdaten sind für die Präsentation deaktiviert
+        /*
         db!!.execSQL(queryFillShoppingDB)
         db!!.execSQL(queryFillArchiveDB)
         db!!.execSQL(queryFillArchiveItemDB)
         db!!.execSQL(queryFillUserFinancesDB)
+        */
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -328,9 +331,26 @@ class ShoppingListDB(
         return id
     }
 
-    fun getArchivesToBePaid(username: String): Double {
+    fun getArchivesToBePaid(): Double {
         val db = this.readableDatabase
-        val selection = "$COLUMN_ARCHIVE_USERNAME != '${username}' and $COLUMN_ARCHIVE_PAID = 0"
+        val selection = "$COLUMN_ARCHIVE_PAID = 0"
+
+        var cursor = db.query(
+            TABLE_ARCHIVE,
+            arrayOf("SUM($COLUMN_ARCHIVE_FULL_PRICE)"),
+            selection,
+            null,
+            null,
+            null,
+            null
+        )
+        cursor.moveToNext()
+        return cursor.getDouble(0)
+    }
+
+    fun getArchivesUserPaid(username: String): Double {
+        val db = this.readableDatabase
+        val selection = "$COLUMN_ARCHIVE_USERNAME == '${username}' and $COLUMN_ARCHIVE_PAID = 0"
 
         var cursor = db.query(
             TABLE_ARCHIVE,

@@ -56,18 +56,14 @@ class MainActivity : AppCompatActivity() {
 
         val connectionInfoListener = WifiP2pManager.ConnectionInfoListener { info ->
             //Check if the device is the group owner
-            if (!global.socketRunning) {
-                if (info.isGroupOwner) {
-                    // Device is the group owner, so start the server
-                    Log.i("ClientSocket", "server")
-                    WifiP2pServerSocket(8888, this, global).startServer()
-                    global.socketRunning = true
-                } else {
-                    // Device is the client, so connect to the group owner
-                    Log.i("ClientSocket", "client")
-                    WifiP2pClientSocket(8888, this, global).connectToServer(info.groupOwnerAddress)
-                    global.socketRunning = true
-                }
+            if (info.isGroupOwner) {
+                // Device is the group owner, so start the server
+                Log.i("ClientSocket", "server")
+                WifiP2pServerSocket(8888, this, global).startServer()
+            } else {
+                // Device is the client, so connect to the group owner
+                Log.i("ClientSocket", "client")
+                WifiP2pClientSocket(8888, this, global).connectToServer(info.groupOwnerAddress)
             }
         }
 

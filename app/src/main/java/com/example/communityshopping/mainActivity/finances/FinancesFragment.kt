@@ -59,8 +59,9 @@ class FinancesFragment : Fragment() {
                 val username =
                     cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_USER_NAME))
                 textViewName.text = username
-                val finance = db.getArchivesToBePaid(username)
-                var personalFinance = finance / cursor.count
+                val openFinance = db.getArchivesToBePaid()
+                val paidFinance = db.getArchivesUserPaid(username)
+                var personalFinance = paidFinance - (openFinance / cursor.count)
                 personalFinance =
                     personalFinance.toBigDecimal().setScale(2, RoundingMode.DOWN).toDouble()
                 textViewFinances.text =
