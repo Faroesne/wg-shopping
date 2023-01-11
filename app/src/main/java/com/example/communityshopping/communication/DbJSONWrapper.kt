@@ -133,9 +133,9 @@ class DbJSONWrapper(private var context: Context) {
             i++
         }
 
-        val archiveList = jsonObject.getJSONArray(ShoppingListDB.TABLE_SHOPPING_LIST)
+        val archiveList = jsonObject.getJSONArray(ShoppingListDB.TABLE_ARCHIVE)
         i = 0
-        while (i<shoppingList.length()){
+        while (i<archiveList.length()){
             var archiveID = (archiveList[i] as JSONObject).getString(ShoppingListDB.COLUMN_ARCHIVE_ID)
             var archiveFullPrice = (archiveList[i] as JSONObject).getDouble(ShoppingListDB.COLUMN_ARCHIVE_FULL_PRICE)
             var archiveUserName = (archiveList[i] as JSONObject).getString(ShoppingListDB.COLUMN_ARCHIVE_USERNAME)
@@ -145,9 +145,9 @@ class DbJSONWrapper(private var context: Context) {
             i++
         }
 
-        val archiveItemList = jsonObject.getJSONArray(ShoppingListDB.TABLE_SHOPPING_LIST)
+        val archiveItemList = jsonObject.getJSONArray(ShoppingListDB.TABLE_ARCHIVE_ITEM)
         i = 0
-        while (i<shoppingList.length()){
+        while (i<archiveItemList.length()){
             var archiveItemID = (archiveItemList[i] as JSONObject).getString(ShoppingListDB.COLUMN_ARCHIVE_ITEM_ID)
             var archivePrice = (archiveItemList[i] as JSONObject).getDouble(ShoppingListDB.COLUMN_ITEM_PRICE)
             var itemID = (archiveItemList[i] as JSONObject).getString(ShoppingListDB.COLUMN_ITEM_ID)
