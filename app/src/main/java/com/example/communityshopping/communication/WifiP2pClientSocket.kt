@@ -21,24 +21,24 @@ class WifiP2pClientSocket(
 
     private var socket: Socket? = null
     private var clientThread: Thread? = null
+    private var updateThread: Thread? = null
+    private var status: SocketStatus = NOT_CONNECTED
 
     fun connectToServer(serverAddress: InetAddress) {
-        Log.i("ClientSocket", "${global.status}")
+        Log.i("ClientSocket", "$status")
         clientThread = Thread {
             while (true) {
-                when (global.status) {
+                when (status) {
                     NOT_CONNECTED -> {
                         // Connect to the server
-                        while (global.status == NOT_CONNECTED) {
+                        while (status == NOT_CONNECTED) {
                             try {
                                 socket = Socket()
                                 socket?.bind(null)
                                 socket?.connect(InetSocketAddress(serverAddress, 8888))
                             } catch (e: IOException) {
                                 e.printStackTrace()
-                                // Handle exceptions
                             }
-                            Log.i("ClientSocket", "spam")
                             if (socket!!.isConnected) {
                                 val input = DataInputStream(socket!!.getInputStream())
                                 val jsonString = input.readUTF()
@@ -61,11 +61,11 @@ class WifiP2pClientSocket(
 
                                     Log.i("ClientSocket", "SYNC_ALL Message sent.")
 
-                                    global.status = UN_SYNCHRONIZED
+                                    status = UN_SYNCHRONIZED
                                 } else {
                                     Log.i(
                                         "ClientSocket",
-                                        "Unknown Message while in ${global.status} with message: $jsonObject"
+                                        "Unknown Message while in $status with message: $jsonObject"
                                     )
                                 }
                             } else {
@@ -76,7 +76,7 @@ class WifiP2pClientSocket(
                     UN_SYNCHRONIZED -> {
                         Log.i(
                             "ClientSocket",
-                            "Reached ${global.status}"
+                            "Reached $status"
                         )
                         if (socket!!.isConnected) {
                             val input = DataInputStream(socket!!.getInputStream())
@@ -94,11 +94,32 @@ class WifiP2pClientSocket(
                                     jsonObject
                                 )
 
-                                global.status = SYNCHRONIZED
+                                status = SYNCHRONIZED
+                                updateThread = Thread {
+                                    while (status == SYNCHRONIZED) {
+                                        if (global.resend == 1) {
+                                            val messageJSON =
+                                                DbJSONWrapper(context).writeShoppingListDbJSON()
+
+                                            val outputStream =
+                                                DataOutputStream(socket?.getOutputStream())
+
+                                            Log.i("ClientSocket", "Send message: $messageJSON")
+                                            outputStream.writeUTF(messageJSON.toString())
+                                            outputStream.flush()
+
+
+                                            Log.i("ClientSocket", "Update Executed")
+                                            global.resend = 0
+                                        }
+                                    }
+                                }
+                                updateThread?.start()
+                                Log.i("ClientSocket", "UpdateThread started.")
                             } else {
                                 Log.i(
                                     "ClientSocket",
-                                    "Unknown Message while in ${global.status} with message: $jsonObject"
+                                    "Unknown Message while in $status with message: $jsonObject"
                                 )
                             }
                         }
@@ -106,7 +127,7 @@ class WifiP2pClientSocket(
                     SYNCHRONIZED -> {
                         Log.i(
                             "ClientSocket",
-                            "Reached ${global.status}"
+                            "Reached $status"
                         )
                         if (socket!!.isConnected) {
                             val input = DataInputStream(socket!!.getInputStream())
@@ -125,22 +146,10 @@ class WifiP2pClientSocket(
                             } else {
                                 Log.i(
                                     "ClientSocket",
-                                    "Unknown Message while in ${global.status} with message: $jsonObject"
+                                    "Unknown Message while in $status with message: $jsonObject"
                                 )
                             }
                         }
-                    }
-                    SYNC_ALL -> {
-                        val outputStream =
-                            DataOutputStream(socket?.getOutputStream())
-                        val messageJSON =
-                            DbJSONWrapper(context).writeShoppingListDbJSON()
-                        outputStream.writeUTF(messageJSON.toString())
-                        outputStream.flush()
-
-                        Log.i("ServerSocket", "SYNC_ALL Message sent: $messageJSON")
-
-                        global.status = SYNCHRONIZED
                     }
                     else -> {
                         Log.i("ClientSocket", "Client is in an unknown status.")
@@ -155,8 +164,9 @@ class WifiP2pClientSocket(
     }
 
     fun disconnectFromServer() {
-        //status = NOT_CONNECTED
+        status = NOT_CONNECTED
         clientThread?.interrupt()
+        updateThread?.interrupt()
         socket?.close()
     }
 }
