@@ -14,7 +14,6 @@ import com.example.communityshopping.communication.WifiP2pClientSocket
 import com.example.communityshopping.communication.WifiP2pServerSocket
 import com.example.communityshopping.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlin.system.exitProcess
 
 
 class MainActivity : AppCompatActivity() {
@@ -49,7 +48,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        moveTaskToBack (true)
+        moveTaskToBack(true)
         finish();
     }
 
@@ -57,17 +56,20 @@ class MainActivity : AppCompatActivity() {
 
         val connectionInfoListener = WifiP2pManager.ConnectionInfoListener { info ->
             //Check if the device is the group owner
-            if (info.isGroupOwner) {
-                // Device is the group owner, so start the server
-                Log.i("ClientSocket", "server")
-                WifiP2pServerSocket(8888).startServer()
-            } else {
-                // Device is the client, so connect to the group owner
-                Log.i("ClientSocket", "client")
-                WifiP2pClientSocket(8888).connectToServer(info.groupOwnerAddress)
+            if (!global.socketRunning) {
+                if (info.isGroupOwner) {
+                    // Device is the group owner, so start the server
+                    Log.i("ClientSocket", "server")
+                    WifiP2pServerSocket(8888, this, global).startServer()
+                    global.socketRunning = true
+                } else {
+                    // Device is the client, so connect to the group owner
+                    Log.i("ClientSocket", "client")
+                    WifiP2pClientSocket(8888, this, global).connectToServer(info.groupOwnerAddress)
+                    global.socketRunning = true
+                }
             }
         }
-
 
         // Connect to the group owner
         global.wifiP2pManager?.requestConnectionInfo(global.wifiP2pChannel, connectionInfoListener)

@@ -11,5 +11,7 @@ class CommunityShoppingApplication : Application() {
     class Global {
         var wifiP2pManager: WifiP2pManager? = null
         var wifiP2pChannel: WifiP2pManager.Channel? = null
+        var resend: Boolean = false
+        var socketRunning: Boolean = false
     }
 }

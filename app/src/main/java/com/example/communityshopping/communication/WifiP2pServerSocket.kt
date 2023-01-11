@@ -1,28 +1,36 @@
 package com.example.communityshopping.communication
 
+import android.content.Context
 import android.util.Log
+import com.example.communityshopping.CommunityShoppingApplication
 import com.example.communityshopping.communication.SocketStatus.*
-import java.io.*
+import org.json.JSONObject
+import java.io.DataInputStream
+import java.io.DataOutputStream
+import java.io.IOException
 import java.net.InetSocketAddress
 import java.net.ServerSocket
 import java.net.Socket
 
-class WifiP2pServerSocket(private val port: Int) {
+class WifiP2pServerSocket(
+    private val port: Int,
+    private val context: Context,
+    private val global: CommunityShoppingApplication.Global
+) {
 
     private var serverSocket: ServerSocket? = null
     private var clientSocket: Socket? = null
     private var serverThread: Thread? = null
     private var clientThread: Thread? = null
+    private var updateThread: Thread? = null
     private var status: SocketStatus = NOT_CONNECTED
 
     fun startServer() {
         Log.i("ServerSocket", "$status")
         serverThread = Thread {
             try {
-                Log.i("ServerSocket", "$status in thread loop")
                 // Bind the server socket to a specific port
                 if (status == NOT_CONNECTED) {
-                    Log.i("ServerSocket", "$status in creation loop")
                     serverSocket = ServerSocket()
                     serverSocket?.bind(InetSocketAddress(8888))
 
@@ -33,70 +41,155 @@ class WifiP2pServerSocket(private val port: Int) {
                         "Connection to clientsocket " + clientSocket.toString()
                     )
                     // Start the client thread to handle the connection
-                    startClientThread(clientSocket)
-                    val out =
-                        BufferedWriter(OutputStreamWriter(clientSocket?.getOutputStream()))
-                    out.write(CONNECTED.toString())
-                    out.newLine()
-                    out.flush()
+
+                    val outputStream = DataOutputStream(clientSocket?.getOutputStream())
+
+                    val dbShoppingListJSON = JSONObject()
+                    dbShoppingListJSON.put("MessageType", CONNECTED)
+
+                    outputStream.writeUTF(dbShoppingListJSON.toString())
+                    outputStream.flush()
+
                     Log.i("ServerSocket", "$CONNECTED message send.")
                     status = CONNECTED
+                    startClientThread(clientSocket)
                 }
             } catch (e: IOException) {
                 // Handle exceptions
             }
+
         }
         serverThread?.start()
     }
 
     private fun startClientThread(clientSocket: Socket?) {
         clientThread = Thread {
-            Log.i("ServerSocket", "$status in client - thread loop")
-            try {
-                // Send and receive data through the client socket
-                val `in` = BufferedReader(InputStreamReader(clientSocket?.getInputStream()))
-                val message = `in`.readLine()
-                Log.i("ServerSocket", message)
-                when (status) {
-                    CONNECTED -> {
-                        if (message.equals(SYNC_ALL.toString())) {
-                            // Send SYN_ALL message data through the socket
-                            Log.i("ServerSocket", "Sync ALL here.")
-                            status = SYNCHRONIZED
-                        } else {
+            while (status != NOT_CONNECTED) {
+                try {
+                    when (status) {
+                        CONNECTED -> {
+                            if (clientSocket!!.isConnected) {
+                                val input = DataInputStream(clientSocket!!.getInputStream())
+                                val jsonString = input.readUTF()
+                                val jsonObject = JSONObject(jsonString)
+                                val messageType = jsonObject.getString("MessageType")
+                                Log.i("ServerSocket", "Received message: $jsonObject")
+                                if (messageType.equals(SYNC_ALL.toString())) {
+                                    Log.i("ServerSocket", "Got SYNC_ALL MESSAGE")
+                                    // Send SYN_ALL message data through the socket
+                                    val outputStream =
+                                        DataOutputStream(clientSocket?.getOutputStream())
+                                    val messageJSON =
+                                        DbJSONWrapper(context).createCompleteDbJSON()
+                                    outputStream.writeUTF(messageJSON.toString())
+                                    outputStream.flush()
+
+                                    Log.i("ServerSocket", "SYNC_ALL Message sent: $messageJSON")
+
+                                    //UpdateData
+                                    DbJSONWrapper(context).synchronizeDataWithCurrentDB(jsonObject)
+                                    Log.i("ServerSocket", "Database Updated")
+
+                                    updateThread = Thread {
+                                        while (status == SYNCHRONIZED) {
+                                            if (global.resend) {
+                                                val messageJSON =
+                                                    DbJSONWrapper(context).createCompleteDbJSON()
+
+                                                val outputStream =
+                                                    DataOutputStream(clientSocket?.getOutputStream())
+
+                                                Log.i("ServerSocket", "Send message: $messageJSON")
+                                                outputStream.writeUTF(messageJSON.toString())
+                                                outputStream.flush()
+
+
+                                                Log.i("ServerSocket", "Update Executed")
+                                                global.resend = false
+                                            }
+                                        }
+                                    }
+                                    updateThread?.start()
+                                    Log.i("ServerSocket", "UpdateThread started.")
+
+                                    status = SYNCHRONIZED
+                                } else {
+                                    Log.i(
+                                        "ServerSocket",
+                                        "Unknown Message while in $status with message:  $jsonObject"
+                                    )
+                                }
+                            }
+                        }
+                        SYNCHRONIZED -> {
                             Log.i(
                                 "ServerSocket",
-                                "Unknown Message while in $status with message: $message"
+                                "Reached $status"
                             )
+                            if (clientSocket!!.isConnected) {
+                                try {
+                                    val input = DataInputStream(clientSocket!!.getInputStream())
+
+                                    val jsonString = input.readUTF()
+                                    val jsonObject = JSONObject(jsonString)
+                                    val messageType = jsonObject.getString("MessageType")
+                                    Log.i("ServerSocket", "Received message: $jsonObject")
+                                    if (messageType.equals(SYNC_ALL.toString())) {
+                                        Log.i("ServerSocket", "Got SYNC_ALL MESSAGE")
+
+                                        //UpdateData
+                                        DbJSONWrapper(context).synchronizeDataWithCurrentDB(
+                                            jsonObject
+                                        )
+                                    } else {
+                                        Log.i(
+                                            "ServerSocket",
+                                            "Unknown Message while in $status with message: $jsonObject"
+                                        )
+                                    }
+
+                                } catch (e: Exception) {
+                                    Log.i(
+                                        "ServerSocket",
+                                        "Socket read not possible. Restarting connection"
+                                    )
+                                    restartServer()
+                                }
+                            } else {
+                                Log.i("ServerSocket", "Socket not connected")
+                                restartServer()
+                            }
+                        }
+                        else -> {
+                            Log.i("ServerSocket", "Client is in an unknown status. $status")
                         }
                     }
-                    SYNCHRONIZED -> {
-                        if (message.equals(SYNC_ALL.toString())) {
-                            // Send SYN_ALL message data through the socket
-                            Log.i("ServerSocket", "Sync ALL here.")
-                            status = SYNCHRONIZED
-                        } else {
-                            Log.i(
-                                "ServerSocket",
-                                "Unknown Message while in $status with message: $message"
-                            )
-                        }
-                    }
-                    else -> {
-                        Log.i("ServerSocket", "Client is in an unknown status.")
-                    }
+                } catch (e: IOException) {
+                    // Handle exceptions
+                    e.printStackTrace()
                 }
-            } catch (e: IOException) {
-                // Handle exceptions
             }
         }
         clientThread?.start()
     }
 
     fun stopServer() {
+        status = NOT_CONNECTED
         serverThread?.interrupt()
         clientThread?.interrupt()
         serverSocket?.close()
         clientSocket?.close()
+    }
+
+    fun restartServer() {
+        status = NOT_CONNECTED
+        updateThread = null
+        clientThread = null
+        serverThread = null
+        serverSocket?.close()
+        clientSocket?.close()
+        //serverSocket = null
+        //clientSocket = null
+        this.startServer()
     }
 }

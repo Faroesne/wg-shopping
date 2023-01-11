@@ -11,6 +11,7 @@ import android.widget.*
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.communityshopping.CommunityShoppingApplication
 import com.example.communityshopping.R
 import com.example.communityshopping.database.ShoppingListDB
 import com.example.communityshopping.database.models.Item
@@ -30,6 +31,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     var itemIdList = arrayListOf<String>()
     private var buttonClick: AlphaAnimation = AlphaAnimation(1F, 0.7F)
+    private lateinit var global: CommunityShoppingApplication.Global
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -59,6 +61,8 @@ class HomeFragment : Fragment() {
         btnSubmit.setOnClickListener { submitItems() }
         dbGetShoppingList()
         checkIfListEmpty()
+
+        global = (activity?.application as CommunityShoppingApplication).global
         return root
     }
 
@@ -113,6 +117,7 @@ class HomeFragment : Fragment() {
         itemList.add(item)
         layout!!.addView(view)
         checkIfListEmpty()
+        global.resend = true
     }
 
     private fun removeItems() {

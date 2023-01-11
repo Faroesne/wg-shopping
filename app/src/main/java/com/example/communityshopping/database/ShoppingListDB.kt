@@ -105,10 +105,37 @@ class ShoppingListDB(
             db.insert(TABLE_SHOPPING_LIST, null, values)
         } else {
             cursor.moveToNext()
-            if (cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_ITEM_ID)) < timestamp) {
+            if (cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_ITEM_TIMESTAMP)) < timestamp) {
                 db.update(TABLE_SHOPPING_LIST, values, "$COLUMN_ITEM_ID = '$id'", null)
             }
         }
+    }
+
+    fun insertOrUpdateUser(id: String, name: String) {
+        val db = this.writableDatabase
+        var values = ContentValues()
+        values.put(COLUMN_USER_ID, id)
+        values.put(COLUMN_USER_NAME, name)
+
+        var cursor = getUserById(id)
+        if (cursor.count < 1) {
+            db.insert(TABLE_USER, null, values)
+        }
+    }
+
+    private fun getUserById(id: String): Cursor {
+        val db = this.readableDatabase
+        val projection = arrayOf(COLUMN_USER_ID, COLUMN_USER_NAME)
+        val selection = "$COLUMN_USER_ID = '${id}'"
+        return db.query(
+            TABLE_USER,
+            projection,
+            selection,
+            null,
+            null,
+            null,
+            null
+        )
     }
 
     fun getShoppingListDataByID(index: String): Cursor {
@@ -154,7 +181,96 @@ class ShoppingListDB(
         )
     }
 
-    fun getArchiveItemData(index: String): Cursor? {
+    fun insertOrUpdateArchiveListItem(
+        archiveID: String,
+        archiveFullPrice: Double,
+        archiveUserName: String,
+        archiveDate: Long,
+        archivePaid: Int
+    ) {
+        val db = this.writableDatabase
+        var values = ContentValues()
+        values.put(COLUMN_ARCHIVE_ID, archiveID)
+        values.put(COLUMN_ARCHIVE_FULL_PRICE, archiveFullPrice)
+        values.put(COLUMN_ARCHIVE_USERNAME, archiveUserName)
+        values.put(COLUMN_ARCHIVE_DATE, archiveDate)
+        values.put(COLUMN_ARCHIVE_PAID, archivePaid)
+        values.put(COLUMN_ARCHIVE_IMAGE, "1A")
+
+        var cursor = getArchiveListDataByID(archiveID)
+        if (cursor.count < 1) {
+            db.insert(TABLE_ARCHIVE, null, values)
+        } else {
+            cursor.moveToNext()
+            if (cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ARCHIVE_PAID)) == 0) {
+                db.update(TABLE_ARCHIVE, values, "$COLUMN_ARCHIVE_ID = '$archiveID'", null)
+            }
+        }
+    }
+
+    fun getArchiveListDataByID(index: String): Cursor {
+        val db = this.readableDatabase
+        val projection = arrayOf(COLUMN_ARCHIVE_ID, COLUMN_ARCHIVE_PAID)
+        val selection = "${COLUMN_ARCHIVE_ID} = '${index}'"
+        return db.query(
+            TABLE_ARCHIVE,
+            projection,
+            selection,
+            null,
+            null,
+            null,
+            null
+        )
+    }
+
+    fun getArchiveItemData(): Cursor? {
+        val db = this.readableDatabase
+        return db.query(
+            TABLE_ARCHIVE_ITEM,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        )
+    }
+
+    fun insertOrUpdateArchiveItemListItem(
+        archiveItemID: String,
+        archivePrice: Double,
+        itemID: String,
+        archiveID: String
+    ) {
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put(COLUMN_ARCHIVE_ITEM_ID, archiveItemID)
+        values.put(COLUMN_ITEM_PRICE, archivePrice)
+        values.put(COLUMN_ITEM_ID, itemID)
+        values.put(COLUMN_ARCHIVE_ID, archiveID)
+
+        val cursor = getSingleArchiveItemDataByID(archiveItemID)
+        if (cursor.count < 1) {
+            db.insert(TABLE_ARCHIVE_ITEM, null, values)
+        }
+    }
+
+    private fun getSingleArchiveItemDataByID(index: String): Cursor {
+        val db = this.readableDatabase
+        val projection = arrayOf(COLUMN_ARCHIVE_ITEM_ID)
+        val selection = "${COLUMN_ARCHIVE_ITEM_ID} = '${index}'"
+        return db.query(
+            TABLE_ARCHIVE_ITEM,
+            projection,
+            selection,
+            null,
+            null,
+            null,
+            null
+        )
+    }
+
+    fun getArchiveItemByID(index: String): Cursor? {
         val db = this.readableDatabase
         val selection = "$COLUMN_ARCHIVE_ID = '${index}'"
 
@@ -228,11 +344,13 @@ class ShoppingListDB(
         return cursor.getDouble(0)
     }
 
-    fun addUser(username: String): Long {
+    fun addUser(username: String): String {
         val db = this.writableDatabase
         val values = ContentValues()
+        val id = UUID.randomUUID().toString()
+        values.put(COLUMN_USER_ID,id)
         values.put(COLUMN_USER_NAME, username)
-        val id = db.insert(TABLE_USER, null, values)
+        db.insert(TABLE_USER, null, values)
         db.close()
         return id
     }
@@ -256,7 +374,6 @@ class ShoppingListDB(
         val values = ContentValues()
         values.put(COLUMN_ARCHIVE_PAID, 1)
         db.update(TABLE_ARCHIVE, values, null, null)
-
     }
 
     fun deleteShoppingListItem(id: String) {
