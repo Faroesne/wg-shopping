@@ -30,13 +30,16 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/brandred" />
 
-            <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@android:drawable/checkbox_on_background"
-                    android:id="@+id/paid_img" />
-
         </LinearLayout>
+
+        <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                app:srcCompat="@drawable/check_circle_green"
+                android:id="@+id/paid_img"
+                android:layout_marginEnd="24dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"/>
 
     </RelativeLayout>
 
