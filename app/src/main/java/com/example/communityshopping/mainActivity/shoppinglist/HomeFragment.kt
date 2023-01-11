@@ -140,6 +140,7 @@ class HomeFragment : Fragment() {
                     R.style.toastStyle
                 ).show()
             }
+            global.resend = true
         }
         checkIfListEmpty()
     }
