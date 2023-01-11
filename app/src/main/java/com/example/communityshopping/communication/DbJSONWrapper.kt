@@ -1,7 +1,7 @@
 package com.example.communityshopping.communication
 
 import android.content.Context
-import com.example.communityshopping.communication.SocketStatus.*
+import com.example.communityshopping.communication.SocketStatus.SYNC_ALL
 import com.example.communityshopping.database.ShoppingListDB
 import org.json.JSONArray
 import org.json.JSONObject
@@ -14,6 +14,7 @@ class DbJSONWrapper(private var context: Context) {
         dbCompleteJSON.put(ShoppingListDB.TABLE_SHOPPING_LIST, writeShoppingListDbJSON())
         dbCompleteJSON.put(ShoppingListDB.TABLE_ARCHIVE, writeArchiveListDbJSON())
         dbCompleteJSON.put(ShoppingListDB.TABLE_ARCHIVE_ITEM, writeArchiveItemListDbJSON())
+        dbCompleteJSON.put(ShoppingListDB.TABLE_USER,writeUserListDbJSON())
 
         return dbCompleteJSON
     }
@@ -80,6 +81,34 @@ class DbJSONWrapper(private var context: Context) {
             cursor.close()
 
             dbArchiveListJSON.put(ShoppingListDB.TABLE_ARCHIVE, JSONArray(itemList))
+        }
+
+        return JSONArray(itemList)
+    }
+    private fun writeUserListDbJSON(): JSONArray {
+        val db = ShoppingListDB(context, null)
+        val cursor = db.getUserFinancesData()
+
+        val dbUserListJSON = JSONObject()
+        val itemList = arrayListOf<JSONObject>()
+
+        if (cursor!!.count >= 1) {
+            while (cursor.moveToNext()) {
+                val columnID =
+                    cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_USER_ID))
+                val columnUserName =
+                    cursor.getString(cursor.getColumnIndexOrThrow(ShoppingListDB.COLUMN_USER_NAME))
+
+
+                val singleItemJSON = JSONObject()
+                singleItemJSON.put(ShoppingListDB.COLUMN_USER_ID, columnID)
+                singleItemJSON.put(ShoppingListDB.COLUMN_USER_NAME, columnUserName)
+
+                itemList.add(singleItemJSON)
+            }
+            cursor.close()
+
+            dbUserListJSON.put(ShoppingListDB.TABLE_USER, JSONArray(itemList))
         }
 
         return JSONArray(itemList)
@@ -169,6 +198,17 @@ class DbJSONWrapper(private var context: Context) {
             var archiveID =
                 (archiveItemList[i] as JSONObject).getString(ShoppingListDB.COLUMN_ARCHIVE_ID)
             db.insertOrUpdateArchiveItemListItem(archiveItemID, archivePrice, itemID, archiveID)
+            i++
+        }
+
+        val userList = jsonObject.getJSONArray(ShoppingListDB.TABLE_USER)
+        i = 0
+        while (i < userList.length()) {
+            var userID =
+                (userList[i] as JSONObject).getString(ShoppingListDB.COLUMN_USER_ID)
+            var userName =
+                (userList[i] as JSONObject).getString(ShoppingListDB.COLUMN_USER_NAME)
+            db.insertOrUpdateUser(userID, userName)
             i++
         }
 

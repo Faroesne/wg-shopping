@@ -344,11 +344,13 @@ class ShoppingListDB(
         return cursor.getDouble(0)
     }
 
-    fun addUser(username: String): Long {
+    fun addUser(username: String): String {
         val db = this.writableDatabase
         val values = ContentValues()
+        val id = UUID.randomUUID().toString()
+        values.put(COLUMN_USER_ID,id)
         values.put(COLUMN_USER_NAME, username)
-        val id = db.insert(TABLE_USER, null, values)
+        db.insert(TABLE_USER, null, values)
         db.close()
         return id
     }
