@@ -141,6 +141,7 @@ class JoinGroupActivity : AppCompatActivity() {
                 val nameView: TextView = view.findViewById(R.id.connectionStatus)
                 nameView.text = resources.getString(R.string.device_status_connected)
                 connectionEstablished = true
+                Thread.sleep(2000)
                 startActivity(Intent(this, MainActivity::class.java))
             } else if (device.status == WifiP2pDevice.AVAILABLE) {
                 val nameView: TextView = view.findViewById(R.id.connectionStatus)
