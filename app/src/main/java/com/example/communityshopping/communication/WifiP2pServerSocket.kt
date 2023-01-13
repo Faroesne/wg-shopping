@@ -12,6 +12,30 @@ import java.net.InetSocketAddress
 import java.net.ServerSocket
 import java.net.Socket
 
+/**
+
+The WifiP2pServerSocket class is used to establish a socket connection with a client,
+
+and to synchronize data between the server and the client.
+
+@param port the port number to use for the socket connection
+
+@param context the context of the application
+
+@param global the global application object
+
+@property serverSocket the server socket used for the connection
+
+@property clientSocket the client socket used for the connection
+
+@property serverThread the thread used to handle the server side of the connection
+
+@property clientThread the thread used to handle the client side of the connection
+
+@property updateThread the thread used to handle updates to the connection
+
+@property status the current status of the socket connection, represented by the SocketStatus enum (NOT_CONNECTED, CONNECTED, UN_SYNCHRONIZED, SYNCHRONIZED, SYNC_ALL)
+ */
 class WifiP2pServerSocket(
     private val port: Int,
     private val context: Context,
@@ -25,6 +49,10 @@ class WifiP2pServerSocket(
     private var updateThread: Thread? = null
     private var status: SocketStatus = NOT_CONNECTED
 
+    /**
+
+    Start the server, bind it to a specific port and wait for incoming connections from clients.
+     */
     fun startServer() {
         Log.i("ServerSocket", "$status")
         serverThread = Thread {
@@ -62,6 +90,12 @@ class WifiP2pServerSocket(
         serverThread?.start()
     }
 
+    /**
+
+    Start the server, bind it to a specific port and wait for incoming connections from clients.
+
+    @param clientSocket the client socket used for the connection
+     */
     private fun startClientThread(clientSocket: Socket?) {
         clientThread = Thread {
             while (status != NOT_CONNECTED) {
