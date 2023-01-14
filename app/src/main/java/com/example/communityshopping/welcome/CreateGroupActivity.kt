@@ -30,12 +30,17 @@ class CreateGroupActivity : AppCompatActivity() {
         window.setNavigationBarColor(Color.WHITE)
     }
 
+
     private fun createGroup() {
-        saveBluetoothStatus()
+        saveUsernameAsSharedPreferences()
         startActivity(Intent(this, MainActivity::class.java))
     }
 
-    private fun saveBluetoothStatus() {
+    /**
+     * This method saves the usernames as shared preferences
+     */
+
+    private fun saveUsernameAsSharedPreferences() {
         val sharedPref = this.getSharedPreferences(
             getString(R.string.app_preferences), Context.MODE_PRIVATE
         )

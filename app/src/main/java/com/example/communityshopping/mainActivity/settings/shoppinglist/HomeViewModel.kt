@@ -1,4 +1,4 @@
-package com.example.communityshopping.mainActivity.shoppinglist
+package com.example.communityshopping.mainActivity.settings.shoppinglist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

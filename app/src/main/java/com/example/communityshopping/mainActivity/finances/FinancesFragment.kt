@@ -48,6 +48,10 @@ class FinancesFragment : Fragment() {
         return root
     }
 
+    /**
+     * This method retrieves the user list from the database
+     */
+
     private fun addUserList() {
         val db = ShoppingListDB(this.context, null)
         val cursor = db.getUserFinancesData()
@@ -74,6 +78,10 @@ class FinancesFragment : Fragment() {
             cursor.close()
         }
     }
+
+    /**
+     * This method clears the finances for the users
+     */
 
     private fun clearFinance() {
         val db = ShoppingListDB(this.context, null)

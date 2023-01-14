@@ -54,6 +54,10 @@ class SettingsFragment : Fragment() {
 
     }
 
+    /**
+     * This method changes the language of the app
+     */
+
     private fun showChangeLang() {
         val listItems = arrayOf("English", "Deutsch")
         val mBuilder = AlertDialog.Builder(context)
@@ -75,6 +79,10 @@ class SettingsFragment : Fragment() {
         mDialog.show()
     }
 
+    /**
+     * This method sets the locale for the language
+     */
+
     private fun setLocate(Lang: String?) {
 
         val locale = Locale(Lang)
@@ -95,6 +103,10 @@ class SettingsFragment : Fragment() {
             editor.apply()
         }
     }
+
+    /**
+     * This method load the locale for the language
+     */
 
     private fun loadLocate() {
         val sharedPreferences =

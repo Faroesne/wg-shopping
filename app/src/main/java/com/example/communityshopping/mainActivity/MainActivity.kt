@@ -52,6 +52,10 @@ class MainActivity : AppCompatActivity() {
         finish();
     }
 
+    /**
+     * This method initialises the socket for communication based on Wifi Direct information
+     */
+
     private fun setupP2pSocket() {
 
         val connectionInfoListener = WifiP2pManager.ConnectionInfoListener { info ->
