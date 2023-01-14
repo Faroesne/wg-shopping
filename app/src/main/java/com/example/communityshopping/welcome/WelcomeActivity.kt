@@ -45,6 +45,10 @@ class WelcomeActivity : AppCompatActivity() {
         checkForExistingSetup()
     }
 
+    /**
+     * This method checks if the devices has all the required permissions
+     */
+
     private fun checkPermissions() {
         val requiredPermissions = arrayOf(
             Manifest.permission.ACCESS_WIFI_STATE,
@@ -82,11 +86,18 @@ class WelcomeActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * This method switches to the group join screen with the saved user's name
+     */
 
     private fun joinGroup() {
         saveUserName()
         startActivity(Intent(this, JoinGroupActivity::class.java))
     }
+
+    /**
+     * This method switches to the group create screen with the saved user's name
+     */
 
     private fun createGroup() {
         saveUserName()
@@ -96,6 +107,10 @@ class WelcomeActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
     }
+
+    /**
+     * This method saves the username that got typed in
+     */
 
     private fun saveUserName() {
         val sharedPref = this.getSharedPreferences(
@@ -115,6 +130,10 @@ class WelcomeActivity : AppCompatActivity() {
             apply()
         }
     }
+
+    /**
+     * This method checks if there ever was a login before and sends you to the next screen
+     */
 
     private fun checkForExistingSetup() {
         val sharedPref = this.getSharedPreferences(

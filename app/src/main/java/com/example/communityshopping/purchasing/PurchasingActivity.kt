@@ -111,6 +111,10 @@ class PurchasingActivity : AppCompatActivity() {
         window.setNavigationBarColor(Color.parseColor("#0C0B0B"))
     }
 
+    /**
+     * This method changes the UI Interface and the visual look of the screen if the user paid in total
+     */
+
     private fun changeToTotal() {
         val iterator = binding.scroll.iterator()
         for (item in iterator) {
@@ -135,6 +139,10 @@ class PurchasingActivity : AppCompatActivity() {
         isTotal = true
     }
 
+    /**
+     * This method takes all cards from the DB and adds them to the linearlayout
+     */
+
     private fun addCards(list: ArrayList<String>) {
         val db = ShoppingListDB(this, null)
         for (itemId in list) {
@@ -152,6 +160,10 @@ class PurchasingActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * This method checks/takes camera permissions and captures an image with the device
+     */
+
     private fun pickCameraOrGallery() {
         if (ActivityCompat.checkSelfPermission(
                 this,
@@ -164,6 +176,10 @@ class PurchasingActivity : AppCompatActivity() {
             startActivityForResult(intent, 123)
         }
     }
+
+    /**
+     * This method changes the UI Interface and the visual look of the screen if the user pays single items
+     */
 
     private fun changeToSingle() {
         val iterator = binding.scroll.iterator()
@@ -222,6 +238,10 @@ class PurchasingActivity : AppCompatActivity() {
             startActivity(i)
         }
     }
+
+    /**
+     * This methods keeps the total value of the cards updated with every change
+     */
 
     private fun updateText() {
         val totalPriceArrayList = arrayListOf<Float>()

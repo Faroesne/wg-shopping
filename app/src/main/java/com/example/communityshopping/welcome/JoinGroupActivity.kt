@@ -57,6 +57,10 @@ class JoinGroupActivity : AppCompatActivity() {
         window.navigationBarColor = Color.WHITE
     }
 
+    /**
+     * This method creates the p2p connection between the devices
+     */
+
     private fun setupWifiP2P() {
         wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
         global.wifiP2pManager = getSystemService(Context.WIFI_P2P_SERVICE) as WifiP2pManager
@@ -135,6 +139,10 @@ class JoinGroupActivity : AppCompatActivity() {
         global.wifiP2pManager!!.requestPeers(global.wifiP2pChannel, peerListListener)
     }
 
+    /**
+     * This method checks in what status the connection of the devices is
+     */
+
     private fun checkDeviceStatus(device: WifiP2pDevice?, view: View) {
         if (device != null && !connectionEstablished) {
             if (device.status == WifiP2pDevice.CONNECTED) {
@@ -153,6 +161,10 @@ class JoinGroupActivity : AppCompatActivity() {
 
         }
     }
+
+    /**
+     * This method starts the discovery of new wifi direct devices in the area
+     */
 
     private fun searchPeers() {
         // Start the search for devices

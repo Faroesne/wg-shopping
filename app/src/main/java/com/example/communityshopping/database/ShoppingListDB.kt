@@ -82,6 +82,11 @@ class ShoppingListDB(
         onCreate(db)
     }
 
+    /**
+     * This method gives the shopping list data
+     * @return the entire shopping list
+     */
+
     fun getShoppingListData(): Cursor? {
         val db = this.readableDatabase
         return db.query(
@@ -94,6 +99,10 @@ class ShoppingListDB(
             null
         )
     }
+
+    /**
+     * This method inserts an item for the shopping list and updates it simultaneously
+     */
 
     fun insertOrUpdateShoppingListItem(id: String, name: String, timestamp: Long, deleted: Int) {
         val db = this.writableDatabase
@@ -115,6 +124,10 @@ class ShoppingListDB(
         }
     }
 
+    /**
+     * This method inserts an user and updates it simultaneously
+     */
+
     fun insertOrUpdateUser(id: String, name: String) {
         val db = this.writableDatabase
         var values = ContentValues()
@@ -126,6 +139,12 @@ class ShoppingListDB(
             db.insert(TABLE_USER, null, values)
         }
     }
+
+    /**
+     * This method returns the user according to a specified UUID
+     * @param id specified UUID of the user
+     * @return the user according to the UUID
+     */
 
     private fun getUserById(id: String): Cursor {
         val db = this.readableDatabase
@@ -142,6 +161,12 @@ class ShoppingListDB(
         )
     }
 
+    /**
+     * This method returns the shopping list data according to a specific UUID
+     * @param index specified UUID for the data
+     * @return the shopping list data according to the UUID
+     */
+
     fun getShoppingListDataByID(index: String): Cursor {
         val db = this.readableDatabase
         val projection = arrayOf(COLUMN_ITEM_ID, COLUMN_ITEM_NAME, COLUMN_ITEM_TIMESTAMP)
@@ -156,6 +181,12 @@ class ShoppingListDB(
             null
         )
     }
+
+    /**
+     * This method returns the item name from a list according to a specific UUID
+     * @param index specified UUID for the item of the list
+     * @return the item according to the UUID
+     */
 
     fun getShoppingListDataNameByID(index: String): Cursor {
         val db = this.readableDatabase
@@ -172,6 +203,11 @@ class ShoppingListDB(
         )
     }
 
+    /**
+     * This method returns the archive data
+     * @return archive data
+     */
+
     fun getArchiveData(): Cursor? {
         val db = this.readableDatabase
         return db.query(
@@ -184,6 +220,10 @@ class ShoppingListDB(
             COLUMN_ARCHIVE_DATE
         )
     }
+
+    /**
+     * This method insets an archive list item and updates it simultaneously
+     */
 
     fun insertOrUpdateArchiveListItem(
         archiveID: String,
@@ -212,6 +252,12 @@ class ShoppingListDB(
         }
     }
 
+    /**
+     * This method gives the archive list data according to a specified UUID
+     * @param index specific UUID of the archive list data
+     * @return the archive list data
+     */
+
     fun getArchiveListDataByID(index: String): Cursor {
         val db = this.readableDatabase
         val projection = arrayOf(COLUMN_ARCHIVE_ID, COLUMN_ARCHIVE_PAID)
@@ -227,6 +273,11 @@ class ShoppingListDB(
         )
     }
 
+    /**
+     * This method gives the entire archive item data
+     * @return archive item data
+     */
+
     fun getArchiveItemData(): Cursor? {
         val db = this.readableDatabase
         return db.query(
@@ -239,6 +290,10 @@ class ShoppingListDB(
             null
         )
     }
+
+    /**
+     * This method inserts an archive list item and updates it simultaneously
+     */
 
     fun insertOrUpdateArchiveItemListItem(
         archiveItemID: String,
@@ -259,6 +314,12 @@ class ShoppingListDB(
         }
     }
 
+    /**
+     * This method returns the single archive item according to a specific UUID
+     * @param index specific UUID
+     * @return single archive item
+     */
+
     private fun getSingleArchiveItemDataByID(index: String): Cursor {
         val db = this.readableDatabase
         val projection = arrayOf(COLUMN_ARCHIVE_ITEM_ID)
@@ -273,6 +334,12 @@ class ShoppingListDB(
             null
         )
     }
+
+    /**
+     * This method returns the total archive item according to a specific UUID
+     * @param index specific UUID
+     * @return total archive item
+     */
 
     fun getArchiveItemByID(index: String): Cursor? {
         val db = this.readableDatabase
@@ -289,6 +356,12 @@ class ShoppingListDB(
         )
     }
 
+    /**
+     * This method adds an item to the shopping list
+     * @param name name of the item
+     * @return the UUID of the item
+     */
+
     fun addShoppingListItem(name: String): String {
         val db = this.writableDatabase
         val values = ContentValues()
@@ -302,6 +375,13 @@ class ShoppingListDB(
         return id
     }
 
+    /**
+     * This method adds an item to the archive list
+     * @param price price of the item
+     * @param name name of the item
+     * @param img receipt image of the item as an bytearray
+     * @return the UUID of the item
+     */
 
     fun addArchiveListItem(price: Double, name: String, img: ByteArray): String {
         val db = this.writableDatabase
@@ -318,6 +398,14 @@ class ShoppingListDB(
         return id
     }
 
+    /**
+     * This method adds an item to the archive
+     * @param price of the item
+     * @param itemFK id of the item
+     * @param archiveFK id of the archive
+     * @return the UUID of the item
+     */
+
     fun addArchiveItem(price: Double?, itemFK: String, archiveFK: String): String {
         val db = this.writableDatabase
         val values = ContentValues()
@@ -330,6 +418,11 @@ class ShoppingListDB(
         db.close()
         return id
     }
+
+    /**
+     * This method gives the archives that still need to be paid
+     * @return the value that needs to be paid
+     */
 
     fun getArchivesToBePaid(): Double {
         val db = this.readableDatabase
@@ -348,6 +441,11 @@ class ShoppingListDB(
         return cursor.getDouble(0)
     }
 
+    /**
+     * This method gives the archives that have been paid
+     * @return the value that has been paid
+     */
+
     fun getArchivesUserPaid(username: String): Double {
         val db = this.readableDatabase
         val selection = "$COLUMN_ARCHIVE_USERNAME == '${username}' and $COLUMN_ARCHIVE_PAID = 0"
@@ -365,6 +463,12 @@ class ShoppingListDB(
         return cursor.getDouble(0)
     }
 
+    /**
+     * This method adds an user to the database
+     * @param username name of the user
+     * @return the UUID of the user
+     */
+
     fun addUser(username: String): String {
         val db = this.writableDatabase
         val values = ContentValues()
@@ -376,6 +480,10 @@ class ShoppingListDB(
         return id
     }
 
+    /**
+     * This method gives the finances of the users
+     * @return the user table
+     */
 
     fun getUserFinancesData(): Cursor? {
         val db = this.readableDatabase
@@ -390,12 +498,21 @@ class ShoppingListDB(
         )
     }
 
+    /**
+     * This method clears the finance of the users and updates it
+     */
+
     fun clearFinance() {
         val db = this.writableDatabase
         val values = ContentValues()
         values.put(COLUMN_ARCHIVE_PAID, 1)
         db.update(TABLE_ARCHIVE, values, null, null)
     }
+
+    /**
+     * This method deletes an item from the shopping list and updates it
+     * @param id specific id of the item
+     */
 
     fun deleteShoppingListItem(id: String) {
         val db = this.writableDatabase

@@ -39,6 +39,10 @@ class ArchiveFragment : Fragment() {
         return root
     }
 
+    /**
+     * This method retrieves the archives saved in the database
+     */
+
     private fun dbGetArchiveList() {
         val db = ShoppingListDB(this.context, null)
         val cursor = db.getArchiveData()
