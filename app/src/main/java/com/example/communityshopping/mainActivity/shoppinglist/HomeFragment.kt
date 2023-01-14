@@ -1,4 +1,4 @@
-package com.example.communityshopping.mainActivity.settings.shoppinglist
+package com.example.communityshopping.mainActivity.shoppinglist
 
 import android.app.AlertDialog
 import android.content.Intent
